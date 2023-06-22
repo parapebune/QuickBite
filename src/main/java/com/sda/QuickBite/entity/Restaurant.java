@@ -2,12 +2,18 @@ package com.sda.QuickBite.entity;
 
 import com.sda.QuickBite.enums.RestaurantSpecific;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Getter
+@Setter
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +22,6 @@ public class Restaurant {
     private String description;
     private String address;
     private String phoneNo;
-    private String email;
-    private String password;
 
     @Enumerated(value = EnumType.STRING)
     private RestaurantSpecific restaurantSpecific;
