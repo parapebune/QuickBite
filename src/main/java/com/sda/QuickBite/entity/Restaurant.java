@@ -2,11 +2,17 @@ package com.sda.QuickBite.entity;
 
 import com.sda.QuickBite.enums.RestaurantSpecific;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 
 public class Restaurant {
     @Id
@@ -15,7 +21,7 @@ public class Restaurant {
     private String name;
     private String description;
     private String address;
-    private String phoneNo;
+    private String phoneNumber;
     private String email;
     private String password;
 

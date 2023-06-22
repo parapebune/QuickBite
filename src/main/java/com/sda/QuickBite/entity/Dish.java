@@ -21,7 +21,7 @@ public class Dish {
     private byte[] logo;
 
     @ManyToOne
-    @JoinColumn(name = "restaurantId")
+    @JoinColumn
     private Restaurant restaurant;
 
 

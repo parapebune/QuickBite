@@ -43,7 +43,7 @@ public class SendEmail {
 
                 protected PasswordAuthentication getPasswordAuthentication() {
 
-                    return new PasswordAuthentication("romulus.chitic@gmail.com", "hvmjzelqlokatewq");
+                    return new PasswordAuthentication("romulus.chitic@gmail.com", "hvmjzelqlokatewq"); //parola este generata specifipe https://myaccount.google.com/apppasswords
 
                 }
 
