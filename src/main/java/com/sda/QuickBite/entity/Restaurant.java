@@ -20,7 +20,7 @@ public class Restaurant {
     private String password;
 
     @Enumerated(value = EnumType.STRING)
-    private RestaurantSpecific specific;
+    private RestaurantSpecific restaurantSpecific;
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] logo;
