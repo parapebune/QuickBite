@@ -1,6 +1,5 @@
 package com.sda.QuickBite.controller;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.sda.QuickBite.dto.DishDto;
 import com.sda.QuickBite.dto.RestaurantDto;
 import com.sda.QuickBite.dto.UserDto;
@@ -10,11 +9,10 @@ import com.sda.QuickBite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Controller
 public class MvcController {
@@ -54,8 +52,9 @@ public class MvcController {
     }
 
     @PostMapping("/addRestaurant")
-    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") RestaurantDto restaurantDto ){
-        restaurantService.addRestaurant(restaurantDto);
+    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") RestaurantDto restaurantDto,
+                                    MultipartFile restaurantImage){
+        restaurantService.addRestaurant(restaurantDto, restaurantImage);
         return "redirect:/addRestaurant";
     }
 
@@ -73,10 +72,21 @@ public class MvcController {
     }
 
     @PostMapping("/addDish")
-    public String addDishPost(@ModelAttribute(name = "dishDto") DishDto dishDto ,
+    public String addDishPost(@ModelAttribute(name = "dishDto") DishDto dishDto,
                               @RequestParam("dishImage") MultipartFile dishImage){
         dishService.addDish(dishDto, dishImage);
         return "redirect:/addDish";
+    }
+
+    @GetMapping("/restaurantPage/{restaurantId}")
+    public String restaurantPageGet(@PathVariable(value = "restaurantId") String restaurantId, Model model){
+        Optional<RestaurantDto> optionalRestaurantDto = restaurantService.getRestaurantById(restaurantId);
+        if(optionalRestaurantDto.isEmpty()){
+            return "error";
+        }
+        RestaurantDto restaurantDto = optionalRestaurantDto.get();
+        model.addAttribute("restaurantDto",restaurantDto);
+        return "restaurantPage";
     }
 
 

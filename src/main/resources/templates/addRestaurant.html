@@ -15,8 +15,9 @@
     </style>
 </head>
 <body>
+<div th:insert="fragments/navBar"></div>
 <div class="m-4" >
-    <form th:object="${restaurantDto}"  action="/addRestaurant" method="post" >
+    <form th:object="${restaurantDto}"  action="/addRestaurant" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label" for="name">Restaurant name</label>
             <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Name" required>
@@ -42,7 +43,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="logo">Logo</label>
-            <input type="file" class="form-control" id="logo" required>
+            <input type="file" name="restaurantImage" class="form-control" id="logo" required>
         </div>
         <button type="submit" class="btn btn-primary">Add Restaurant</button>
     </form>

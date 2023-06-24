@@ -22,6 +22,7 @@ public class Restaurant {
     private String description;
     private String address;
     private String phoneNo;
+    private Double rating;
 
     @Enumerated(value = EnumType.STRING)
     private RestaurantSpecific restaurantSpecific;
@@ -31,7 +32,7 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dish> menu = new ArrayList<>();
-    private Double rating;
+
 
 
 }
