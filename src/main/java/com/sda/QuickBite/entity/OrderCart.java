@@ -16,7 +16,7 @@ public class OrderCart {
     private Long id;
 
     @OneToOne(mappedBy = "orderCart")
-    private Customer customer;
+    private User user;
 
     @OneToMany(mappedBy = "orderCart")
     private List<OrderEntry> orderEntryList;

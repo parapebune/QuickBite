@@ -22,6 +22,7 @@ public class Restaurant {
     private String description;
     private String address;
     private String phoneNo;
+    private Double rating;
 
     @Enumerated(value = EnumType.STRING)
     private RestaurantSpecific restaurantSpecific;
@@ -29,9 +30,10 @@ public class Restaurant {
     @Column(columnDefinition = "BLOB")
     private byte[] logo;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Dish> menu = new ArrayList<>();
-    private Double rating;
-
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn
+//    private RestaurantMenu restaurantMenu;
 
 }

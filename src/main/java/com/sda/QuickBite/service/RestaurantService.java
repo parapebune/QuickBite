@@ -6,6 +6,9 @@ import com.sda.QuickBite.mapper.RestaurantMapper;
 import com.sda.QuickBite.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 public class RestaurantService {
@@ -15,8 +18,18 @@ public class RestaurantService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
-    public void addRestaurant(RestaurantDto restaurantDto){
-        Restaurant restaurant = restaurantMapper.map(restaurantDto);
+    public void addRestaurant(RestaurantDto restaurantDto, MultipartFile restaurantImage){
+        Restaurant restaurant = restaurantMapper.map(restaurantDto, restaurantImage);
         restaurantRepository.save(restaurant);
+    }
+
+    public Optional<RestaurantDto> getRestaurantById(String restaurantId) {
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(Long.valueOf(restaurantId));
+        if(optionalRestaurant.isEmpty()){
+            return Optional.empty();
+        }
+        Restaurant restaurant = optionalRestaurant.get();
+        RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
+        return Optional.of(restaurantDto);
     }
 }

@@ -17,7 +17,8 @@
 <body>
 <div th:insert="fragments/navBar"></div>
 <div class="m-4" >
-    <form th:object="${restaurantDto}"  action="/addRestaurant" method="post" enctype="multipart/form-data">
+    <h1>Add dish</h1>
+    <form th:object="${dishDto}"  action="/addDish" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label" for="name">Restaurant name</label>
             <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Name" required>
@@ -27,25 +28,26 @@
             <input th:field="*{description}" type="text" class="form-control" id="description" placeholder="Description" required>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="address">Address</label>
-            <input th:field="*{address}" type="text" class="form-control" id="address" placeholder="Address" required>
+            <label class="form-label" for="cookingTime">Cooking Time (Minutes)</label>
+            <input th:field="*{cookingTime}" type="text" class="form-control" id="cookingTime" placeholder="Cooking Time" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="price">Price</label>
+            <input th:field="*{price}" type="text" class="form-control" id="price" placeholder="Price" required>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="phoneNumber">Phone no.</label>
-            <input th:field="*{phoneNo}" type="text" class="form-control" id="phoneNumber" placeholder="Phone Number" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="restaurantSpecific">Restaurant specific</label>
-            <select th:field="*{restaurantSpecific}" class="form-control" id="restaurantSpecific"  required>
-                <option th:each="specificOpt : ${T(com.sda.QuickBite.enums.RestaurantSpecific).values()}"
-                        th:value="${specificOpt}" th:text="${specificOpt}"></option>
+            <label class="form-label" for="category">Category</label>
+            <select th:field="*{category}" class="form-control" id="category"  required>
+                <option th:each="dishOpt : ${T(com.sda.QuickBite.enums.DishCategory).values()}"
+                        th:value="${dishOpt}" th:text="${dishOpt}"></option>
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label" for="logo">Logo</label>
-            <input type="file" name="restaurantImage" class="form-control" id="logo" required>
+            <label class="form-label" for="image">Image</label>
+            <input type="file" name="dishImage" class="form-control" id="image">
         </div>
-        <button type="submit" class="btn btn-primary">Add Restaurant</button>
+        <button type="submit" class="btn btn-primary">Add Dish</button>
     </form>
 </div>
 </body>
