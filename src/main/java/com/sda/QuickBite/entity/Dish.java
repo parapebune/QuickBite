@@ -29,7 +29,7 @@ public class Dish {
     private byte[] image;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
 

@@ -3,7 +3,7 @@ package com.sda.QuickBite.mapper;
 import com.sda.QuickBite.dto.RestaurantDto;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.enums.RestaurantSpecific;
-import com.sda.QuickBite.helper.Convertor;
+import com.sda.QuickBite.utils.Convertor;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

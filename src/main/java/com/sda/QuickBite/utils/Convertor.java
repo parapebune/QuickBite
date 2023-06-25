@@ -1,4 +1,4 @@
-package com.sda.QuickBite.helper;
+package com.sda.QuickBite.utils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

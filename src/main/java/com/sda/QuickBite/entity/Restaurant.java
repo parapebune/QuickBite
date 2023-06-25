@@ -30,9 +30,10 @@ public class Restaurant {
     @Column(columnDefinition = "BLOB")
     private byte[] logo;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Dish> menu = new ArrayList<>();
-
-
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn
+//    private RestaurantMenu restaurantMenu;
 
 }
