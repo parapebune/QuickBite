@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+
 @Entity
 public class Dish {
 
@@ -22,16 +22,24 @@ public class Dish {
     private Double price;
     private Integer cookingTime;
     private Double rating;
+    @Enumerated(value = EnumType.STRING)
     private DishCategory category;
 
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] image;
+//    @Lob
+//    @Column(columnDefinition = "BLOB")
+//    private byte[] image;
+    private String imageName;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
 

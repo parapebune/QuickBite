@@ -3,7 +3,7 @@ package com.sda.QuickBite.mapper;
 import com.sda.QuickBite.dto.RestaurantDto;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.enums.RestaurantSpecific;
-import com.sda.QuickBite.utils.Convertor;
+import com.sda.QuickBite.utils.Util;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class RestaurantMapper {
 
     @Autowired
-    private Convertor convertor;
+    private Util util;
     public Restaurant map(RestaurantDto restaurantDto, MultipartFile restaurantImage){
         return Restaurant.builder()
                 .name(restaurantDto.getName())
@@ -21,7 +21,7 @@ public class RestaurantMapper {
                 .address(restaurantDto.getAddress())
                 .phoneNo(restaurantDto.getPhoneNo())
                 .restaurantSpecific(RestaurantSpecific.valueOf(restaurantDto.getRestaurantSpecific()))
-                .logo(convertor.convertToBytes(restaurantImage))
+                .logo(util.convertToBytes(restaurantImage))
                 .build();
     }
 

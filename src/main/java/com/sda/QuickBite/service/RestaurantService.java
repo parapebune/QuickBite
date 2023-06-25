@@ -1,6 +1,7 @@
 package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.RestaurantDto;
+import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.mapper.RestaurantMapper;
 import com.sda.QuickBite.repository.RestaurantRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,7 +25,7 @@ public class RestaurantService {
         restaurantRepository.save(restaurant);
     }
 
-    public Optional<RestaurantDto> getRestaurantById(String restaurantId) {
+    public Optional<RestaurantDto> getRestaurantDtoById(String restaurantId) {
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(Long.valueOf(restaurantId));
         if(optionalRestaurant.isEmpty()){
             return Optional.empty();
@@ -32,4 +34,10 @@ public class RestaurantService {
         RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
         return Optional.of(restaurantDto);
     }
+
+    public Optional<Restaurant> getRestaurantById(String restaurantId) {
+        return restaurantRepository.findById(Long.valueOf(restaurantId));
+    }
+
+
 }
