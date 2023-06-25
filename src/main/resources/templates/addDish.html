@@ -18,9 +18,9 @@
 <div th:insert="fragments/navBar"></div>
 <div class="m-4" >
     <h1>Add dish</h1>
-    <form th:object="${dishDto}"  action="/addDish" method="post" enctype="multipart/form-data">
+    <form th:object="${dishDto}" th:action="${'/addDish/'+restaurantId}"  method="post" enctype="multipart/form-data">
         <div class="mb-3">
-            <label class="form-label" for="name">Restaurant name</label>
+            <label class="form-label" for="name">Dish name</label>
             <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Name" required>
         </div>
         <div class="mb-3">
