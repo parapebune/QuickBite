@@ -24,7 +24,7 @@ public class Util {
             Files.createDirectories(path);
             String imageName = dishImage.getOriginalFilename();
 
-            Files.copy(dishImage.getInputStream(),path.resolve( name + "_" + id.toString() + imageName.substring(imageName.length()-4)));
+            Files.copy(dishImage.getInputStream(),path.resolve( name + "_" + id.toString() + ".png"));
         }catch (Exception e){
             throw new RuntimeException("Error upload image!");
         }
