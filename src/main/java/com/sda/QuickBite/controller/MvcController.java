@@ -146,13 +146,9 @@ public class MvcController {
         List<DishCategoryDto> dishCategoryDtoList = dishService.getDishDtoListGroupByCategory(restaurantId);
         model.addAttribute("dishCategoryDtoList",dishCategoryDtoList);
 
-        System.out.println(restaurantDto);
         return "restaurantPage";
     }
-
-
-
-
-
-
+@GetMapping("/dish")
+public String dishGet(){
+    return "dish";}
 }
