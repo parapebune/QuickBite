@@ -86,4 +86,18 @@ public class DishService {
         Path path = Paths.get(folder + dishImage.getOriginalFilename());
         Files.write(path,bytes);
     }
+
+
+
+    public Optional<DishDto> getDishDtoById(String dishId) {
+        Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
+        if(optionalDish.isEmpty()){
+            return Optional.empty();
+        }
+        Dish dish = optionalDish.get();
+        DishDto dishDto = dishMapper.map(dish);
+        return Optional.of(dishDto);
+
+
+    }
 }

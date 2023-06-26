@@ -8,7 +8,9 @@ public enum RestaurantSpecific {
     INDIAN,
     THAI,
     CHINESE,
-    LEBANESE
+    LEBANESE,
+    FUSION,
+    JAPANESE
 
 
 
