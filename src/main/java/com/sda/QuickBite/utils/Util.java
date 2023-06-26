@@ -12,11 +12,8 @@ import java.util.Objects;
 @Component
 public class Util {
 
-<<<<<<< HEAD
     public static final String BASE64_PREFIX = "data:image/png; base64, ";
-=======
-    public static final String BASE64_PREFIX = "data:image/png; base64";
->>>>>>> abb7c5f (linked dishpage to model)
+
     public byte[] convertToBytes(MultipartFile multipartFile){
         try {
             return multipartFile.getBytes();
