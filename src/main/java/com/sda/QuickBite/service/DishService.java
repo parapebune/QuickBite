@@ -41,11 +41,7 @@ public class DishService {
         Dish dish = dishMapper.map(dishDto, dishImage, restaurant);
         dishRepository.save(dish);
 
-//        Long maxId = dishRepository.findMaxId();
-//        dish.setImageName("dish_" + maxId.toString() + ".png");
-//        util.saveImage(dishImage,"dish",maxId);
-//
-//        dishRepository.save(dish);
+
 
     }
     public List<DishCategoryDto> getDishDtoListGroupByCategory(String restaurantId) {

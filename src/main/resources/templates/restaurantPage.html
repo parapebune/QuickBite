@@ -15,6 +15,7 @@
 
         <div class="card-img-overlay p-5 text-white ">
             <img class="card-header" th:src="${restaurantDto.logo}" style=" height: 150px" alt="Product image">
+
             <h1 class="card-header-title" th:text="${restaurantDto.name}"></h1>
             <h4 class="card-header" th:text="${restaurantDto.restaurantSpecific}"></h4>
             <h4 class="card-body" th:text="${restaurantDto.description}"></h4>
@@ -49,15 +50,14 @@
 
                         <img th:src="${dishDto.image}" alt="Imagine product">
 
-
                         <div class="card-footer" th:text="${dishDto.price + '$'}">12.4</div>
                     </div>
                 </a>
             </th:block>
         </div>
     </div>
-    </di>
-</th:block>
 
+</th:block>
+    </div>
 </body>
 </html>

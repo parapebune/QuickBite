@@ -14,7 +14,6 @@ import static com.sda.QuickBite.utils.Util.BASE64_PREFIX;
 @Component
 public class RestaurantMapper {
 
-
     @Autowired
     private Util util;
 
@@ -39,6 +38,7 @@ public class RestaurantMapper {
                 .description(restaurant.getDescription())
                 .logo(BASE64_PREFIX + Base64.encodeBase64String(restaurant.getLogo()))
                 .backgroundImage(BASE64_PREFIX + Base64.encodeBase64String(restaurant.getBackgroundImage()))
+
                 .build();
     }
 }

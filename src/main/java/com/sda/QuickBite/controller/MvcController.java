@@ -124,6 +124,7 @@ public class MvcController {
 
     @GetMapping("/dish/{dishId}")
     public String dishGet(Model model, @PathVariable(name = "dishId") String dishId){
+        System.out.println("Ajunge?");
         Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
         if(optionalDishDto.isEmpty()){
             return "error";
@@ -148,11 +149,13 @@ public class MvcController {
 
         return "restaurantPage";
     }
+
 @GetMapping("/dish")
 public String dishGet(){
     return "dish";}
 @GetMapping("/orderHistory")
     public String orderHistoryGet(){
         return "orderHistory";}
+
 
 }
