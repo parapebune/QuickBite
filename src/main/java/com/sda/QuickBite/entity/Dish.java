@@ -25,10 +25,10 @@ public class Dish {
     @Enumerated(value = EnumType.STRING)
     private DishCategory category;
 
-//    @Lob
-//    @Column(columnDefinition = "BLOB")
-//    private byte[] image;
-    private String imageName;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] image;
+//    private String imageName;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

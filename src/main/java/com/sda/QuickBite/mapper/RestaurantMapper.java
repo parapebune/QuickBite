@@ -9,30 +9,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.sda.QuickBite.utils.Util.BASE64_PREFIX;
+
 @Component
 public class RestaurantMapper {
 
+
     @Autowired
     private Util util;
-    public Restaurant map(RestaurantDto restaurantDto, MultipartFile restaurantImage){
+
+    public Restaurant map(RestaurantDto restaurantDto, MultipartFile restaurantLogo, MultipartFile restaurantBackgroundImage) {
         return Restaurant.builder()
                 .name(restaurantDto.getName())
                 .description(restaurantDto.getDescription())
                 .address(restaurantDto.getAddress())
                 .phoneNo(restaurantDto.getPhoneNo())
                 .restaurantSpecific(RestaurantSpecific.valueOf(restaurantDto.getRestaurantSpecific()))
-                .logo(util.convertToBytes(restaurantImage))
+                .logo(util.convertToBytes(restaurantLogo))
+                .backgroundImage(util.convertToBytes(restaurantBackgroundImage))
                 .build();
     }
 
-    public RestaurantDto map(Restaurant restaurant){
+    public RestaurantDto map(Restaurant restaurant) {
         return RestaurantDto.builder()
                 .name(restaurant.getName())
                 .address(restaurant.getAddress())
                 .phoneNo(restaurant.getPhoneNo())
                 .restaurantSpecific(restaurant.getRestaurantSpecific().name())
                 .description(restaurant.getDescription())
-                .logo(Base64.encodeBase64String(restaurant.getLogo()))
+                .logo(BASE64_PREFIX + Base64.encodeBase64String(restaurant.getLogo()))
+                .backgroundImage(BASE64_PREFIX + Base64.encodeBase64String(restaurant.getBackgroundImage()))
                 .build();
     }
 }

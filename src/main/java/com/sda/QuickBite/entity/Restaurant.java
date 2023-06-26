@@ -27,8 +27,13 @@ public class Restaurant {
     @Enumerated(value = EnumType.STRING)
     private RestaurantSpecific restaurantSpecific;
     @Lob
-    @Column(columnDefinition = "BLOB")
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] logo;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] backgroundImage;
+
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Dish> menu = new ArrayList<>();

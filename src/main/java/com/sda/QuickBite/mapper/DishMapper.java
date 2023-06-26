@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.sda.QuickBite.utils.Util.BASE64_PREFIX;
+
 @Component
 public class DishMapper {
 
@@ -22,7 +24,7 @@ public class DishMapper {
                 .price(Double.valueOf(dishDto.getPrice()))
                 .cookingTime(Integer.valueOf(dishDto.getCookingTime()))
                 .category(DishCategory.valueOf(dishDto.getCategory()))
-//                .imageName("")
+                .image(util.convertToBytes(dishImage))
                 .restaurant(restaurant)
                 .build();
     }
@@ -35,7 +37,7 @@ public class DishMapper {
                 .cookingTime(dish.getCookingTime().toString())
                 .category(dish.getCategory().name())
                 .price(dish.getPrice().toString())
-                .imageName(dish.getImageName())
+                .image(BASE64_PREFIX + Base64.encodeBase64String(dish.getImage()))
                 .build();
     }
 

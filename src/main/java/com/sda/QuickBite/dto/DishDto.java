@@ -15,6 +15,6 @@ public class DishDto {
     private String price;
     private String category;
     private String cookingTime;
-    private String imageName;
+    private String image;
 
 }

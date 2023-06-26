@@ -18,40 +18,40 @@
 <div th:insert="fragments/navBar"></div>
 <div class="m-4" >
     <h1>Registration</h1>
-    <form th:object="${userDto}"  action="/registration" method="post">
-        <div class="mb-3">
-            <label class="form-label" for="firstName">First name</label>
-            <input th:field="*{firstName}" type="text" class="form-control" id="firstName" placeholder="First name" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="lastName">Last name</label>
-            <input th:field="*{lastName}" type="text" class="form-control" id="lastName" placeholder="Last name" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="email">Email</label>
-            <input th:field="*{email}" type="text" class="form-control" id="email" placeholder="Email" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="address">Address</label>
-            <input th:field="*{address}" type="text" class="form-control" id="address" placeholder="Address" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="phoneNumber">Phone no.</label>
-            <input th:field="*{phoneNumber}" type="text" class="form-control" id="phoneNumber" placeholder="Phone Number" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="role">Role</label>
-            <select th:field="*{role}" class="form-control" id="role"  required>
-                <option th:each="roleOpt : ${T(com.sda.QuickBite.enums.Role).values()}"
-                        th:value="${roleOpt}" th:text="${roleOpt.getLabel()}"></option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="password">Password</label>
-            <input th:field="*{password}" type="password" class="form-control" id="password" placeholder="Password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Create account</button>
-    </form>
+<!--    <form th:object="${userDto}"  action="/registration" method="post">-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="firstName">First name</label>-->
+<!--            <input th:field="*{firstName}" type="text" class="form-control" id="firstName" placeholder="First name" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="lastName">Last name</label>-->
+<!--            <input th:field="*{lastName}" type="text" class="form-control" id="lastName" placeholder="Last name" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="email">Email</label>-->
+<!--            <input th:field="*{email}" type="text" class="form-control" id="email" placeholder="Email" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="address">Address</label>-->
+<!--            <input th:field="*{address}" type="text" class="form-control" id="address" placeholder="Address" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="phoneNumber">Phone no.</label>-->
+<!--            <input th:field="*{phoneNumber}" type="text" class="form-control" id="phoneNumber" placeholder="Phone Number" required>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="role">Role</label>-->
+<!--            <select th:field="*{role}" class="form-control" id="role"  required>-->
+<!--                <option th:each="roleOpt : ${T(com.sda.QuickBite.enums.Role).values()}"-->
+<!--                        th:value="${roleOpt}" th:text="${roleOpt.getLabel()}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--            <label class="form-label" for="password">Password</label>-->
+<!--            <input th:field="*{password}" type="password" class="form-control" id="password" placeholder="Password" required>-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary">Create account</button>-->
+<!--    </form>-->
 </div>
 </body>
 </html>
