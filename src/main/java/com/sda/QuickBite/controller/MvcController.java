@@ -176,7 +176,10 @@ public class MvcController {
         model.addAttribute("dishCategoryDtoList",dishCategoryDtoList);
         return "restaurantPage";
     }
+@GetMapping("/dish")
+public String dishGet(){
 
+<<<<<<< Updated upstream
     @GetMapping("/uploadImage")
     public String uploadImageGet(){
         return "uploadImage";
@@ -193,4 +196,7 @@ public class MvcController {
 
 
 
+=======
+    return "dish";}
+>>>>>>> Stashed changes
 }
