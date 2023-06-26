@@ -42,7 +42,7 @@ public class DishService {
         dishRepository.save(dish);
 
         Long maxId = dishRepository.findMaxId();
-        dish.setImageName("dish_" + maxId.toString() + Objects.requireNonNull(dishImage.getOriginalFilename()).substring(dishImage.getOriginalFilename().length()-4));
+        dish.setImageName("dish_" + maxId.toString() + ".png");
         System.out.println("dish id: " + maxId);
         util.saveImage(dishImage,"dish",maxId);
 
@@ -84,5 +84,19 @@ public class DishService {
         byte[] bytes = util.convertToBytes(dishImage);
         Path path = Paths.get(folder + dishImage.getOriginalFilename());
         Files.write(path,bytes);
+    }
+
+
+
+    public Optional<DishDto> getDishDtoById(String dishId) {
+        Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
+        if(optionalDish.isEmpty()){
+            return Optional.empty();
+        }
+        Dish dish = optionalDish.get();
+        DishDto dishDto = dishMapper.map(dish);
+        return Optional.of(dishDto);
+
+
     }
 }

@@ -1,19 +1,18 @@
 package com.sda.QuickBite.controller;
 
-import com.sda.QuickBite.dto.DishCategoryDto;
-import com.sda.QuickBite.dto.DishDto;
-import com.sda.QuickBite.dto.RestaurantDto;
-import com.sda.QuickBite.dto.UserDto;
+import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.enums.DishCategory;
 import com.sda.QuickBite.service.DishService;
+import com.sda.QuickBite.service.LoginService;
 import com.sda.QuickBite.service.RestaurantService;
 import com.sda.QuickBite.service.UserService;
 import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +34,9 @@ public class MvcController {
     private DishService dishService;
     @Autowired
     private Util util;
+
+    @Autowired
+    private LoginService loginService;
 
     @GetMapping("/navBar")
     public String navBarGet(Model model){
@@ -61,6 +63,29 @@ public class MvcController {
         return "registration";
     }
 
+    @GetMapping("/login")
+    public String loginGet(Model model) {
+        LoginDto loginDto = new LoginDto();
+        model.addAttribute("loginDto", loginDto);
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String loginPost(@ModelAttribute(name = "loginDto") LoginDto loginDto, Model model) {
+        System.out.println(loginDto);
+        Boolean loginSuccessfull = loginService.login(loginDto);
+        if (loginSuccessfull) {
+            model.addAttribute("loginMessage", "Login was successfull!!!");
+        } else {
+            model.addAttribute("loginMessage", "Login failed!!!");
+            return "login";
+        }
+        return "redirect:/addRestaurant";
+
+    }
+
+
+
     @PostMapping("/addRestaurant")
     public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") RestaurantDto restaurantDto,
                                     MultipartFile restaurantImage){
@@ -71,7 +96,7 @@ public class MvcController {
     @PostMapping("/registration")
     public String registerPost(@ModelAttribute(name = "userDto") UserDto userDto){
         userService.addUser(userDto);
-        return "redirect:/registration";
+        return "redirect:/login";
     }
 
     @GetMapping("/addDish/{restaurantId}")
@@ -94,6 +119,49 @@ public class MvcController {
         dishService.addDish(dishDto, dishImage, restaurant);
         return "redirect:/restaurantPage/" + restaurantId;
     }
+
+
+
+    @GetMapping("/dish/{dishId}")
+    public String dishGet(Model model, @PathVariable(name = "dishId") String dishId){
+        Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
+        if(optionalDishDto.isEmpty()){
+            return "error";
+        }
+        DishDto dishDto = optionalDishDto.get();
+        model.addAttribute("dishDto",dishDto);
+        System.out.println(dishDto);
+        return "dish";
+    }
+
+//    @PostMapping("/dish/{dishId}")
+//    public String dishPost(@ModelAttribute(name = "dishDto") DishDto dishDto,
+//                              @RequestParam("dishImage") MultipartFile dishImage,
+//                              @PathVariable(name = "dishId") String dishId){
+//
+//        Optional<Dish> optionalDish = dishService.getDishById(dishId);
+//        if(optionalDish.isEmpty()){
+//            return "error";
+//        }
+//        Dish dish = optionalDish.get();
+//        dishService.addDish(dishDto, dishImage);
+//        return "redirect:/dish/" + dishId;
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @GetMapping("/restaurantPage/{restaurantId}")
     public String restaurantPageGet(@PathVariable(value = "restaurantId") String restaurantId, Model model){
