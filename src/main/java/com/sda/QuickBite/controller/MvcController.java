@@ -151,4 +151,8 @@ public class MvcController {
 @GetMapping("/dish")
 public String dishGet(){
     return "dish";}
+@GetMapping("/orderHistory")
+    public String orderHistoryGet(){
+        return "orderHistory";}
+
 }
