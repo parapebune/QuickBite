@@ -43,7 +43,6 @@ public class DishService {
 
         Long maxId = dishRepository.findMaxId();
         dish.setImageName("dish_" + maxId.toString() + ".png");
-        System.out.println("dish id: " + maxId);
         util.saveImage(dishImage,"dish",maxId);
 
         dishRepository.save(dish);
