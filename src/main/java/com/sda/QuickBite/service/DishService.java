@@ -42,8 +42,7 @@ public class DishService {
         dishRepository.save(dish);
 
         Long maxId = dishRepository.findMaxId();
-        dish.setImageName("dish_" + maxId.toString() + Objects.requireNonNull(dishImage.getOriginalFilename()).substring(dishImage.getOriginalFilename().length()-4));
-        System.out.println("dish id: " + maxId);
+        dish.setImageName("dish_" + maxId.toString() + ".png");
         util.saveImage(dishImage,"dish",maxId);
 
         dishRepository.save(dish);
@@ -74,7 +73,9 @@ public class DishService {
                     dishCategoryDto.getDishDtoList().add(dishDto);
                 }
             }
-            dishCategoryDtoList.add(dishCategoryDto);
+            if(dishCategoryDto.getDishDtoList().size() > 0){
+                dishCategoryDtoList.add(dishCategoryDto);
+            }
         }
         return dishCategoryDtoList;
     }
