@@ -12,7 +12,7 @@
   <div class="card " style="border-radius: 100px">
 
     <div class="card p-5">
-      <img class="card-header" th:src="${'data:image/png; base64, ' + dishDto.imageName}" style=" height: 150px"
+      <img class="card-header" th:src="@{${'data:image/png; base64, ' + dishDto.image}}" style=" height: 150px"
            alt="Product image">
       <div class="card-header-title" th:text="${dishDto.name}"></div>
       <div class="card-body" th:text="${dishDto.description}"></div>

@@ -15,4 +15,5 @@ public class RestaurantDto {
     private String phoneNo;
     private String restaurantSpecific;
     private String logo;
+    private String backgroundImage;
 }

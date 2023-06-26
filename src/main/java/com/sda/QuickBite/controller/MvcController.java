@@ -88,8 +88,8 @@ public class MvcController {
 
     @PostMapping("/addRestaurant")
     public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") RestaurantDto restaurantDto,
-                                    MultipartFile restaurantImage){
-        restaurantService.addRestaurant(restaurantDto, restaurantImage);
+                                    MultipartFile restaurantLogo, MultipartFile restaurantBackgroundImg){
+        restaurantService.addRestaurant(restaurantDto, restaurantLogo, restaurantBackgroundImg);
         return "redirect:/addRestaurant";
     }
 
@@ -134,35 +134,6 @@ public class MvcController {
         return "dish";
     }
 
-//    @PostMapping("/dish/{dishId}")
-//    public String dishPost(@ModelAttribute(name = "dishDto") DishDto dishDto,
-//                              @RequestParam("dishImage") MultipartFile dishImage,
-//                              @PathVariable(name = "dishId") String dishId){
-//
-//        Optional<Dish> optionalDish = dishService.getDishById(dishId);
-//        if(optionalDish.isEmpty()){
-//            return "error";
-//        }
-//        Dish dish = optionalDish.get();
-//        dishService.addDish(dishDto, dishImage);
-//        return "redirect:/dish/" + dishId;
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @GetMapping("/restaurantPage/{restaurantId}")
     public String restaurantPageGet(@PathVariable(value = "restaurantId") String restaurantId, Model model){
         Optional<RestaurantDto> optionalRestaurantDto = restaurantService.getRestaurantDtoById(restaurantId);
@@ -174,20 +145,11 @@ public class MvcController {
 
         List<DishCategoryDto> dishCategoryDtoList = dishService.getDishDtoListGroupByCategory(restaurantId);
         model.addAttribute("dishCategoryDtoList",dishCategoryDtoList);
+
+        System.out.println(restaurantDto);
         return "restaurantPage";
     }
 
-    @GetMapping("/uploadImage")
-    public String uploadImageGet(){
-        return "uploadImage";
-    }
-
-    @PostMapping("/uploadImage")
-    public String uploadImagePost(@RequestParam("dishImage") MultipartFile dishImage){
-
-//        util.saveImage(dishImage);
-        return "redirect:/uploadImage";
-    }
 
 
 
