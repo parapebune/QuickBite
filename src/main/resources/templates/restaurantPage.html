@@ -7,7 +7,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div th:insert="fragments/navBar"></div>
+<!--<div th:insert="fragments/navBar"></div>-->
+<div th:insert="~{fragments/navBar.html :: body}"></div>
+
 <div th:object="${restaurantDto}" class="container p-1 my-5" style="text-align: center;">
     <div class="card " style="border-radius: 100px">
         <img class="card-img-fluid w-auto h-auto border border-5" style="border-radius: 100px"
@@ -48,10 +50,9 @@
                     <a th:href="@{/dish/{x}(x=${dishDto.id})}" class="nav-link m-0 p-0 btn-outline-light">
                         <div class="card bg-light text-dark m-3" style="width:300px">
                             <h4 class="card-header" th:text="${dishDto.name}"></h4>
-
                             <img th:src="${dishDto.image}" alt="Imagine product">
-
                             <div class="card-footer" th:text="${dishDto.price}"></div>
+
                         </div>
                     </a>
                 </th:block>

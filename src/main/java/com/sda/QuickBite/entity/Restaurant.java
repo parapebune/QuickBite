@@ -34,11 +34,12 @@ public class Restaurant {
     @Column(columnDefinition = "LONGBLOB")
     private byte[] backgroundImage;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<Dish> menu = new ArrayList<>();
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn
-//    private RestaurantMenu restaurantMenu;
+
 
 }
