@@ -36,7 +36,7 @@ public class DishMapper {
                 .description(dish.getDescription())
                 .cookingTime(dish.getCookingTime().toString())
                 .category(dish.getCategory().name())
-                .price(dish.getPrice().toString())
+                .price(String.format("%.2f", dish.getPrice()) + " RON")
                 .image(BASE64_PREFIX + Base64.encodeBase64String(dish.getImage()))
                 .build();
     }
