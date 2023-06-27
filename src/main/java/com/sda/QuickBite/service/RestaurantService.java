@@ -2,12 +2,15 @@ package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.RestaurantDto;
 import com.sda.QuickBite.entity.Restaurant;
+import com.sda.QuickBite.enums.RestaurantSpecific;
 import com.sda.QuickBite.mapper.RestaurantMapper;
 import com.sda.QuickBite.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,4 +41,22 @@ public class RestaurantService {
     }
 
 
+    public List<RestaurantDto> getAllRestaurantDto() {
+        Iterable<Restaurant> restaurantIterable = restaurantRepository.findAll();
+        return getRestaurantDtoList(restaurantIterable);
+    }
+
+    public List<RestaurantDto> getRestaurantsByCategory(String category) {
+        Iterable<Restaurant> restaurantIterable = restaurantRepository.findByRestaurantSpecific(RestaurantSpecific.valueOf(category));
+        return getRestaurantDtoList(restaurantIterable);
+    }
+
+    private List<RestaurantDto> getRestaurantDtoList(Iterable<Restaurant> restaurantIterable) {
+        List<RestaurantDto> restaurantDtoList = new ArrayList<>();
+        for (Restaurant restaurant : restaurantIterable){
+            RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
+            restaurantDtoList.add(restaurantDto);
+        }
+        return restaurantDtoList;
+    }
 }

@@ -4,6 +4,8 @@ import com.sda.QuickBite.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Builder
 @AllArgsConstructor
@@ -25,6 +27,9 @@ public class User {
     private String address;
     @Enumerated(value = EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Restaurant> restaurantList;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn

@@ -6,7 +6,7 @@ public enum DishCategory {
     PASTA,
     BURGER,
     FISH,
-    SANDVICH,
+    SANDWICH,
     TACO,
     SALAD,
     GRILL

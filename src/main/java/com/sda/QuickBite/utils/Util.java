@@ -11,7 +11,6 @@ import java.util.Objects;
 
 @Component
 public class Util {
-
     public static final String BASE64_PREFIX = "data:image/png; base64, ";
 
     public byte[] convertToBytes(MultipartFile multipartFile){
@@ -32,6 +31,4 @@ public class Util {
             throw new RuntimeException("Error upload image!");
         }
     }
-
-
 }

@@ -14,7 +14,6 @@ import static com.sda.QuickBite.utils.Util.BASE64_PREFIX;
 
 @Component
 public class DishMapper {
-
     @Autowired
     private Util util;
     public Dish map(DishDto dishDto, MultipartFile dishImage, Restaurant restaurant) {
@@ -28,7 +27,6 @@ public class DishMapper {
                 .restaurant(restaurant)
                 .build();
     }
-
     public DishDto map(Dish dish){
         return DishDto.builder()
                 .id(dish.getId().toString())
@@ -40,6 +38,4 @@ public class DishMapper {
                 .image(BASE64_PREFIX + Base64.encodeBase64String(dish.getImage()))
                 .build();
     }
-
-
 }

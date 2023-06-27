@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,13 +41,21 @@ public class MvcController {
     @Autowired
     private LoginService loginService;
 
+    @GetMapping("/home")
+    public String homeGet(Model model, @RequestParam(name = "category",required = false) String category){
+        List<RestaurantDto> restaurantDtoList = null;
+        if(category == null){
+             restaurantDtoList = restaurantService.getAllRestaurantDto();
+        }else {
+            restaurantDtoList = restaurantService.getRestaurantsByCategory(category);
+        }
+        model.addAttribute("restaurantDtoList", restaurantDtoList);
+        return "home";
+    }
+
     @GetMapping("/navBar")
     public String navBarGet(Model model){
         return "fragments/navBar";
-    }
-    @GetMapping("/home")
-    public String homeGet(Model model){
-        return "home";
     }
 
     @GetMapping("/registration")
@@ -109,7 +118,6 @@ public class MvcController {
     }
 
 
-
     @GetMapping("/dish/{dishId}")
     public String dishGet(Model model, @PathVariable(name = "dishId") String dishId){
         System.out.println("Ajunge?");
@@ -138,10 +146,10 @@ public class MvcController {
         return "restaurantPage";
     }
 
-@GetMapping("/dish")
-public String dishGet(){
-    return "dish";}
-@GetMapping("/orderHistory")
+    @GetMapping("/dish")
+    public String dishGet(){
+        return "dish";}
+    @GetMapping("/orderHistory")
     public String orderHistoryGet(){
         return "orderHistory";}
 

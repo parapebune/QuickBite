@@ -14,6 +14,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @NoArgsConstructor
 @ToString
 public class RestaurantDto {
+
+    private String id;
+
     @NotEmpty(message = "Name is required")
     private String name;
 
