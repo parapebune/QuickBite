@@ -17,15 +17,15 @@ public class RestaurantMapper {
     @Autowired
     private Util util;
 
-    public Restaurant map(RestaurantDto restaurantDto, MultipartFile restaurantLogo, MultipartFile restaurantBackgroundImage) {
+    public Restaurant map(RestaurantDto restaurantDto, MultipartFile logo, MultipartFile backgroundImage) {
         return Restaurant.builder()
                 .name(restaurantDto.getName())
                 .description(restaurantDto.getDescription())
                 .address(restaurantDto.getAddress())
                 .phoneNo(restaurantDto.getPhoneNo())
                 .restaurantSpecific(RestaurantSpecific.valueOf(restaurantDto.getRestaurantSpecific()))
-                .logo(util.convertToBytes(restaurantLogo))
-                .backgroundImage(util.convertToBytes(restaurantBackgroundImage))
+                .logo(util.convertToBytes(logo))
+                .backgroundImage(util.convertToBytes(backgroundImage))
                 .build();
     }
 
@@ -38,7 +38,6 @@ public class RestaurantMapper {
                 .description(restaurant.getDescription())
                 .logo(BASE64_PREFIX + Base64.encodeBase64String(restaurant.getLogo()))
                 .backgroundImage(BASE64_PREFIX + Base64.encodeBase64String(restaurant.getBackgroundImage()))
-
                 .build();
     }
 }

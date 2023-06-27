@@ -22,6 +22,7 @@ public class LoginService {
         }
 
         User user = optionalUser.get();
+        System.out.println(user.getPassword());
         return loginDto.getPassword().equals(user.getPassword());
     }
 }

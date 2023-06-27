@@ -9,10 +9,12 @@ import com.sda.QuickBite.service.LoginService;
 import com.sda.QuickBite.service.RestaurantService;
 import com.sda.QuickBite.service.UserService;
 import com.sda.QuickBite.utils.Util;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,13 +44,29 @@ public class MvcController {
     public String navBarGet(Model model){
         return "fragments/navBar";
     }
-
     @GetMapping("/home")
     public String homeGet(Model model){
         return "home";
     }
 
-
+    @GetMapping("/registration")
+    public String registrationGet(Model model){
+        UserDto userDto = new UserDto();
+        model.addAttribute("userDto",userDto);
+        return "registration";
+    }
+    @PostMapping("/registration")
+    public String registerPost(@ModelAttribute(name = "userDto") @Valid UserDto userDto, BindingResult bindingResult ){
+        if(bindingResult.hasErrors()){
+            return "registration";
+        }
+        userService.addUser(userDto);
+        return "redirect:/login";
+    }
+    @GetMapping("/login")
+    public String loginGet(Model model) {
+        return "login";
+    }
 
     @GetMapping("/addRestaurant")
     public String addRestaurantGet(Model model){
@@ -56,47 +74,14 @@ public class MvcController {
         model.addAttribute("restaurantDto", restaurantDto);
         return "addRestaurant";
     }
-    @GetMapping("/registration")
-    public String registrationGet(Model model){
-        UserDto userDto = new UserDto();
-        model.addAttribute("userDto",userDto);
-        return "registration";
-    }
-
-    @GetMapping("/login")
-    public String loginGet(Model model) {
-        LoginDto loginDto = new LoginDto();
-        model.addAttribute("loginDto", loginDto);
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String loginPost(@ModelAttribute(name = "loginDto") LoginDto loginDto, Model model) {
-        System.out.println(loginDto);
-        Boolean loginSuccessfull = loginService.login(loginDto);
-        if (loginSuccessfull) {
-            model.addAttribute("loginMessage", "Login was successfull!!!");
-        } else {
-            model.addAttribute("loginMessage", "Login failed!!!");
-            return "login";
-        }
-        return "redirect:/addRestaurant";
-
-    }
-
-
-
     @PostMapping("/addRestaurant")
-    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") RestaurantDto restaurantDto,
-                                    MultipartFile restaurantLogo, MultipartFile restaurantBackgroundImg){
-        restaurantService.addRestaurant(restaurantDto, restaurantLogo, restaurantBackgroundImg);
+    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") @Valid RestaurantDto restaurantDto, BindingResult bindingResult,
+                                    MultipartFile restaurantLogo, MultipartFile restaurantBackground){
+        if(bindingResult.hasErrors()){
+            return "addRestaurant";
+        }
+        restaurantService.addRestaurant(restaurantDto, restaurantLogo, restaurantBackground);
         return "redirect:/addRestaurant";
-    }
-
-    @PostMapping("/registration")
-    public String registerPost(@ModelAttribute(name = "userDto") UserDto userDto){
-        userService.addUser(userDto);
-        return "redirect:/login";
     }
 
     @GetMapping("/addDish/{restaurantId}")
@@ -107,9 +92,12 @@ public class MvcController {
     }
 
     @PostMapping("/addDish/{restaurantId}")
-    public String addDishPost(@ModelAttribute(name = "dishDto") DishDto dishDto,
+    public String addDishPost(@ModelAttribute(name = "dishDto") @Valid DishDto dishDto, BindingResult bindingResult,
                               @RequestParam("dishImage") MultipartFile dishImage,
                               @PathVariable(name = "restaurantId") String restaurantId){
+        if(bindingResult.hasErrors()){
+            return "addDish";
+        }
 
         Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
         if(optionalRestaurant.isEmpty()){
