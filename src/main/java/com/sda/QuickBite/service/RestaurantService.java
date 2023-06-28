@@ -2,6 +2,7 @@ package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.RestaurantDto;
 import com.sda.QuickBite.entity.Restaurant;
+import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.RestaurantSpecific;
 import com.sda.QuickBite.mapper.RestaurantMapper;
 import com.sda.QuickBite.repository.RestaurantRepository;
@@ -21,14 +22,15 @@ public class RestaurantService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
-    public void addRestaurant(RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg){
-        Restaurant restaurant = restaurantMapper.map(restaurantDto, restaurantImage, restaurantBackgroundImg);
+
+    public void addRestaurant(RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg, User user) {
+        Restaurant restaurant = restaurantMapper.map(restaurantDto, restaurantImage, restaurantBackgroundImg, user);
         restaurantRepository.save(restaurant);
     }
 
     public Optional<RestaurantDto> getRestaurantDtoById(String restaurantId) {
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(Long.valueOf(restaurantId));
-        if(optionalRestaurant.isEmpty()){
+        if (optionalRestaurant.isEmpty()) {
             return Optional.empty();
         }
         Restaurant restaurant = optionalRestaurant.get();
@@ -53,10 +55,28 @@ public class RestaurantService {
 
     private List<RestaurantDto> getRestaurantDtoList(Iterable<Restaurant> restaurantIterable) {
         List<RestaurantDto> restaurantDtoList = new ArrayList<>();
-        for (Restaurant restaurant : restaurantIterable){
+        for (Restaurant restaurant : restaurantIterable) {
             RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
             restaurantDtoList.add(restaurantDto);
         }
         return restaurantDtoList;
     }
+
+    public List<RestaurantDto> getRestaurantDToListByUserId(String userId) {
+        List<Restaurant> restaurantList = restaurantRepository.findByUserId(userId);
+        List<RestaurantDto> restaurantDtoList = new ArrayList<>();
+        for (Restaurant restaurant : restaurantList) {
+            if (restaurant.getUser().getId().equals(userId)) {
+                RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
+                restaurantDtoList.add(restaurantDto);
+
+            }
+
+        }
+        return restaurantDtoList;
+
+    }
+
+
 }
+

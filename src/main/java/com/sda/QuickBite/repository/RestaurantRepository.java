@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
     List<Restaurant> findByRestaurantSpecific(RestaurantSpecific restaurantSpecific);
+
+    List<Restaurant> findByUserId(String userId);
 }

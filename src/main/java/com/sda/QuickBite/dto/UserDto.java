@@ -13,6 +13,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Setter
 @ToString
 public class UserDto {
+
+    private String id;
+
     @NotEmpty(message = "First name is required")
     private String firstName;
 

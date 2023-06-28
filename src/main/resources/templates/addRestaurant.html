@@ -15,30 +15,30 @@
             <label class="form-label" for="name">Restaurant name</label>
             <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Name">
         </div>
-        <div>
-            <p th:each="error : ${#fields.errors('name')}" th:text="${error}" class="error"/>
-        </div>
+<!--        <div>-->
+<!--            <p th:each="error : ${#fields.errors('name')}" th:text="${error}" class="error"/>-->
+<!--        </div>-->
         <div class="mb-3">
             <label class="form-label" for="description">Description</label>
             <input th:field="*{description}" type="text" class="form-control" id="description" placeholder="Description">
         </div>
-        <div>
-            <p th:each="error : ${#fields.errors('description')}" th:text="${error}" class="error"/>
-        </div>
+<!--        <div>-->
+<!--            <p th:each="error : ${#fields.errors('description')}" th:text="${error}" class="error"/>-->
+<!--        </div>-->
         <div class="mb-3">
             <label class="form-label" for="address">Address</label>
             <input th:field="*{address}" type="text" class="form-control" id="address" placeholder="Address">
         </div>
-        <div>
-            <p th:each="error : ${#fields.errors('address')}" th:text="${error}" class="error"/>
-        </div>
+<!--        <div>-->
+<!--            <p th:each="error : ${#fields.errors('address')}" th:text="${error}" class="error"/>-->
+<!--        </div>-->
         <div class="mb-3">
             <label class="form-label" for="phoneNumber">Phone no.</label>
             <input th:field="*{phoneNo}" type="text" class="form-control" id="phoneNumber" placeholder="Phone Number">
         </div>
-        <div>
-            <p th:each="error : ${#fields.errors('phoneNo')}" th:text="${error}" class="error"/>
-        </div>
+<!--        <div>-->
+<!--            <p th:each="error : ${#fields.errors('phoneNo')}" th:text="${error}" class="error"/>-->
+<!--        </div>-->
         <div class="mb-3">
             <label class="form-label" for="restaurantSpecific">Restaurant specific</label>
             <select th:field="*{restaurantSpecific}" class="form-control" id="restaurantSpecific">
@@ -46,9 +46,9 @@
                         th:value="${specificOpt}" th:text="${specificOpt}"></option>
             </select>
         </div>
-        <div>
-            <p th:each="error : ${#fields.errors('restaurantSpecific')}" th:text="${error}" class="error"/>
-        </div>
+<!--        <div>-->
+<!--            <p th:each="error : ${#fields.errors('restaurantSpecific')}" th:text="${error}" class="error"/>-->
+<!--        </div>-->
         <div class="mb-3">
             <label class="form-label" for="logo">Logo</label>
             <input type="file" name="restaurantLogo" class="form-control" id="logo" required>
