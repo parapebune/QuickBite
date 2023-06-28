@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>Title</title>
@@ -11,23 +11,29 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a href="/home" class="navbar-brand">
-                <img src="../img/quick_bite.png">
+                <img src="/img/quick_bite.png">
             </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div th:object="${userDto}" class="navbar-nav">
-                    <a href="/yourProfile" th:if="${fullName!=null}" th:text="${fullName}" class="nav-item nav-link" style="font-weight: bold; color: red;">Your Profile</a>
-                    <a  href="#" class="nav-item nav-link">View Restaurant</a>
-<!--                    <a href="#" class="nav-item nav-link disabled" tabindex="-1">Reports</a>-->
-                </div>
-                <div class="navbar-nav ms-auto">
-                    <a sec:authorize="isAnonymous()"  href="/login" class="nav-item nav-link">Login</a>
-                    <a sec:authorize="hasRole('BUYER')" href="/orderHistory" class="nav-item nav-link">Order History</a>
-                    <a sec:authorize="hasRole('BUYER')" href="/shoppingCart" class="nav-item nav-link">Your Cart</a>
-                    <a sec:authorize="isAnonymous()"  href="/registration" class="nav-item nav-link">Registration</a>
-                    <a sec:authorize="isAuthenticated()" href="/logout" class="nav-item nav-link">Logout</a>
+                    <a href="/yourProfile" th:if="${fullName!=null}" th:text="${fullName}" class="nav-item nav-link"
+                       style="font-weight: bold; color: red;">Your Profile</a>
+                    <a href="#" class="nav-item nav-link">View Restaurant</a>
+                    <div class="navbar-nav">
+                        <a href="/addRestaurant" class="nav-item nav-link">Add Restaurant</a>
+                    </div>
+
+
+                    <div class="navbar-nav ms-auto">
+                        <a sec:authorize="isAnonymous()" href="/login" class="nav-item nav-link">Login</a>
+                        <a sec:authorize="hasRole('BUYER')" href="/orderHistory" class="nav-item nav-link">Order
+                            History</a>
+                        <a sec:authorize="hasRole('BUYER')" href="/shoppingCart" class="nav-item nav-link">Your Cart</a>
+                        <a sec:authorize="isAnonymous()" href="/registration" class="nav-item nav-link">Registration</a>
+                        <a sec:authorize="isAuthenticated()" href="/logout" class="nav-item nav-link">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>

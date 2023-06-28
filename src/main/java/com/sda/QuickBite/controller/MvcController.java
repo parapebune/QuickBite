@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,6 +45,7 @@ public class MvcController {
     @Autowired
     private LoginService loginService;
 
+
     @ModelAttribute("fullName")
     public String fullName(Authentication authentication){
         if (authentication==null){
@@ -51,6 +53,7 @@ public class MvcController {
         }
         return util.displayAuthenticatedUserFullName(authentication);
     }
+
 
     @GetMapping("/home")
     public String homeGet(Model model, @RequestParam(name = "category",required = false) String category, Authentication authentication){
@@ -90,6 +93,8 @@ public class MvcController {
         userService.addUser(userDto);
         return "redirect:/login";
     }
+
+
     @GetMapping("/login")
     public String loginGet(Model model) {
         return "login";
@@ -103,13 +108,9 @@ public class MvcController {
     }
 
     @PostMapping("/addRestaurant")
-    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") RestaurantDto restaurantDto, BindingResult bindingResult,
+
+    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") @Valid RestaurantDto restaurantDto, BindingResult bindingResult,
                                     MultipartFile restaurantLogo, MultipartFile restaurantBackground, Authentication authentication){
-
-        if(bindingResult.hasErrors()){
-            return "addRestaurant";
-        }
-
         String email = authentication.getName();
         Optional<User> optionalUser = userService.getUserByEmail(email);
         if(optionalUser.isEmpty()){
@@ -120,14 +121,14 @@ public class MvcController {
         return "redirect:/addRestaurant";
     }
 
-    @GetMapping("/addDish/{restaurantId}")
+    @GetMapping("/restaurant/{restaurantId}/addDish")
     public String addDishGet(Model model, @PathVariable(name = "restaurantId") String restaurantId){
         DishDto dishDto = new DishDto();
         model.addAttribute("dishDto",dishDto);
         return "addDish";
     }
 
-    @PostMapping("/addDish/{restaurantId}")
+    @PostMapping("/restaurant/{restaurantId}/addDish")
     public String addDishPost(@ModelAttribute(name = "dishDto") @Valid DishDto dishDto, BindingResult bindingResult,
                               @RequestParam("dishImage") MultipartFile dishImage,
                               @PathVariable(name = "restaurantId") String restaurantId){
@@ -171,6 +172,12 @@ public class MvcController {
         model.addAttribute("dishCategoryDtoList",dishCategoryDtoList);
 
         return "restaurantPage";
+    }
+
+
+    @PostMapping("/addToCard/{dishId}")
+    public void addToCardPost(@PathVariable(name = "dishId") String dishId){
+
     }
 
     @GetMapping("/dish")

@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<div th:insert="fragments/navBar"></div>
+<!--<div th:insert="fragments/navBar"></div>-->
+<div th:insert="~{fragments/navBar.html :: body}"></div>
 <div class="m-4" >
     <h1>Add dish</h1>
     <form th:object="${dishDto}" th:action="${'/addDish/'+restaurantId}"  method="post" enctype="multipart/form-data">

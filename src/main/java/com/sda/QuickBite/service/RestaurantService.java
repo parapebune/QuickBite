@@ -24,6 +24,7 @@ public class RestaurantService {
     private RestaurantRepository restaurantRepository;
 
     public void addRestaurant(RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg, User user) {
+
         Restaurant restaurant = restaurantMapper.map(restaurantDto, restaurantImage, restaurantBackgroundImg, user);
         restaurantRepository.save(restaurant);
     }
