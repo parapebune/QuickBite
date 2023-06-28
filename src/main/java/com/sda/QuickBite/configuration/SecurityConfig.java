@@ -29,12 +29,19 @@ public class SecurityConfig {
                     auth.requestMatchers("/yourProfile").permitAll();
 
                     auth.requestMatchers("/registration").permitAll();
-                    auth.requestMatchers("/css/*").permitAll();
-                    auth.requestMatchers("/img/*").permitAll();
+                    auth.requestMatchers("/css/**").permitAll();
+                    auth.requestMatchers("/img/**").permitAll();
                     auth.requestMatchers("/restaurantPage/*").permitAll();
                     auth.requestMatchers("/dish/*").permitAll();
+
                     auth.requestMatchers("/js/*").permitAll();
                     auth.requestMatchers("/api/users").permitAll();
+
+                    auth.requestMatchers("/restaurant/*/addDish").permitAll();
+
+                    auth.requestMatchers("/addToCard/*").permitAll();
+
+
 
 
                     auth.requestMatchers("/addDish/*").permitAll();

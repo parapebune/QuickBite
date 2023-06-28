@@ -1,6 +1,7 @@
 package com.sda.QuickBite.mapper;
 
 import com.sda.QuickBite.dto.UserDto;
+import com.sda.QuickBite.entity.OrderCart;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class UserMapper {
                 .phoneNumber(userDto.getPhoneNumber())
                 .password(encodedPassword)
                 .role(Role.valueOf(userDto.getRole()))
+                .orderCart(new OrderCart())
                 .build();
     }
 

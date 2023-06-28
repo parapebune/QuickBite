@@ -17,8 +17,6 @@ public class OrderEntry {
     @JoinColumn
     private Dish dish;
 
-
-
     @ManyToOne
     @JoinColumn
     private OrderCart orderCart;

@@ -25,8 +25,6 @@ public class UserDetailsServiceImplementation implements UserDetailsService {
         if (optionalUser.isEmpty()){
             throw new UsernameNotFoundException(email);
         }
-
-
         User user = optionalUser.get();
         SimpleGrantedAuthority role = new SimpleGrantedAuthority(user.getRole().name());
 
