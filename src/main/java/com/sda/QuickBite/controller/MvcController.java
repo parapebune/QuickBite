@@ -3,14 +3,17 @@ package com.sda.QuickBite.controller;
 import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.Restaurant;
+import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.DishCategory;
 import com.sda.QuickBite.service.DishService;
 import com.sda.QuickBite.service.LoginService;
 import com.sda.QuickBite.service.RestaurantService;
 import com.sda.QuickBite.service.UserService;
 import com.sda.QuickBite.utils.Util;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,8 +44,17 @@ public class MvcController {
     @Autowired
     private LoginService loginService;
 
+    @ModelAttribute("fullName")
+    public String fullName(Authentication authentication){
+        if (authentication==null){
+            return null;
+        }
+        return util.displayAuthenticatedUserFullName(authentication);
+    }
+
     @GetMapping("/home")
-    public String homeGet(Model model, @RequestParam(name = "category",required = false) String category){
+    public String homeGet(Model model, @RequestParam(name = "category",required = false) String category, Authentication authentication){
+
         List<RestaurantDto> restaurantDtoList = null;
         if(category == null){
              restaurantDtoList = restaurantService.getAllRestaurantDto();
@@ -53,8 +65,14 @@ public class MvcController {
         return "home";
     }
 
+//    @GetMapping("/navBar")
+//    public String navBarGet(Model model){
+//        return "fragments/navBar";
+//    }
+
     @GetMapping("/navBar")
     public String navBarGet(Model model){
+
         return "fragments/navBar";
     }
 
@@ -83,13 +101,22 @@ public class MvcController {
         model.addAttribute("restaurantDto", restaurantDto);
         return "addRestaurant";
     }
+
     @PostMapping("/addRestaurant")
-    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") @Valid RestaurantDto restaurantDto, BindingResult bindingResult,
-                                    MultipartFile restaurantLogo, MultipartFile restaurantBackground){
+    public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") RestaurantDto restaurantDto, BindingResult bindingResult,
+                                    MultipartFile restaurantLogo, MultipartFile restaurantBackground, Authentication authentication){
+
         if(bindingResult.hasErrors()){
             return "addRestaurant";
         }
-        restaurantService.addRestaurant(restaurantDto, restaurantLogo, restaurantBackground);
+
+        String email = authentication.getName();
+        Optional<User> optionalUser = userService.getUserByEmail(email);
+        if(optionalUser.isEmpty()){
+            return "error";
+        }
+        User user = optionalUser.get();
+        restaurantService.addRestaurant(restaurantDto, restaurantLogo, restaurantBackground, user);
         return "redirect:/addRestaurant";
     }
 
@@ -152,6 +179,28 @@ public class MvcController {
     @GetMapping("/orderHistory")
     public String orderHistoryGet(){
         return "orderHistory";}
+
+    @GetMapping("/shoppingCart")
+    public String shoppingCartGet(){
+        return "shoppingCart";}
+
+
+    @GetMapping("/sellerPage")
+    public String sellerPageGet(Model model){
+
+
+        return "sellerPage";
+    }
+
+    @GetMapping("/yourProfile")
+    public String yourProfileGet(Model model){
+
+
+        return "yourProfile";
+    }
+
+
+
 
 
 }

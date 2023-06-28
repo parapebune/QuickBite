@@ -25,4 +25,17 @@ public class UserMapper {
                 .role(Role.valueOf(userDto.getRole()))
                 .build();
     }
+
+    public UserDto map(User user) {
+        return UserDto.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .address(user.getAddress())
+                .build();
+
+
+
+    }
 }

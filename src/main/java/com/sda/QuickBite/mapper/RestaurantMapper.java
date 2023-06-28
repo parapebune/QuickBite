@@ -2,6 +2,7 @@ package com.sda.QuickBite.mapper;
 
 import com.sda.QuickBite.dto.RestaurantDto;
 import com.sda.QuickBite.entity.Restaurant;
+import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.RestaurantSpecific;
 import com.sda.QuickBite.utils.Util;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -17,7 +18,7 @@ public class RestaurantMapper {
     @Autowired
     private Util util;
 
-    public Restaurant map(RestaurantDto restaurantDto, MultipartFile logo, MultipartFile backgroundImage) {
+    public Restaurant map(RestaurantDto restaurantDto, MultipartFile logo, MultipartFile backgroundImage, User user) {
         return Restaurant.builder()
                 .name(restaurantDto.getName())
                 .description(restaurantDto.getDescription())
@@ -26,6 +27,7 @@ public class RestaurantMapper {
                 .restaurantSpecific(RestaurantSpecific.valueOf(restaurantDto.getRestaurantSpecific()))
                 .logo(util.convertToBytes(logo))
                 .backgroundImage(util.convertToBytes(backgroundImage))
+                .user(user)
                 .build();
     }
 

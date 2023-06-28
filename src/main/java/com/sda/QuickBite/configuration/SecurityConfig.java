@@ -24,6 +24,9 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/home").permitAll();
                     auth.requestMatchers("/error").permitAll();
+                    auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers("/addRestaurant").permitAll();
+                    auth.requestMatchers("/yourProfile").permitAll();
 
                     auth.requestMatchers("/registration").permitAll();
                     auth.requestMatchers("/css/*").permitAll();
@@ -31,9 +34,14 @@ public class SecurityConfig {
                     auth.requestMatchers("/restaurantPage/*").permitAll();
                     auth.requestMatchers("/dish/*").permitAll();
                     auth.requestMatchers("/js/*").permitAll();
-                    auth.requestMatchers("/api/users").hasAnyRole("BUYER", "SELLER");
+                    auth.requestMatchers("/api/users").permitAll();
 
-                    auth.requestMatchers("/addRestaurant").hasRole("SELLER");
+
+                    auth.requestMatchers("/addDish/*").permitAll();
+                    auth.requestMatchers("/sellerPage/*").permitAll();
+                    auth.requestMatchers("/orderHistory/*").permitAll();
+                    auth.requestMatchers("/shoppingCart/*").permitAll();
+                    auth.requestMatchers("/navBar").permitAll();
 
 
                 })

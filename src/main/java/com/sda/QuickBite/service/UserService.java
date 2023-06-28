@@ -7,6 +7,8 @@ import com.sda.QuickBite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -18,5 +20,40 @@ public class UserService {
     public void addUser(UserDto userDto){
         User user = userMapper.map(userDto);
         userRepository.save(user);
+    }
+
+
+
+    public Optional<User> getUserById(String userId) {
+        return userRepository.findById(Long.valueOf(userId));
+    }
+
+    public Optional<UserDto> getUserDtoById(String userId) {
+        Optional<User> optionalUser = userRepository.findById(Long.valueOf(userId));
+        if (optionalUser.isEmpty()){
+            return Optional.empty();
+        }
+        User user = optionalUser.get();
+        UserDto userDto = userMapper.map(user);
+        return Optional.of(userDto);
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()){
+            return Optional.empty();
+        }
+        return optionalUser;
+
+    }
+
+    public Optional<UserDto> getUserDtoByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()){
+            return Optional.empty();
+        }
+        User user = optionalUser.get();
+        UserDto userDto = userMapper.map(user);
+        return Optional.of(userDto);
     }
 }
