@@ -26,9 +26,7 @@
                     <a  th:object="${activePage}" th:if="${activePage != '/sellerPage'}" sec:authorize="hasRole('SELLER')" href="/sellerPage" class="nav-item nav-link">Your Restaurants</a>
                     <a  th:object="${activePage}" th:if="${activePage == '/sellerPage'}" sec:authorize="hasRole('SELLER')" href="/addRestaurant" class="nav-item nav-link">Add Restaurant</a>
                 </div>
-
                 <div class="navbar-nav ms-auto">
-
                     <a sec:authorize="isAnonymous()" href="/login" class="nav-item nav-link">Login</a>
                     <a sec:authorize="hasRole('BUYER')" href="#" class="nav-item nav-link">Order History</a>
                     <a sec:authorize="hasRole('BUYER')" href="/orderCart" class="nav-item nav-link">Your Cart</a>
