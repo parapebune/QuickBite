@@ -29,7 +29,7 @@ public class DishMapper {
     }
     public DishDto map(Dish dish){
         return DishDto.builder()
-                .id(dish.getId().toString())
+                .id(dish.getDishId().toString())
                 .name(dish.getName())
                 .description(dish.getDescription())
                 .cookingTime(dish.getCookingTime().toString())

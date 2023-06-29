@@ -61,14 +61,14 @@ public class RestaurantService {
         return restaurantDtoList;
     }
 
-    public List<RestaurantDto> getRestaurantDtoListByUserId(String userId) {
-        List<Restaurant> restaurantList = restaurantRepository.findByUserId(userId);
+
+    public List<RestaurantDto> getRestaurantDToListByUserId(String userId) {
+        List<Restaurant> restaurantList = restaurantRepository.findByUserUserId(userId);
         List<RestaurantDto> restaurantDtoList = new ArrayList<>();
         for (Restaurant restaurant : restaurantList) {
-            if (restaurant.getUser().getId().toString().equals(userId)) {
+            if (restaurant.getUser().getUserId().equals(userId)) {
                 RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
                 restaurantDtoList.add(restaurantDto);
-
             }
 
         }

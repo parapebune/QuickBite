@@ -1,11 +1,15 @@
 package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.*;
+<<<<<<< HEAD
 import com.sda.QuickBite.entity.*;
 import com.sda.QuickBite.enums.RestaurantSpecific;
+=======
+import com.sda.QuickBite.entity.Restaurant;
+import com.sda.QuickBite.entity.User;
+>>>>>>> 91c996c (beforeDisaster)
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -34,14 +38,15 @@ public class MvcController {
     @Autowired
     private Util util;
 
-    @Autowired
-    public BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @Autowired
     private OrderEntryService orderEntryService;
-
     @Autowired
     private OrderCartService orderCartService;
+    @Autowired
+    private OrderCartEntryService orderCartEntryService;
+
 
 
     @ModelAttribute("fullName")
@@ -153,12 +158,16 @@ public class MvcController {
 
     @GetMapping("/dish/{dishId}")
     public String dishGet(Model model, @PathVariable(name = "dishId") String dishId) {
+
         Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
         if (optionalDishDto.isEmpty()) {
             return "error";
         }
         DishDto dishDto = optionalDishDto.get();
         model.addAttribute("dishDto", dishDto);
+        QuantityDto quantityDto = QuantityDto.builder()
+                .quantity("1").build();
+        model.addAttribute("quantityDto", quantityDto);
         return "dish";
     }
 
@@ -179,7 +188,14 @@ public class MvcController {
 
 
     @PostMapping("/addToCard/{dishId}")
-    public void addToCardPost(@PathVariable(name = "dishId") String dishId) {
+
+    public String addToCardPost(@PathVariable(name = "dishId") String dishId, @ModelAttribute(name = "quantityDto") QuantityDto quantityDto,
+                                Authentication authentication){
+        if(authentication == null){
+            return "login";
+        }
+        orderCartService.addToCart(dishId, quantityDto, authentication.getName());
+        return "redirect:/dish/" + dishId;
 
     }
 
@@ -193,10 +209,14 @@ public class MvcController {
         return "orderHistory";
     }
 
-    @GetMapping("/shoppingCart")
-    public String shoppingCartGet() {
-        return "addToCart";
-    }
+
+    @GetMapping("/orderCart")
+    public String shoppingCartGet(Model model, Authentication authentication){
+        List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getOrderCartEntryList(authentication.getName());
+        System.out.println(orderCartEntryDtoList);
+        model.addAttribute("orderCartEntryDtoList",orderCartEntryDtoList);
+        return "orderCart";}
+
 
 
     @GetMapping("/sellerPage")

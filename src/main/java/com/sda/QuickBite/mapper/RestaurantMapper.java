@@ -33,7 +33,7 @@ public class RestaurantMapper {
 
     public RestaurantDto map(Restaurant restaurant) {
         return RestaurantDto.builder()
-                .id(restaurant.getId().toString())
+                .id(restaurant.getRestaurantId().toString())
                 .name(restaurant.getName())
                 .address(restaurant.getAddress())
                 .phoneNo(restaurant.getPhoneNo())

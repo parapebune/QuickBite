@@ -1,7 +1,6 @@
 package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.OrderEntryDto;
-import com.sda.QuickBite.entity.OrderEntry;
 import com.sda.QuickBite.mapper.OrderEntryMapper;
 import com.sda.QuickBite.repository.OrderEntryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

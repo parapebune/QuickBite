@@ -15,7 +15,7 @@ public class Dish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long dishId;
 
     private String name;
     private String description;
@@ -30,7 +30,7 @@ public class Dish {
     private byte[] image;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn
     private Restaurant restaurant;
 
     @Override

@@ -41,7 +41,6 @@ public class Util {
             throw new RuntimeException("Error upload image!");
         }
     }
-
     public String displayAuthenticatedUserFullName (Authentication authentication) {
         String email = authentication.getName();
         Optional<UserDto> optionalUserDto = userService.getUserDtoByEmail(email);
@@ -49,8 +48,6 @@ public class Util {
             return "Not Authenticated";
         }
         UserDto userDto = optionalUserDto.get();
-        String fullName = userDto.getFirstName() + " " + userDto.getLastName();
-        return fullName;
+        return userDto.getFirstName() + " " + userDto.getLastName();
     }
-
 }

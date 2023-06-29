@@ -17,7 +17,7 @@ import java.util.List;
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long restaurantId;
     private String name;
     private String description;
     private String address;
@@ -35,11 +35,11 @@ public class Restaurant {
     private byte[] backgroundImage;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn
     private User user;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-    private List<Dish> menu = new ArrayList<>();
+    private List<Dish> menu;
 
 
 }

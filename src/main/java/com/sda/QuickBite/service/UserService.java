@@ -34,12 +34,13 @@ public class UserService {
 
 
     public Optional<User> getUserById(String userId) {
-        return userRepository.findById(Long.valueOf(userId));
+        return userRepository.findByUserId(Long.valueOf(userId));
     }
 
     public Optional<UserDto> getUserDtoById(String userId) {
-        Optional<User> optionalUser = userRepository.findById(Long.valueOf(userId));
-        if (optionalUser.isEmpty()) {
+
+        Optional<User> optionalUser = userRepository.findByUserId(Long.valueOf(userId));
+        if (optionalUser.isEmpty()){
             return Optional.empty();
         }
         User user = optionalUser.get();
@@ -48,12 +49,7 @@ public class UserService {
     }
 
     public Optional<User> getUserByEmail(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isEmpty()) {
-            return Optional.empty();
-        }
-        return optionalUser;
-
+        return userRepository.findByEmail(email);
     }
 
     public Optional<UserDto> getUserDtoByEmail(String email) {
