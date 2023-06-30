@@ -34,8 +34,19 @@ public class DishMapper {
                 .description(dish.getDescription())
                 .cookingTime(dish.getCookingTime().toString())
                 .category(dish.getCategory().name())
-                .price(String.format("%.2f", dish.getPrice()) + " RON")
+                .price(String.format("%.2f", dish.getPrice()))
                 .image(BASE64_PREFIX + Base64.encodeBase64String(dish.getImage()))
+                .build();
+    }
+
+    public Dish map(DishDto dishDto, MultipartFile dishImage) {
+        return Dish.builder()
+                .name(dishDto.getName())
+                .description(dishDto.getDescription())
+                .price(Double.valueOf(dishDto.getPrice()))
+                .cookingTime(Integer.valueOf(dishDto.getCookingTime()))
+                .category(DishCategory.valueOf(dishDto.getCategory()))
+                .image(util.convertToBytes(dishImage))
                 .build();
     }
 }

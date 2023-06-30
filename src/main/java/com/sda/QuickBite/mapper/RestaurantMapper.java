@@ -43,4 +43,18 @@ public class RestaurantMapper {
                 .backgroundImage(BASE64_PREFIX + Base64.encodeBase64String(restaurant.getBackgroundImage()))
                 .build();
     }
+
+    public Restaurant map(RestaurantDto restaurantDto, MultipartFile logo, MultipartFile backgroundImage) {
+        return Restaurant.builder()
+                .name(restaurantDto.getName())
+                .description(restaurantDto.getDescription())
+                .address(restaurantDto.getAddress())
+                .phoneNo(restaurantDto.getPhoneNo())
+                .restaurantSpecific(RestaurantSpecific.valueOf(restaurantDto.getRestaurantSpecific()))
+                .logo(util.convertToBytes(logo))
+                .backgroundImage(util.convertToBytes(backgroundImage))
+                .build();
+    }
+
+
 }

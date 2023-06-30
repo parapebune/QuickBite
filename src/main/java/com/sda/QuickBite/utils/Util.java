@@ -1,6 +1,7 @@
 package com.sda.QuickBite.utils;
 
 import com.sda.QuickBite.dto.UserDto;
+import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -43,9 +44,7 @@ public class Util {
 
     public String displayAuthenticatedUserFullName (Authentication authentication) {
         String email = authentication.getName();
-        System.out.println(email);
         Optional<UserDto> optionalUserDto = userService.getUserDtoByEmail(email);
-        System.out.println(optionalUserDto.toString());
         if (optionalUserDto.isEmpty()) {
             return "Not Authenticated";
         }
@@ -53,8 +52,5 @@ public class Util {
         String fullName = userDto.getFirstName() + " " + userDto.getLastName();
         return fullName;
     }
-
-
-
 
 }

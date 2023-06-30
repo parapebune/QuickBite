@@ -64,6 +64,14 @@
         <div>
             <p th:each="error : ${#fields.errors('password')}" th:text="${error}" class="error"/>
         </div>
+        <div class="mb-3">
+            <label class="form-label" for="passwordRetype">Retype Password</label>
+            <input th:field="*{passwordRetype}" type="password" class="form-control" id="passwordRetype" placeholder="Retype Password">
+        </div>
+        <div>
+            <p th:each="error : ${#fields.errors('passwordRetype')}" th:text="${error}" class="error"/>
+        </div>
+
         <button type="submit" class="btn btn-primary">Create account</button>
     </form>
 </div>

@@ -12,7 +12,7 @@
 <div th:insert="~{fragments/navBar.html :: body}"></div>
 <div class="m-4" >
     <h1>Add dish</h1>
-    <form th:object="${dishDto}" th:action="${'/addDish/'+restaurantId}"  method="post" enctype="multipart/form-data">
+    <form th:object="${dishDto}" th:action="${'/restaurant/'+restaurantId+'/addDish'}"  method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label" for="name">Dish name</label>
             <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Name" required>
@@ -53,7 +53,7 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="image">Image</label>
-            <input type="file" name="dishImage" class="form-control" id="image" required>
+            <input type="file" name="dishImage" class="form-control" id="image">
         </div>
         <div>
             <p th:each="error : ${#fields.errors('image')}" th:text="${error}" class="error"/>

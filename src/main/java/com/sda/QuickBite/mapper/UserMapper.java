@@ -1,10 +1,14 @@
 package com.sda.QuickBite.mapper;
 
+import com.sda.QuickBite.dto.ChangePasswordDto;
 import com.sda.QuickBite.dto.UserDto;
+import com.sda.QuickBite.dto.UserProfileDto;
 import com.sda.QuickBite.entity.OrderCart;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.Role;
+import com.sda.QuickBite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +16,9 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    public BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User map(UserDto userDto){
+    public User map(UserDto userDto) {
         String encodedPassword = bCryptPasswordEncoder.encode(userDto.getPassword());
         return User.builder()
                 .firstName(userDto.getFirstName())
@@ -38,6 +42,16 @@ public class UserMapper {
                 .build();
 
 
-
     }
+
+    public UserProfileDto mapProfile(User user) {
+        return UserProfileDto.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .address(user.getAddress())
+                .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
+
 }

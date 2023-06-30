@@ -94,4 +94,20 @@ public class DishService {
 
 
     }
+
+    public Optional<Dish> getDishById(String dishId) {
+        Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
+        if(optionalDish.isEmpty()){
+            return Optional.empty();
+        }
+        return optionalDish;
+
+    }
+
+    public void updateDish(Dish outdatedDish, DishDto dishDto, MultipartFile dishImage) {
+        Dish dishToBeSaved = dishMapper.map(dishDto, dishImage);
+        dishToBeSaved.setId(outdatedDish.getId());
+        dishToBeSaved.setRestaurant(outdatedDish.getRestaurant());
+        dishRepository.save(dishToBeSaved);
+    }
 }
