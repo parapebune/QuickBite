@@ -8,3 +8,56 @@ form{
     font-style: italic;
     color: red;
 }
+
+.navbar-right {
+    display: flex;
+    margin-right: 0;
+    margin-top: 100px;
+}
+
+.navbar-nav.mr-auto {
+    margin-right: auto;
+}
+
+.navbar-nav.ml-auto {
+    margin-left: auto;
+}
+
+.navbar-custom{
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-logo {
+    height: 45px;
+}
+
+body{
+
+    background: #83b0e3;
+
+}
+
+.restaurant-container{
+
+    background: #83b0e3;
+}
+
+.category-nav {
+    background: #4990e1;
+}
+
+.quantity {
+    display: flex;
+    flex-direction: row;
+}
+
+.quantity label {
+    align-self: center;
+    margin-right: 10px;
+}
+
+.quantity-input {
+    width: 100px;
+    background: #4990e1;
+}

@@ -27,25 +27,32 @@ public class SecurityConfig {
                     auth.requestMatchers("/login").permitAll();
                     auth.requestMatchers("/addRestaurant").permitAll();
                     auth.requestMatchers("/yourProfile").permitAll();
+                    auth.requestMatchers("/changePassword").permitAll();
+                    auth.requestMatchers("/editRestaurant/**").permitAll();
+                    auth.requestMatchers("/editDish/**").permitAll();
+                    auth.requestMatchers("/addToCart/**").permitAll();
+                    auth.requestMatchers("/orderCart").permitAll();
+
 
                     auth.requestMatchers("/registration").permitAll();
                     auth.requestMatchers("/css/**").permitAll();
                     auth.requestMatchers("/img/**").permitAll();
-                    auth.requestMatchers("/restaurantPage/*").permitAll();
-                    auth.requestMatchers("/dish/*").permitAll();
+                    auth.requestMatchers("/restaurantPage/**").permitAll();
+                    auth.requestMatchers("/dish/**").permitAll();
 
-                    auth.requestMatchers("/js/*").permitAll();
+                    auth.requestMatchers("/js/**").permitAll();
                     auth.requestMatchers("/api/users").permitAll();
 
                     auth.requestMatchers("/restaurant/*/addDish").permitAll();
+                    auth.requestMatchers("/restaurant/**").permitAll();
 
-                    auth.requestMatchers("/addToCard/*").permitAll();
+                    auth.requestMatchers("/addToCard/**").permitAll();
 
 
 
 
                     auth.requestMatchers("/addDish/*").permitAll();
-                    auth.requestMatchers("/sellerPage/*").permitAll();
+                    auth.requestMatchers("/sellerPage").permitAll();
                     auth.requestMatchers("/orderHistory/*").permitAll();
                     auth.requestMatchers("/shoppingCart/*").permitAll();
                     auth.requestMatchers("/navBar").permitAll();
@@ -57,7 +64,7 @@ public class SecurityConfig {
         httpSecurity.formLogin()
                 .loginPage("/login").defaultSuccessUrl("/home").permitAll()
                 .and()
-                .logout().permitAll()
+                .logout().logoutSuccessUrl("/home").permitAll()
                 .and()
                 .csrf().disable().authorizeHttpRequests()
                 .and()

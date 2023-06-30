@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RestaurantService {
@@ -49,7 +47,7 @@ public class RestaurantService {
         return getRestaurantDtoList(restaurantIterable);
     }
 
-    public List<RestaurantDto> getRestaurantsByCategory(String category) {
+    public List<RestaurantDto> getRestaurantDtoListByCategory(String category) {
         Iterable<Restaurant> restaurantIterable = restaurantRepository.findByRestaurantSpecific(RestaurantSpecific.valueOf(category));
         return getRestaurantDtoList(restaurantIterable);
     }
@@ -63,21 +61,49 @@ public class RestaurantService {
         return restaurantDtoList;
     }
 
-    public List<RestaurantDto> getRestaurantDToListByUserId(String userId) {
+    public List<RestaurantDto> getRestaurantDtoListByUserId(String userId) {
         List<Restaurant> restaurantList = restaurantRepository.findByUserId(userId);
         List<RestaurantDto> restaurantDtoList = new ArrayList<>();
         for (Restaurant restaurant : restaurantList) {
-            if (restaurant.getUser().getId().equals(userId)) {
+            if (restaurant.getUser().getId().toString().equals(userId)) {
                 RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
                 restaurantDtoList.add(restaurantDto);
 
             }
 
         }
+
         return restaurantDtoList;
 
     }
 
 
+    public List<RestaurantDto> getRestaurantDtoListByUserIdAndCategory(List<RestaurantDto> restaurantDtoListByUserId, String category) {
+        List<RestaurantDto> restaurantDtoList = new ArrayList<>();
+        for (RestaurantDto restaurantDto : restaurantDtoListByUserId) {
+            if (restaurantDto.getRestaurantSpecific().equals(category)) {
+                restaurantDtoList.add(restaurantDto);
+            }
+
+        }
+        return restaurantDtoList;
+    }
+
+    public List<RestaurantSpecific> getRestaurantSpecificListByUserId(String userId) {
+        Set<RestaurantSpecific> uniqueRestaurantSpecificSet = new HashSet<>();
+        List<Restaurant> restaurantList = restaurantRepository.findByUserId(userId);
+        for (Restaurant restaurant : restaurantList) {
+            uniqueRestaurantSpecificSet.add(restaurant.getRestaurantSpecific());
+        }
+        return new ArrayList<>(uniqueRestaurantSpecificSet);
+    }
+
+    public void updateRestaurant(Restaurant outDatedRestaurant, RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg) {
+
+        Restaurant restaurantToBeSaved = restaurantMapper.map(restaurantDto, restaurantImage, restaurantBackgroundImg);
+        restaurantToBeSaved.setId(outDatedRestaurant.getId());
+        restaurantToBeSaved.setUser(outDatedRestaurant.getUser());
+        restaurantRepository.save(restaurantToBeSaved);
+    }
 }
 

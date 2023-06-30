@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Getter
 @Setter
 @ToString
-public class UserDto {
+public class UserProfileDto {
 
     private String id;
 
@@ -26,11 +26,6 @@ public class UserDto {
     @Email(message = "Email is not valid")
     private String email;
 
-    @NotEmpty(message = "Password is required")
-    private String password;
-
-    @NotEmpty(message = "Password is required")
-    private String passwordRetype;
 
     @NotEmpty(message = "Phone number is required")
     @Pattern(regexp="^(?:(?:\\+|00)40|0)(?:(?:2[1-8]|3[1-8]|4[1-8]|5[1-8]|6[1-8]|7[1-9]|8[1-8]|9[1-8])\\d{7}|7[2-8]\\d{8})$"
@@ -39,9 +34,6 @@ public class UserDto {
 
     @NotEmpty(message = "Address is required")
     private String address;
-
-    @NotNull(message = "Role is required")
-    private String role;
 
 
 }

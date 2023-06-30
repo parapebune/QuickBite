@@ -1,30 +1,22 @@
 package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.*;
-import com.sda.QuickBite.entity.Dish;
-import com.sda.QuickBite.entity.Restaurant;
-import com.sda.QuickBite.entity.User;
-import com.sda.QuickBite.enums.DishCategory;
-import com.sda.QuickBite.service.DishService;
-import com.sda.QuickBite.service.LoginService;
-import com.sda.QuickBite.service.RestaurantService;
-import com.sda.QuickBite.service.UserService;
+import com.sda.QuickBite.entity.*;
+import com.sda.QuickBite.enums.RestaurantSpecific;
+import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,12 +35,18 @@ public class MvcController {
     private Util util;
 
     @Autowired
-    private LoginService loginService;
+    public BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private OrderEntryService orderEntryService;
+
+    @Autowired
+    private OrderCartService orderCartService;
 
 
     @ModelAttribute("fullName")
-    public String fullName(Authentication authentication){
-        if (authentication==null){
+    public String fullName(Authentication authentication) {
+        if (authentication == null) {
             return null;
         }
         return util.displayAuthenticatedUserFullName(authentication);
@@ -56,13 +54,13 @@ public class MvcController {
 
 
     @GetMapping("/home")
-    public String homeGet(Model model, @RequestParam(name = "category",required = false) String category, Authentication authentication){
+    public String homeGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
 
         List<RestaurantDto> restaurantDtoList = null;
-        if(category == null){
-             restaurantDtoList = restaurantService.getAllRestaurantDto();
-        }else {
-            restaurantDtoList = restaurantService.getRestaurantsByCategory(category);
+        if (category == null) {
+            restaurantDtoList = restaurantService.getAllRestaurantDto();
+        } else {
+            restaurantDtoList = restaurantService.getRestaurantDtoListByCategory(category);
         }
         model.addAttribute("restaurantDtoList", restaurantDtoList);
         return "home";
@@ -74,22 +72,33 @@ public class MvcController {
 //    }
 
     @GetMapping("/navBar")
-    public String navBarGet(Model model){
+    public String navBarGet(Model model) {
 
         return "fragments/navBar";
     }
 
     @GetMapping("/registration")
-    public String registrationGet(Model model){
+    public String registrationGet(Model model) {
         UserDto userDto = new UserDto();
-        model.addAttribute("userDto",userDto);
+        model.addAttribute("userDto", userDto);
         return "registration";
     }
+
     @PostMapping("/registration")
-    public String registerPost(@ModelAttribute(name = "userDto") @Valid UserDto userDto, BindingResult bindingResult ){
-        if(bindingResult.hasErrors()){
+    public String registerPost(@ModelAttribute(name = "userDto") @Valid UserDto userDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "registration";
         }
+
+        if (!userDto.getPassword().equals(userDto.getPasswordRetype())) {
+            bindingResult.rejectValue("passwordRetype", "error.userDto",
+                    "Passwords do not match! Please try again!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+
         userService.addUser(userDto);
         return "redirect:/login";
     }
@@ -101,7 +110,7 @@ public class MvcController {
     }
 
     @GetMapping("/addRestaurant")
-    public String addRestaurantGet(Model model){
+    public String addRestaurantGet(Model model) {
         RestaurantDto restaurantDto = new RestaurantDto();
         model.addAttribute("restaurantDto", restaurantDto);
         return "addRestaurant";
@@ -110,34 +119,30 @@ public class MvcController {
     @PostMapping("/addRestaurant")
 
     public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") @Valid RestaurantDto restaurantDto, BindingResult bindingResult,
-                                    MultipartFile restaurantLogo, MultipartFile restaurantBackground, Authentication authentication){
-        String email = authentication.getName();
-        Optional<User> optionalUser = userService.getUserByEmail(email);
-        if(optionalUser.isEmpty()){
-            return "error";
-        }
-        User user = optionalUser.get();
+                                    MultipartFile restaurantLogo, MultipartFile restaurantBackground, Authentication authentication) {
+
+        User user = userService.getAuthenticatedUser(authentication);
         restaurantService.addRestaurant(restaurantDto, restaurantLogo, restaurantBackground, user);
-        return "redirect:/addRestaurant";
+        return "redirect:/sellerPage";
     }
 
+
     @GetMapping("/restaurant/{restaurantId}/addDish")
-    public String addDishGet(Model model, @PathVariable(name = "restaurantId") String restaurantId){
+    public String addDishGet(Model model, @PathVariable(name = "restaurantId") String restaurantId) {
         DishDto dishDto = new DishDto();
-        model.addAttribute("dishDto",dishDto);
+        model.addAttribute("dishDto", dishDto);
         return "addDish";
     }
 
     @PostMapping("/restaurant/{restaurantId}/addDish")
     public String addDishPost(@ModelAttribute(name = "dishDto") @Valid DishDto dishDto, BindingResult bindingResult,
                               @RequestParam("dishImage") MultipartFile dishImage,
-                              @PathVariable(name = "restaurantId") String restaurantId){
-        if(bindingResult.hasErrors()){
+                              @PathVariable(name = "restaurantId") String restaurantId) {
+        if (bindingResult.hasErrors()) {
             return "addDish";
         }
-
         Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
-        if(optionalRestaurant.isEmpty()){
+        if (optionalRestaurant.isEmpty()) {
             return "error";
         }
         Restaurant restaurant = optionalRestaurant.get();
@@ -147,67 +152,243 @@ public class MvcController {
 
 
     @GetMapping("/dish/{dishId}")
-    public String dishGet(Model model, @PathVariable(name = "dishId") String dishId){
-        System.out.println("Ajunge?");
+    public String dishGet(Model model, @PathVariable(name = "dishId") String dishId) {
         Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
-        if(optionalDishDto.isEmpty()){
+        if (optionalDishDto.isEmpty()) {
             return "error";
         }
         DishDto dishDto = optionalDishDto.get();
-        model.addAttribute("dishDto",dishDto);
-        System.out.println(dishDto);
+        model.addAttribute("dishDto", dishDto);
         return "dish";
     }
 
     @GetMapping("/restaurantPage/{restaurantId}")
-    public String restaurantPageGet(@PathVariable(value = "restaurantId") String restaurantId, Model model){
+    public String restaurantPageGet(@PathVariable(value = "restaurantId") String restaurantId, Model model) {
         Optional<RestaurantDto> optionalRestaurantDto = restaurantService.getRestaurantDtoById(restaurantId);
-        if(optionalRestaurantDto.isEmpty()){
+        if (optionalRestaurantDto.isEmpty()) {
             return "error";
         }
         RestaurantDto restaurantDto = optionalRestaurantDto.get();
-        model.addAttribute("restaurantDto",restaurantDto);
+        model.addAttribute("restaurantDto", restaurantDto);
 
         List<DishCategoryDto> dishCategoryDtoList = dishService.getDishDtoListGroupByCategory(restaurantId);
-        model.addAttribute("dishCategoryDtoList",dishCategoryDtoList);
+        model.addAttribute("dishCategoryDtoList", dishCategoryDtoList);
 
         return "restaurantPage";
     }
 
 
     @PostMapping("/addToCard/{dishId}")
-    public void addToCardPost(@PathVariable(name = "dishId") String dishId){
+    public void addToCardPost(@PathVariable(name = "dishId") String dishId) {
 
     }
 
     @GetMapping("/dish")
-    public String dishGet(){
-        return "dish";}
+    public String dishGet() {
+        return "dish";
+    }
+
     @GetMapping("/orderHistory")
-    public String orderHistoryGet(){
-        return "orderHistory";}
+    public String orderHistoryGet() {
+        return "orderHistory";
+    }
 
     @GetMapping("/shoppingCart")
-    public String shoppingCartGet(){
-        return "shoppingCart";}
+    public String shoppingCartGet() {
+        return "addToCart";
+    }
 
 
     @GetMapping("/sellerPage")
-    public String sellerPageGet(Model model){
+    public String sellerPageGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
+        model.addAttribute("activePage", "/sellerPage");
 
+        User user = userService.getAuthenticatedUser(authentication);
+        List<RestaurantDto> restaurantDtoList = null;
+        model.addAttribute("restaurantDtoList", restaurantDtoList);
 
+        String userId = String.valueOf(user.getId());
+        List<RestaurantDto> restaurantDtoListByUserId = restaurantService.getRestaurantDtoListByUserId(userId);
+        if (category == null) {
+            restaurantDtoList = restaurantDtoListByUserId;
+        } else {
+            restaurantDtoList = restaurantService.getRestaurantDtoListByUserIdAndCategory(restaurantDtoListByUserId, category);
+        }
+        model.addAttribute("restaurantDtoList", restaurantDtoList);
+
+        List<RestaurantSpecific> restaurantSpecificlistByUserId = restaurantService.getRestaurantSpecificListByUserId(userId);
+
+        model.addAttribute("restaurantSpecificlistByUserId", restaurantSpecificlistByUserId);
+
+        // other code
         return "sellerPage";
+
     }
 
+
     @GetMapping("/yourProfile")
-    public String yourProfileGet(Model model){
-
-
+    public String yourProfileGet(Model model, Authentication authentication) {
+        UserProfileDto userProfileDto = userService.getAuthenticatedUserProfileDto(authentication);
+        model.addAttribute("userProfileDto", userProfileDto);
         return "yourProfile";
     }
 
+    @PostMapping("/yourProfile")
+    public String yourProfilePost(@ModelAttribute(name = "userProfileDto") @Valid UserProfileDto userProfileDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "yourProfile";
+        }
+        Optional<User> optionalUser = userService.getUserByEmail(userProfileDto.getEmail());
+        if (optionalUser.isEmpty()) {
+            return "error";
+        }
+        User user = optionalUser.get();
+        userService.updateUser(user, userProfileDto);
+        return "redirect:/yourProfile";
+    }
+
+    @GetMapping("/changePassword")
+    public String changePasswordGet(Model model, Authentication authentication) {
+
+        ChangePasswordDto changePasswordDto = new ChangePasswordDto();
+        model.addAttribute("changePasswordDto", changePasswordDto);
 
 
+        return "changePassword";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassWordPost(@ModelAttribute(name = "changePasswordDto") @Valid ChangePasswordDto changePasswordDto,
+                                     BindingResult bindingResult, Authentication authentication) {
+        User user = userService.getAuthenticatedUser(authentication);
+        String oldPasswordInputByUser = changePasswordDto.getOldPassword();
+        String oldPasswordFromDatabase = user.getPassword();
+
+        if (!changePasswordDto.getNewPassword().equals(changePasswordDto.getNewPasswordRetype())) {
+            bindingResult.rejectValue("newPasswordRetype", "error.changePasswordDto",
+                    "New Passwords do not match! Please try again!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "changePassword";
+        }
+
+        if (!bCryptPasswordEncoder.matches(oldPasswordInputByUser, oldPasswordFromDatabase)) {
+            bindingResult.rejectValue("oldPassword", "error.changePasswordDto", "Incorrect old password");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "changePassword";
+        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(changePasswordDto.getNewPassword()));
+        userService.updateUserPassword(user);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/editRestaurant/{restaurantId}")
+    public String editRestaurantGet(Model model, @PathVariable(name = "restaurantId") String restaurantId) {
+        Optional<RestaurantDto> optionalRestaurantDto = restaurantService.getRestaurantDtoById(restaurantId);
+        if (optionalRestaurantDto.isEmpty()) {
+            return "error";
+        }
+        RestaurantDto restaurantDto = optionalRestaurantDto.get();
+        model.addAttribute("restaurantDto", restaurantDto);
+
+
+        return "editRestaurant";
+    }
+
+    @PostMapping("/editRestaurant/{restaurantId}")
+
+    public String editRestaurantPost(@ModelAttribute(name = "restaurantDto") @Valid RestaurantDto restaurantDto, BindingResult bindingResult,
+                                     MultipartFile restaurantLogo, MultipartFile restaurantBackground, @RequestParam(name = "restaurantId") String restaurantId) {
+        Optional<Restaurant> optionalRestaurantToBeUpdated = restaurantService.getRestaurantById(restaurantId);
+        if (optionalRestaurantToBeUpdated.isEmpty()) {
+            return "error";
+        }
+        Restaurant outDatedRestaurant = optionalRestaurantToBeUpdated.get();
+        restaurantService.updateRestaurant(outDatedRestaurant, restaurantDto, restaurantLogo, restaurantBackground);
+        return "redirect:/restaurantPage/" + restaurantId;
+    }
+
+    @GetMapping("/editDish/{dishId}")
+    public String editDishGet(Model model, @PathVariable(name = "dishId") String dishId) {
+        System.out.println("Dish ID: " + dishId);
+
+        Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
+        if (optionalDishDto.isEmpty()) {
+            return "error";
+        }
+        DishDto dishDto = optionalDishDto.get();
+        model.addAttribute("dishDto", dishDto);
+        return "editDish";
+    }
+
+    @PostMapping("/editDish/{dishId}")
+    public String editDishPost(@ModelAttribute(name = "dishDto") @Valid DishDto dishDto, BindingResult bindingResult,
+                               @RequestParam("dishImage") MultipartFile dishImage,
+                               @PathVariable(name = "dishId") String dishId) {
+        System.out.println("Dish ID" + dishId);
+        if (bindingResult.hasErrors()) {
+            return "editDish";
+        }
+
+        Optional<Dish> optionalOutdatedDish = dishService.getDishById(dishId);
+        if (optionalOutdatedDish.isEmpty()) {
+            return "error";
+        }
+        Dish outdatedDish = optionalOutdatedDish.get();
+        dishService.updateDish(outdatedDish, dishDto, dishImage);
+        return "redirect:/dish/" + dishId;
+    }
+
+    @GetMapping("/addToCart/{dishId}")
+    public String addToCartGet(@PathVariable Long dishId, Model model)  {
+
+        return "redirect:/dish/" + dishId;
+    }
+    @PostMapping("/addToCart/{dishId}")
+    public String addToCartPost(@PathVariable(name = "dishId") Long dishId, @RequestParam Integer quantity,
+                            Authentication authentication) {
+        User user = userService.getAuthenticatedUser(authentication);
+        Optional<Dish> optionalDish = dishService.getDishById(String.valueOf(dishId));
+        if (optionalDish.isEmpty()) {
+            return "error";
+        }
+        System.out.println("Numarul cosului este: " + user.getOrderCart().getId());
+        Dish dish = optionalDish.get();
+        OrderEntryDto orderEntryDto = OrderEntryDto.builder()
+                .quantity(String.valueOf(quantity))
+                .dish(dish)
+                .orderCart(user.getOrderCart())
+                .build();
+        String restaurantId = String.valueOf(dish.getRestaurant().getId());
+        if(quantity==0){
+            return "redirect:/restaurantPage/" + restaurantId;
+        }
+
+        orderEntryService.addOrderEntry(orderEntryDto);
+
+        return "redirect:/restaurantPage/" + restaurantId;
+    }
+
+    @GetMapping("/orderCart")
+    public String orderCartGet(Model model, Authentication authentication)  {
+        User user = userService.getAuthenticatedUser(authentication);
+        List<OrderCart> orderCartList = orderCartService.getOrderCartByUser(user);
+        OrderCart orderCart = orderCartList.get(0);
+        model.addAttribute("orderCart", orderCart);
+        OrderCartDto orderCartDto = orderCartService.getOrderCartDto(orderCart);
+
+
+
+
+        return "orderCart";
+    }
+
+    @PostMapping("/orderCart")
+    public String orderCartPost(@ModelAttribute(name = "orderCart"))
 
 
 }
