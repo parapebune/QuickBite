@@ -34,7 +34,7 @@ public class User {
     @JoinColumn
     private OrderCart orderCart;
 
-    @OneToMany(mappedBy = "userFromOrder")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<FoodOrder> orders;
 
 

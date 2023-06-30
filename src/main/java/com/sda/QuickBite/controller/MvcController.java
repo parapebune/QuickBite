@@ -1,13 +1,8 @@
 package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.*;
-<<<<<<< HEAD
 import com.sda.QuickBite.entity.*;
 import com.sda.QuickBite.enums.RestaurantSpecific;
-=======
-import com.sda.QuickBite.entity.Restaurant;
-import com.sda.QuickBite.entity.User;
->>>>>>> 91c996c (beforeDisaster)
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
 import jakarta.validation.Valid;
@@ -46,7 +41,8 @@ public class MvcController {
     private OrderCartService orderCartService;
     @Autowired
     private OrderCartEntryService orderCartEntryService;
-
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @ModelAttribute("fullName")
@@ -213,22 +209,17 @@ public class MvcController {
     @GetMapping("/orderCart")
     public String shoppingCartGet(Model model, Authentication authentication){
         List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getOrderCartEntryList(authentication.getName());
-        System.out.println(orderCartEntryDtoList);
         model.addAttribute("orderCartEntryDtoList",orderCartEntryDtoList);
         return "orderCart";}
-
-
-
     @GetMapping("/sellerPage")
     public String sellerPageGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
         model.addAttribute("activePage", "/sellerPage");
-
         User user = userService.getAuthenticatedUser(authentication);
         List<RestaurantDto> restaurantDtoList = null;
         model.addAttribute("restaurantDtoList", restaurantDtoList);
 
-        String userId = String.valueOf(user.getId());
-        List<RestaurantDto> restaurantDtoListByUserId = restaurantService.getRestaurantDtoListByUserId(userId);
+        String userId = String.valueOf(user.getUserId());
+        List<RestaurantDto> restaurantDtoListByUserId = restaurantService.getRestaurantDToListByUserId(userId);
         if (category == null) {
             restaurantDtoList = restaurantDtoListByUserId;
         } else {
@@ -240,12 +231,9 @@ public class MvcController {
 
         model.addAttribute("restaurantSpecificlistByUserId", restaurantSpecificlistByUserId);
 
-        // other code
         return "sellerPage";
 
     }
-
-
     @GetMapping("/yourProfile")
     public String yourProfileGet(Model model, Authentication authentication) {
         UserProfileDto userProfileDto = userService.getAuthenticatedUserProfileDto(authentication);
@@ -362,10 +350,4 @@ public class MvcController {
         dishService.updateDish(outdatedDish, dishDto, dishImage);
         return "redirect:/dish/" + dishId;
     }
-
-
-
-
-
-
 }

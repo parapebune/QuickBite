@@ -1,7 +1,5 @@
 
 package com.sda.QuickBite.dto;
-
-import com.sda.QuickBite.entity.OrderEntry;
 import com.sda.QuickBite.entity.User;
 import jakarta.persistence.*;
 

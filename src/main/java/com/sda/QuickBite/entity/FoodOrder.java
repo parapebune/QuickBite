@@ -20,6 +20,6 @@ public class FoodOrder {
 
     @ManyToOne
     @JoinColumn
-    private User userFromOrder;
+    private User user;
 
 }

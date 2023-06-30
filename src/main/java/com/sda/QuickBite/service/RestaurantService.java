@@ -91,7 +91,7 @@ public class RestaurantService {
 
     public List<RestaurantSpecific> getRestaurantSpecificListByUserId(String userId) {
         Set<RestaurantSpecific> uniqueRestaurantSpecificSet = new HashSet<>();
-        List<Restaurant> restaurantList = restaurantRepository.findByUserId(userId);
+        List<Restaurant> restaurantList = restaurantRepository.findByUserUserId(userId);
         for (Restaurant restaurant : restaurantList) {
             uniqueRestaurantSpecificSet.add(restaurant.getRestaurantSpecific());
         }
@@ -101,7 +101,7 @@ public class RestaurantService {
     public void updateRestaurant(Restaurant outDatedRestaurant, RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg) {
 
         Restaurant restaurantToBeSaved = restaurantMapper.map(restaurantDto, restaurantImage, restaurantBackgroundImg);
-        restaurantToBeSaved.setId(outDatedRestaurant.getId());
+        restaurantToBeSaved.setRestaurantId(outDatedRestaurant.getRestaurantId());
         restaurantToBeSaved.setUser(outDatedRestaurant.getUser());
         restaurantRepository.save(restaurantToBeSaved);
     }
