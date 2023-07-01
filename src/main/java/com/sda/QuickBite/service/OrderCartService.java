@@ -5,7 +5,6 @@ import com.sda.QuickBite.dto.QuantityDto;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.OrderCart;
 import com.sda.QuickBite.entity.OrderCartEntry;
-import com.sda.QuickBite.mapper.OrderCartMapper;
 import com.sda.QuickBite.repository.DishRepository;
 import com.sda.QuickBite.repository.OrderCartRepository;
 import com.sda.QuickBite.repository.OrderCartEntryRepository;
@@ -22,8 +21,6 @@ public class OrderCartService {
     private DishRepository dishRepository;
     @Autowired
     private OrderCartEntryRepository orderCartEntryRepository;
-    @Autowired
-    private OrderCartMapper orderCartMapper;
 
 
     public void addToCart(String dishId, QuantityDto quantityDto, String name) {

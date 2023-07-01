@@ -3,6 +3,7 @@ package com.sda.QuickBite.service;
 import com.sda.QuickBite.dto.ChangePasswordDto;
 import com.sda.QuickBite.dto.UserDto;
 import com.sda.QuickBite.dto.UserProfileDto;
+import com.sda.QuickBite.entity.OrderCart;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.mapper.UserMapper;
 import com.sda.QuickBite.repository.UserRepository;
@@ -99,14 +100,13 @@ public class UserService {
         User user = optionalUser.get();
         return userMapper.mapProfile(user);
     }
-
-//    public String getEncodedPassword(ChangePasswordDto changePasswordDto) {
-//        return bCryptPasswordEncoder.encode(changePasswordDto.getOldPassword());
-//    }
-
     public void updateUserPassword(User user) {
         userRepository.save(user);
     }
 
+    public void updateUserOrderCart(User user) {
+        user.setOrderCart(new OrderCart());
+        userRepository.save(user);
+    }
 
 }

@@ -44,6 +44,10 @@ public class MvcController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private FoodOrderService foodOrderService;
+
+
 
     @ModelAttribute("fullName")
     public String fullName(Authentication authentication) {
@@ -201,16 +205,25 @@ public class MvcController {
     }
 
     @GetMapping("/orderHistory")
-    public String orderHistoryGet() {
-        return "orderHistory";
-    }
+    public String orderHistoryGet(Authentication authentication, Model model){
+        List<FoodOrderDto> foodOrderDtoList = foodOrderService.getAllFoodOrdersDtoByEmail(authentication.getName());
+        model.addAttribute("foodOrderDtoList",foodOrderDtoList);
+        return "orderHistory";}
 
 
     @GetMapping("/orderCart")
-    public String shoppingCartGet(Model model, Authentication authentication){
+    public String orderCartGet(Model model, Authentication authentication){
         List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getOrderCartEntryList(authentication.getName());
+        TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
+        model.addAttribute("orderTotalAmount", orderTotalAmountDto);
         model.addAttribute("orderCartEntryDtoList",orderCartEntryDtoList);
         return "orderCart";}
+
+    @GetMapping("/sendFoodOrder")
+    public String sendOrderPost(Authentication authentication){
+        foodOrderService.sendFoodOrder(authentication.getName());
+        return "redirect:/home";
+    }
     @GetMapping("/sellerPage")
     public String sellerPageGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
         model.addAttribute("activePage", "/sellerPage");
@@ -349,5 +362,19 @@ public class MvcController {
         Dish outdatedDish = optionalOutdatedDish.get();
         dishService.updateDish(outdatedDish, dishDto, dishImage);
         return "redirect:/dish/" + dishId;
+    }
+    @GetMapping("/orderHistory/foodOrder/{foodOrderId}")
+    public String foodOrderDetailsGet(@PathVariable(name = "foodOrderId") String foodOrderId, Model model){
+        Optional<FoodOrderDto> optionalFoodOrderDto = foodOrderService.getFoodOrderDtoById(foodOrderId);
+        if(optionalFoodOrderDto.isEmpty()){
+            return "error";
+        }
+        FoodOrderDto foodOrderDto = optionalFoodOrderDto.get();
+        List<DishOrderDetailDto> dishOrderDetailDtoList = dishService.getAllDishDtoByFoodOrderId(foodOrderId);
+
+        model.addAttribute("foodOrderDto",foodOrderDto);
+        model.addAttribute("dishOrderDetailDtoList",dishOrderDetailDtoList);
+
+        return "viewOrder";
     }
 }
