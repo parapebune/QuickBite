@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.Optional;
 
 @Controller
-
-public class UserController {
+public class UserController extends DefaultController {
     @Autowired
     private RestaurantService restaurantService;
 
@@ -46,13 +45,7 @@ public class UserController {
     @Autowired
     private FoodOrderService foodOrderService;
 
-    @ModelAttribute("fullName")
-    public String fullName(Authentication authentication) {
-        if (authentication == null) {
-            return null;
-        }
-        return util.displayAuthenticatedUserFullName(authentication);
-    }
+
 
 
     @GetMapping("/registration")

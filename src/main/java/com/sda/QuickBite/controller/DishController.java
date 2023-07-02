@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 @Controller
-public class DishController {
+public class DishController extends DefaultController {
     @Autowired
     private RestaurantService restaurantService;
 
