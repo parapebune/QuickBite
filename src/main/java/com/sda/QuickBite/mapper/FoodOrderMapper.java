@@ -1,0 +1,33 @@
+package com.sda.QuickBite.mapper;
+
+import com.sda.QuickBite.dto.FoodOrderDto;
+import com.sda.QuickBite.dto.OrderEntryDto;
+import com.sda.QuickBite.entity.FoodOrder;
+import com.sda.QuickBite.entity.OrderCartEntry;
+import org.springframework.stereotype.Component;
+
+import java.time.format.DateTimeFormatter;
+
+@Component
+public class FoodOrderMapper {
+
+    public FoodOrderDto map(FoodOrder foodOrder) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return FoodOrderDto.builder()
+                .foodOrderId(foodOrder.getOrderId().toString())
+                .date(foodOrder.getOrderDate().format(formatter))
+                .restaurantName(foodOrder.getRestaurant().getName())
+                .totalAmount(foodOrder.getTotalAmount().toString())
+                .status(foodOrder.getOrderStatus().name())
+                .build();
+    }
+    public OrderEntryDto map(OrderCartEntry orderCartEntry) {
+        Double costPerDish = orderCartEntry.getDish().getPrice() * orderCartEntry.getQuantity();
+        return OrderEntryDto.builder()
+                .dishName(orderCartEntry.getDish().getName())
+                .quantity(orderCartEntry.getQuantity().toString())
+                .costPerDish(costPerDish.toString())
+                .build();
+    }
+}

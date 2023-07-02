@@ -29,7 +29,6 @@
 
     </div>
 </div>
-
 <nav  sec:authorize="hasRole('SELLER')" class="navbar navbar-expand-sm justify-content-center category-nav" >
     <ul class="navbar-nav category-nav">
         <li class="nav-item px-3">
@@ -41,25 +40,46 @@
     </ul>
 </nav>
 
-
-
 <div class="container my-3 2-70" style="text-align: left;">
+<!--Buyer-->
+<div sec:authorize="hasRole('BUYER')" class="container my-3 2-70" style="text-align: left;">
     <th:block th:each="dishCategoryDto : ${dishCategoryDtoList}">
         <div class="container my-4 ">
             <h1 class="ms-5 " th:text="${dishCategoryDto.categoryName}"></h1>
             <div class="container d-flex flex-wrap justify-content-left ">
                 <th:block th:each="dishDto : ${dishCategoryDto.dishDtoList}">
-                    <a th:href="@{/dish/{x}(x=${dishDto.id})}" class="nav-link m-0 p-0 btn-outline-light">
+                    <a th:href="@{'/dish/' + ${dishDto.id} + '?restaurantId='+${restaurantId}}" class="nav-link m-0 p-0 btn-outline-light">
                         <div class="card bg-light text-dark m-3" style="width:300px">
                             <h4 class="card-header" th:text="${dishDto.name}"></h4>
                             <img th:src="${dishDto.image}" alt="Imagine product">
-                            <div class="card-footer" th:text="${dishDto.price}"></div>
+                            <div class="card-footer" th:text="${dishDto.price} + ' RON'"></div>
                         </div>
                     </a>
                 </th:block>
             </div>
         </div>
     </th:block>
+</div>
+
+<!--Seller-->
+<div sec:authorize="hasRole('SELLER')" class="container my-3 2-70" style="text-align: left;">
+    <th:block th:each="dishCategoryDto : ${dishCategoryDtoList}">
+        <div class="container my-4 ">
+            <h1 class="ms-5 " th:text="${dishCategoryDto.categoryName}"></h1>
+            <div class="container d-flex flex-wrap justify-content-left ">
+                <th:block th:each="dishDto : ${dishCategoryDto.dishDtoList}">
+                    <a th:href="@{'/dish/' + ${dishDto.id} + '?restaurantId='+${restaurantId}}" class="nav-link m-0 p-0 btn-outline-light">
+                        <div class="card bg-light text-dark m-3" style="width:300px">
+                            <h4 class="card-header" th:text="${dishDto.name}"></h4>
+                            <img th:src="${dishDto.image}" alt="Imagine product">
+                            <div class="card-footer" th:text="${dishDto.price} + ' RON'"></div>
+                        </div>
+                    </a>
+                </th:block>
+            </div>
+        </div>
+    </th:block>
+</div>
 </div>
 </body>
 </html>

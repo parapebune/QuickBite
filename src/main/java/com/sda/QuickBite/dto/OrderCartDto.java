@@ -1,6 +1,5 @@
-package com.sda.QuickBite.dto;
 
-import com.sda.QuickBite.entity.OrderEntry;
+package com.sda.QuickBite.dto;
 import com.sda.QuickBite.entity.User;
 import jakarta.persistence.*;
 
@@ -15,3 +14,4 @@ public class OrderCartDto {
 
 
 }
+

@@ -1,7 +1,9 @@
 package com.sda.QuickBite.mapper;
 
 import com.sda.QuickBite.dto.DishDto;
+import com.sda.QuickBite.dto.OrderEntryDto;
 import com.sda.QuickBite.entity.Dish;
+import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.enums.DishCategory;
 import com.sda.QuickBite.utils.Util;
@@ -29,7 +31,7 @@ public class DishMapper {
     }
     public DishDto map(Dish dish){
         return DishDto.builder()
-                .id(dish.getId().toString())
+                .id(dish.getDishId().toString())
                 .name(dish.getName())
                 .description(dish.getDescription())
                 .cookingTime(dish.getCookingTime().toString())
@@ -38,7 +40,6 @@ public class DishMapper {
                 .image(BASE64_PREFIX + Base64.encodeBase64String(dish.getImage()))
                 .build();
     }
-
     public Dish map(DishDto dishDto, MultipartFile dishImage) {
         return Dish.builder()
                 .name(dishDto.getName())
@@ -46,7 +47,15 @@ public class DishMapper {
                 .price(Double.valueOf(dishDto.getPrice()))
                 .cookingTime(Integer.valueOf(dishDto.getCookingTime()))
                 .category(DishCategory.valueOf(dishDto.getCategory()))
-                .image(util.convertToBytes(dishImage))
+                .image(util.convertToBytes(dishImage)).build();
+    }
+    public OrderEntryDto map(OrderCartEntry orderCartEntry) {
+
+        Double costPerDish = orderCartEntry.getDish().getPrice() * orderCartEntry.getQuantity();
+        return OrderEntryDto.builder()
+                .dishName(orderCartEntry.getDish().getName())
+                .quantity(orderCartEntry.getQuantity().toString())
+                .costPerDish(costPerDish.toString())
                 .build();
     }
 }

@@ -4,6 +4,8 @@ import com.sda.QuickBite.enums.DishCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +17,7 @@ public class Dish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long dishId;
 
     private String name;
     private String description;
@@ -30,9 +32,11 @@ public class Dish {
     private byte[] image;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn
     private Restaurant restaurant;
 
+    @OneToMany(mappedBy = "dish",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<OrderCartEntry> orderCartEntryList;
     @Override
     public String toString() {
         return "Dish{" +

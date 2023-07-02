@@ -13,14 +13,18 @@ public class OrderCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long orderCartId;
 
     @OneToOne(mappedBy = "orderCart")
+    @JoinColumn
     private User user;
 
-    @OneToMany(mappedBy = "orderCart")
-    private List<OrderEntry> orderEntryList;
+    @OneToOne(mappedBy = "orderCart")
+    @JoinColumn
+    private FoodOrder foodOrder;
 
+    @OneToMany(mappedBy = "orderCart")
+    private List<OrderCartEntry> orderCartEntryList;
 
 
 }

@@ -2,8 +2,6 @@ package com.sda.QuickBite.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-
 @Entity
 @Builder
 @NoArgsConstructor
@@ -13,11 +11,11 @@ import lombok.*;
 @Setter
 
 
-public class OrderEntry {
+public class OrderCartEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long orderCartEntryId;
     private Integer quantity;
 
     @ManyToOne

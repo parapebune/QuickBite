@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title>Home</title>
@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<!--<div th:insert="fragments/navBar"></div>-->
 <div th:insert="~{fragments/navBar.html :: body}"></div>
 
 <nav class="navbar navbar-expand-sm justify-content-center category-nav">
@@ -29,7 +28,7 @@
     <div class="container my-4 restaurant-container">
       <div class="container d-flex flex-wrap justify-content-center ">
         <th:block th:each="restaurantDto : ${restaurantDtoList}">
-          <a th:href="@{/restaurantPage/{x}(x=${restaurantDto.id})}" class="nav-link m-0 p-0 btn-outline-light">
+          <a th:href="@{/restaurant/{x}(x=${restaurantDto.id})}" class="nav-link m-0 p-0 btn-outline-light">
             <div class="card bg-light text-dark m-3" style="width:300px">
               <h4 class="card-header" th:text="${restaurantDto.name}"></h4>
               <img th:src="${restaurantDto.logo}" alt="Imagine product" style="background: bisque">

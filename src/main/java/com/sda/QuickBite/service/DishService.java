@@ -2,21 +2,22 @@ package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.DishCategoryDto;
 import com.sda.QuickBite.dto.DishDto;
+import com.sda.QuickBite.dto.OrderEntryDto;
 import com.sda.QuickBite.entity.Dish;
+import com.sda.QuickBite.entity.FoodOrder;
+import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.enums.DishCategory;
 import com.sda.QuickBite.mapper.DishMapper;
+import com.sda.QuickBite.mapper.FoodOrderMapper;
 import com.sda.QuickBite.repository.DishRepository;
+import com.sda.QuickBite.repository.OrderCartRepository;
 import com.sda.QuickBite.repository.RestaurantRepository;
 import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @Service
@@ -36,6 +37,14 @@ public class DishService {
     private RestaurantRepository restaurantRepository;
     @Autowired
     private Util util;
+    @Autowired
+    private OrderCartRepository orderCartRepository;
+    @Autowired
+    private FoodOrderService foodOrderService;
+    @Autowired
+    private OrderCartEntryService orderCartEntryService;
+    @Autowired
+    private FoodOrderMapper foodOrderMapper;
 
     public void addDish(DishDto dishDto, MultipartFile dishImage, Restaurant restaurant) {
         Dish dish = dishMapper.map(dishDto, dishImage, restaurant);
@@ -76,13 +85,6 @@ public class DishService {
         return dishCategoryDtoList;
     }
 
-    public void uploadImage(MultipartFile dishImage) throws IOException {
-        String folder = "F:\\My-training-java\\FinalProject\\SDA_FinalProject\\QuickBite\\src\\main\\resources\\static\\img\\teste\\";
-        byte[] bytes = util.convertToBytes(dishImage);
-        Path path = Paths.get(folder + dishImage.getOriginalFilename());
-        Files.write(path,bytes);
-    }
-
     public Optional<DishDto> getDishDtoById(String dishId) {
         Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
         if(optionalDish.isEmpty()){
@@ -94,20 +96,50 @@ public class DishService {
 
 
     }
-
-    public Optional<Dish> getDishById(String dishId) {
-        Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
-        if(optionalDish.isEmpty()){
-            return Optional.empty();
-        }
-        return optionalDish;
-
-    }
-
     public void updateDish(Dish outdatedDish, DishDto dishDto, MultipartFile dishImage) {
         Dish dishToBeSaved = dishMapper.map(dishDto, dishImage);
-        dishToBeSaved.setId(outdatedDish.getId());
+        dishToBeSaved.setDishId(outdatedDish.getDishId());
         dishToBeSaved.setRestaurant(outdatedDish.getRestaurant());
         dishRepository.save(dishToBeSaved);
+    }
+
+    public List<OrderEntryDto> getAllDishDtoByFoodOrderId(String foodOrderId) {
+        Optional<FoodOrder> optionalFoodOrder = foodOrderService.getFoodOrderById(foodOrderId);
+        if(optionalFoodOrder.isEmpty()){
+            return new ArrayList<>();
+        }
+        FoodOrder foodOrder = optionalFoodOrder.get();
+
+        List<OrderCartEntry> orderCartEntryList = orderCartEntryService.getOrderCartEntryListByOrderCartId(foodOrder.getOrderCart().getOrderCartId());
+        List<OrderEntryDto> orderEntryDtoList = new ArrayList<>();
+        for (OrderCartEntry orderCartEntry : orderCartEntryList){
+            OrderEntryDto orderEntryDto = foodOrderMapper.map(orderCartEntry);
+            orderEntryDtoList.add(orderEntryDto);
+        }
+        return orderEntryDtoList;
+    }
+    public void updateDish(DishDto dishDto, String dishId, MultipartFile dishImage) {
+        Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
+        if(optionalDish.isEmpty()){
+            throw new RuntimeException("Dish not found");
+        }
+        Dish dish = optionalDish.get();
+        dish.setName(dishDto.getName());
+        dish.setDescription(dishDto.getDescription());
+        dish.setCookingTime(Integer.valueOf(dishDto.getCookingTime()));
+        dish.setCategory(DishCategory.valueOf(dishDto.getCategory()));
+        dish.setPrice(Double.valueOf(dishDto.getPrice()));
+        if(!dishImage.isEmpty()){
+            dish.setImage(util.convertToBytes(dishImage));
+        }
+        dishRepository.save(dish);
+    }
+
+    public void removeDishById(String dishId) {
+        dishRepository.deleteById(Long.valueOf(dishId));
+    }
+
+    public Optional<Dish> getDishById(String dishId) {
+        return dishRepository.findById(Long.valueOf(dishId));
     }
 }

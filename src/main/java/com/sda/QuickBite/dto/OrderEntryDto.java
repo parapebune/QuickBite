@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.dto;
 
 import com.sda.QuickBite.entity.Dish;
@@ -12,10 +13,9 @@ import lombok.*;
 @Setter
 @ToString
 public class OrderEntryDto {
-
-
     private String id;
+    private String dishName;
     private String quantity;
-    private String dish;
-    private String orderCart;
+    private String costPerDish;
 }
+

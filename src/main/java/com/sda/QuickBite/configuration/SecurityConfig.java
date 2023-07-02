@@ -37,24 +37,29 @@ public class SecurityConfig {
                     auth.requestMatchers("/registration").permitAll();
                     auth.requestMatchers("/css/**").permitAll();
                     auth.requestMatchers("/img/**").permitAll();
-                    auth.requestMatchers("/restaurantPage/**").permitAll();
-                    auth.requestMatchers("/dish/**").permitAll();
+                    auth.requestMatchers("/restaurant/*").permitAll();
+                    auth.requestMatchers("/dish/*").permitAll();
 
                     auth.requestMatchers("/js/**").permitAll();
                     auth.requestMatchers("/api/users").permitAll();
 
                     auth.requestMatchers("/restaurant/*/addDish").permitAll();
-                    auth.requestMatchers("/restaurant/**").permitAll();
+                    auth.requestMatchers("/dish/*/update").hasRole("SELLER");
+                    auth.requestMatchers("/dish/*/modify").hasRole("SELLER");
+                    auth.requestMatchers("/dish/*/remove").hasRole("SELLER");
+                    auth.requestMatchers("/orderDashboard").permitAll();
 
                     auth.requestMatchers("/addToCard/**").permitAll();
+                    auth.requestMatchers("/sendFoodOrder").hasRole("BUYER");
+                    auth.requestMatchers("/orderHistory/foodOrder/*").hasRole("BUYER");
 
 
 
 
                     auth.requestMatchers("/addDish/*").permitAll();
+                    auth.requestMatchers("/orderHistory").permitAll();
                     auth.requestMatchers("/sellerPage").permitAll();
-                    auth.requestMatchers("/orderHistory/*").permitAll();
-                    auth.requestMatchers("/shoppingCart/*").permitAll();
+                    auth.requestMatchers("/orderCart").permitAll();
                     auth.requestMatchers("/navBar").permitAll();
 
 

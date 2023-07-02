@@ -9,6 +9,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DishRepository extends CrudRepository<Dish, Long> {
 
-    @Query("SELECT MAX(id) FROM Dish")
-    Long findMaxId();
 }
