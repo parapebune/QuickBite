@@ -343,52 +343,9 @@ public class MvcController {
         return "redirect:/dish/" + dishId;
     }
 
-    @GetMapping("/addToCart/{dishId}")
-    public String addToCartGet(@PathVariable Long dishId, Model model)  {
-
-        return "redirect:/dish/" + dishId;
-    }
-    @PostMapping("/addToCart/{dishId}")
-    public String addToCartPost(@PathVariable(name = "dishId") Long dishId, @RequestParam Integer quantity,
-                            Authentication authentication) {
-        User user = userService.getAuthenticatedUser(authentication);
-        Optional<Dish> optionalDish = dishService.getDishById(String.valueOf(dishId));
-        if (optionalDish.isEmpty()) {
-            return "error";
-        }
-        System.out.println("Numarul cosului este: " + user.getOrderCart().getId());
-        Dish dish = optionalDish.get();
-        OrderEntryDto orderEntryDto = OrderEntryDto.builder()
-                .quantity(String.valueOf(quantity))
-                .dish(dish)
-                .orderCart(user.getOrderCart())
-                .build();
-        String restaurantId = String.valueOf(dish.getRestaurant().getId());
-        if(quantity==0){
-            return "redirect:/restaurantPage/" + restaurantId;
-        }
-
-        orderEntryService.addOrderEntry(orderEntryDto);
-
-        return "redirect:/restaurantPage/" + restaurantId;
-    }
-
-    @GetMapping("/orderCart")
-    public String orderCartGet(Model model, Authentication authentication)  {
-        User user = userService.getAuthenticatedUser(authentication);
-        List<OrderCart> orderCartList = orderCartService.getOrderCartByUser(user);
-        OrderCart orderCart = orderCartList.get(0);
-        model.addAttribute("orderCart", orderCart);
-        OrderCartDto orderCartDto = orderCartService.getOrderCartDto(orderCart);
 
 
 
-
-        return "orderCart";
-    }
-
-    @PostMapping("/orderCart")
-    public String orderCartPost(@ModelAttribute(name = "orderCart"))
 
 
 }

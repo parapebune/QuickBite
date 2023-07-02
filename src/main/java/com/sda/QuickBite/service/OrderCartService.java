@@ -22,18 +22,5 @@ public class OrderCartService {
     @Autowired
     private OrderEntryMapper orderEntryMapper;
 
-    public List<OrderCart> getOrderCartByUser(User user) {
-        List<OrderCart> orderCartList = orderCartRepository.findByUser(user);
-        return orderCartList;
-    }
 
-    public OrderCartDto getOrderCartDto(OrderCart orderCart) {
-        List<OrderEntry> orderEntryList = orderCart.getOrderEntryList();
-        List<OrderEntryDto> orderEntryDtoList = new ArrayList<>();
-        for (OrderEntry orderEntry : orderEntryList) {
-            orderEntryDtoList.add(orderEntryMapper.map(orderEntry));
-        }
-
-
-    }
 }

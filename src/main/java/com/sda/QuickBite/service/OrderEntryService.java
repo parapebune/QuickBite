@@ -10,13 +10,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderEntryService {
 
-    @Autowired
-    private OrderEntryMapper orderEntryMapper;
 
-    @Autowired
-    private OrderEntryRepository orderEntryRepository;
-    public void addOrderEntry(OrderEntryDto orderEntryDto) {
-        OrderEntry orderEntry = orderEntryMapper.map(orderEntryDto);
-        orderEntryRepository.save(orderEntry);
-    }
 }
