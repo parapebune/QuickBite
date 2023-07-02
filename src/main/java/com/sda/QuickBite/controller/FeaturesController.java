@@ -2,7 +2,10 @@ package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.Dish;
+import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
+import com.sda.QuickBite.repository.DishRepository;
+import com.sda.QuickBite.repository.RestaurantRepository;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,11 @@ import java.util.Optional;
 public class FeaturesController {
     @Autowired
     private RestaurantService restaurantService;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+    @Autowired
+    private DishRepository dishRepository;
 
     @Autowired
     private UserService userService;
@@ -78,11 +86,16 @@ public class FeaturesController {
     }
 
     @GetMapping("/orderCart")
-    public String orderCartGet(Model model, Authentication authentication) {
+    public String orderCartGet(Model model, Authentication authentication ) {
         List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getOrderCartEntryList(authentication.getName());
         TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
         model.addAttribute("orderTotalAmount", orderTotalAmountDto);
         model.addAttribute("orderCartEntryDtoList", orderCartEntryDtoList);
+        OrderCartEntryDto orderCartEntryDto =   orderCartEntryDtoList.get(0);
+        String dishId = orderCartEntryDto.getDishDto().getId();
+        Optional<Dish> optionalDish= dishRepository.findDishByDishId(Long.valueOf(dishId));
+        Dish dish=optionalDish.get();
+        model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
         return "orderCart";
     }
 
