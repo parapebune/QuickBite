@@ -34,7 +34,6 @@ public class MvcController {
     private Util util;
 
 
-
     @Autowired
     private OrderEntryService orderEntryService;
     @Autowired
@@ -46,7 +45,6 @@ public class MvcController {
 
     @Autowired
     private FoodOrderService foodOrderService;
-
 
 
     @ModelAttribute("fullName")
@@ -105,7 +103,6 @@ public class MvcController {
         return "login";
     }
 
-<<<<<<< HEAD
     @GetMapping("/addRestaurant")
     public String addRestaurantGet(Model model) {
         RestaurantDto restaurantDto = new RestaurantDto();
@@ -216,8 +213,7 @@ public class MvcController {
         foodOrderService.sendFoodOrder(authentication.getName());
         return "redirect:/home";
     }
-=======
->>>>>>> c058054 (orderDashboard)
+
     @GetMapping("/sellerPage")
     public String sellerPageGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
         model.addAttribute("activePage", "/sellerPage");
@@ -248,7 +244,6 @@ public class MvcController {
         return "yourProfile";
     }
 
-<<<<<<< HEAD
     @PostMapping("/yourProfile")
     public String yourProfilePost(@ModelAttribute(name = "userProfileDto") @Valid UserProfileDto userProfileDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
