@@ -19,6 +19,10 @@ public class OrderCart {
     @JoinColumn
     private User user;
 
+    @OneToOne(mappedBy = "orderCart")
+    @JoinColumn
+    private FoodOrder foodOrder;
+
     @OneToMany(mappedBy = "orderCart")
     private List<OrderCartEntry> orderCartEntryList;
 

@@ -23,13 +23,9 @@ public class OrderCartService {
     private OrderCartEntryRepository orderCartEntryRepository;
 
 
-    public void addToCart(String dishId, QuantityDto quantityDto, String name) {
+    public void addToCart(Dish dish, QuantityDto quantityDto, String name) {
 
-        Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
-        if(optionalDish.isEmpty()){
-            throw new RuntimeException("Dish " + dishId + " is not valid");
-        }
-        Dish dish = optionalDish.get();
+
         Optional<OrderCart> optionalOrderCart = orderCartRepository.findByUserEmail(name);
 
         if(optionalOrderCart.isEmpty()){

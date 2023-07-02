@@ -24,6 +24,7 @@
                     <a href="/yourProfile" th:if="${fullName != null}" th:text="${fullName}" class="nav-item nav-link" style="font-weight: bold; color: red;">Your Profile</a>
                     <a  th:object="${activePage}" th:if="${activePage != '/sellerPage'}" sec:authorize="hasRole('SELLER')" href="/sellerPage" class="nav-item nav-link">Your Restaurants</a>
                     <a  th:object="${activePage}" th:if="${activePage == '/sellerPage'}" sec:authorize="hasRole('SELLER')" href="/addRestaurant" class="nav-item nav-link">Add Restaurant</a>
+                    <a sec:authorize="hasRole('SELLER')" href="/orderDashboard" class="nav-item nav-link">Order Dashboard</a>
                 </div>
                 <div class="navbar-nav ms-auto">
                     <a sec:authorize="isAnonymous()" href="/login" class="nav-item nav-link">Login</a>

@@ -1,7 +1,7 @@
 package com.sda.QuickBite.mapper;
 
 import com.sda.QuickBite.dto.DishDto;
-import com.sda.QuickBite.dto.DishOrderDetailDto;
+import com.sda.QuickBite.dto.OrderEntryDto;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.Restaurant;
@@ -41,6 +41,7 @@ public class DishMapper {
                 .build();
     }
 
+<<<<<<< HEAD
     public Dish map(DishDto dishDto, MultipartFile dishImage) {
         return Dish.builder()
                 .name(dishDto.getName())
@@ -59,4 +60,6 @@ public class DishMapper {
                 .costPerDish(costPerDish.toString())
                 .build();
     }
+=======
+>>>>>>> c058054 (orderDashboard)
 }

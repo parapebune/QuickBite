@@ -1,7 +1,8 @@
 package com.sda.QuickBite.enums;
 
 public enum OrderStatus {
-    ACTIVE,
+    ORDERED,
     DELIVERED,
-    CANCELED
+    CANCELED,
+    ON_THE_WAY
 }

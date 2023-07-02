@@ -1,6 +1,8 @@
 package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.FoodOrderDto;
+import com.sda.QuickBite.dto.FullOrderDto;
+import com.sda.QuickBite.dto.OrderEntryDto;
 import com.sda.QuickBite.entity.FoodOrder;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.Restaurant;
@@ -52,14 +54,14 @@ public class FoodOrderService {
         double totalAmount = orderCartEntryService.calculateTotalAmount(orderCartEntryList);
         FoodOrder foodOrder = FoodOrder.builder()
                 .orderDate(LocalDateTime.now())
-                .restaurantName(restaurant.getName())
+                .restaurant(restaurant)
                 .totalAmount(totalAmount)
-                .orderStatus(OrderStatus.ACTIVE)
+                .orderStatus(OrderStatus.ORDERED)
                 .user(user)
-                .orderCartId(user.getOrderCart().getOrderCartId())
+                .orderCart(user.getOrderCart())
                 .build();
         foodOrderRepository.save(foodOrder);
-//        userService.updateUserOrderCart(user);
+        userService.updateUserOrderCart(user);
     }
 
     public List<FoodOrderDto> getAllFoodOrdersDtoByEmail(String email) {
@@ -85,5 +87,33 @@ public class FoodOrderService {
 
     public Optional<FoodOrder> getFoodOrderById(String foodOrderId) {
         return foodOrderRepository.findById(Long.valueOf(foodOrderId));
+    }
+
+    public List<FullOrderDto> getAllFullFoodOrdersByUser(User user) {
+        List<Restaurant> restaurants = restaurantRepository.findAllByUserUserId(user.getUserId());
+
+        List<FoodOrder> foodOrderList = new ArrayList<>();
+        for(Restaurant restaurant : restaurants){
+            foodOrderList.addAll(foodOrderRepository.findAllByRestaurantRestaurantId(restaurant.getRestaurantId()));
+        }
+        List<FullOrderDto> fullOrderDtoList = new ArrayList<>();
+        for(FoodOrder foodOrder : foodOrderList){
+
+            FullOrderDto fullOrderDto = FullOrderDto.builder()
+                    .foodOrderDto(foodOrderMapper.map(foodOrder))
+                    .orderEntryDtoList(new ArrayList<>()).build();
+
+            List<OrderCartEntry> orderCartEntryList = orderCartEntryRepository.findAllByOrderCartOrderCartId(foodOrder.getOrderCart().getOrderCartId());
+
+            for(OrderCartEntry orderCartEntry : orderCartEntryList){
+                OrderEntryDto orderEntryDto = foodOrderMapper.map(orderCartEntry);
+                fullOrderDto.getOrderEntryDtoList().add(orderEntryDto);
+            }
+
+            fullOrderDtoList.add(fullOrderDto);
+
+        }
+
+        return fullOrderDtoList;
     }
 }

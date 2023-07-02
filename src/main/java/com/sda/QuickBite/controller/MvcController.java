@@ -57,7 +57,6 @@ public class MvcController {
         return util.displayAuthenticatedUserFullName(authentication);
     }
 
-
     @GetMapping("/home")
     public String homeGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
 
@@ -70,12 +69,6 @@ public class MvcController {
         model.addAttribute("restaurantDtoList", restaurantDtoList);
         return "home";
     }
-
-//    @GetMapping("/navBar")
-//    public String navBarGet(Model model){
-//        return "fragments/navBar";
-//    }
-
     @GetMapping("/navBar")
     public String navBarGet(Model model) {
 
@@ -107,13 +100,12 @@ public class MvcController {
         userService.addUser(userDto);
         return "redirect:/login";
     }
-
-
     @GetMapping("/login")
     public String loginGet(Model model) {
         return "login";
     }
 
+<<<<<<< HEAD
     @GetMapping("/addRestaurant")
     public String addRestaurantGet(Model model) {
         RestaurantDto restaurantDto = new RestaurantDto();
@@ -224,6 +216,8 @@ public class MvcController {
         foodOrderService.sendFoodOrder(authentication.getName());
         return "redirect:/home";
     }
+=======
+>>>>>>> c058054 (orderDashboard)
     @GetMapping("/sellerPage")
     public String sellerPageGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
         model.addAttribute("activePage", "/sellerPage");
@@ -254,6 +248,7 @@ public class MvcController {
         return "yourProfile";
     }
 
+<<<<<<< HEAD
     @PostMapping("/yourProfile")
     public String yourProfilePost(@ModelAttribute(name = "userProfileDto") @Valid UserProfileDto userProfileDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -370,11 +365,12 @@ public class MvcController {
             return "error";
         }
         FoodOrderDto foodOrderDto = optionalFoodOrderDto.get();
-        List<DishOrderDetailDto> dishOrderDetailDtoList = dishService.getAllDishDtoByFoodOrderId(foodOrderId);
+        List<OrderEntryDto> dishOrderDetailDtoList = dishService.getAllDishDtoByFoodOrderId(foodOrderId);
 
         model.addAttribute("foodOrderDto",foodOrderDto);
         model.addAttribute("dishOrderDetailDtoList",dishOrderDetailDtoList);
 
         return "viewOrder";
     }
+
 }

@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.dto;
 
 import com.sda.QuickBite.entity.Dish;
@@ -19,3 +20,4 @@ public class OrderEntryDto {
     private String dish;
     private String orderCart;
 }
+

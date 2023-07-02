@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface FoodOrderRepository extends CrudRepository<FoodOrder,Long> {
     List<FoodOrder> findAllByUserEmail(String email);
+    List<FoodOrder> findAllByRestaurantRestaurantId(Long restaurantId);
 }

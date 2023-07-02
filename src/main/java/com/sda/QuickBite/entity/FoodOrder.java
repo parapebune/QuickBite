@@ -18,12 +18,17 @@ public class FoodOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
     private Double totalAmount;
-    private String restaurantName;
     private LocalDateTime orderDate;
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
 
-    private Long orderCartId;
+    @OneToOne
+    @JoinColumn
+    private OrderCart orderCart;
+
+    @ManyToOne
+    @JoinColumn
+    private Restaurant restaurant;
 
     @ManyToOne
     @JoinColumn

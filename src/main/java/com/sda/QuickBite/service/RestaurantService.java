@@ -60,10 +60,8 @@ public class RestaurantService {
         }
         return restaurantDtoList;
     }
-
-
     public List<RestaurantDto> getRestaurantDToListByUserId(String userId) {
-        List<Restaurant> restaurantList = restaurantRepository.findByUserUserId(userId);
+        List<Restaurant> restaurantList = restaurantRepository.findByUserUserId(Long.valueOf(userId));
         List<RestaurantDto> restaurantDtoList = new ArrayList<>();
         for (Restaurant restaurant : restaurantList) {
             if (restaurant.getUser().getUserId().equals(userId)) {
@@ -76,6 +74,7 @@ public class RestaurantService {
         return restaurantDtoList;
 
     }
+
 
 
     public List<RestaurantDto> getRestaurantDtoListByUserIdAndCategory(List<RestaurantDto> restaurantDtoListByUserId, String category) {
@@ -91,7 +90,7 @@ public class RestaurantService {
 
     public List<RestaurantSpecific> getRestaurantSpecificListByUserId(String userId) {
         Set<RestaurantSpecific> uniqueRestaurantSpecificSet = new HashSet<>();
-        List<Restaurant> restaurantList = restaurantRepository.findByUserUserId(userId);
+        List<Restaurant> restaurantList = restaurantRepository.findByUserUserId(Long.valueOf(userId));
         for (Restaurant restaurant : restaurantList) {
             uniqueRestaurantSpecificSet.add(restaurant.getRestaurantSpecific());
         }

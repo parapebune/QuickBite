@@ -12,7 +12,8 @@ import java.util.Optional;
 public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
     List<Restaurant> findByRestaurantSpecific(RestaurantSpecific restaurantSpecific);
 
-    List<Restaurant> findByUserUserId(String userId);
+    List<Restaurant> findByUserUserId(Long userId);
 
     Optional<Restaurant> findByMenuDishId(Long dishId);
+    List<Restaurant> findAllByUserUserId(Long userId);
 }
