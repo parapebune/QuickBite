@@ -35,7 +35,7 @@ public class Dish {
     @JoinColumn
     private Restaurant restaurant;
 
-    @OneToMany(mappedBy = "dish")
+    @OneToMany(mappedBy = "dish",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<OrderCartEntry> orderCartEntryList;
     @Override
     public String toString() {

@@ -40,8 +40,6 @@ public class DishMapper {
                 .image(BASE64_PREFIX + Base64.encodeBase64String(dish.getImage()))
                 .build();
     }
-
-<<<<<<< HEAD
     public Dish map(DishDto dishDto, MultipartFile dishImage) {
         return Dish.builder()
                 .name(dishDto.getName())
@@ -51,15 +49,13 @@ public class DishMapper {
                 .category(DishCategory.valueOf(dishDto.getCategory()))
                 .image(util.convertToBytes(dishImage)).build();
     }
-    public DishOrderDetailDto map(OrderCartEntry orderCartEntry) {
+    public OrderEntryDto map(OrderCartEntry orderCartEntry) {
 
         Double costPerDish = orderCartEntry.getDish().getPrice() * orderCartEntry.getQuantity();
-        return DishOrderDetailDto.builder()
+        return OrderEntryDto.builder()
                 .dishName(orderCartEntry.getDish().getName())
                 .quantity(orderCartEntry.getQuantity().toString())
                 .costPerDish(costPerDish.toString())
                 .build();
     }
-=======
->>>>>>> c058054 (orderDashboard)
 }

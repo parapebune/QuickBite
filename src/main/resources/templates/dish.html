@@ -34,29 +34,28 @@
                             <a type="button" class="btn btn-outline-primary mr-2  m-3" th:href="@{${'/restaurant/' + restaurantId}}">Back to menu</a>
                         </div>
 
-                    <form th:action="@{'/addToCart/' + ${dishId}}" method="post">
-                    <div  sec:authorize="hasRole('BUYER')" class="mb-3 quantity">
-                        <label class="form-label" for="quantity">Quantity</label>
-                        <input type="number" min="1" class="form-control quantity-input" id="quantity" name="quantity">
-                        <input type="hidden" id="dishId" th:value="${dishId}">
-                    </div>
-                        <div class="mt-3 d-flex justify-content-end">
-
-                            <nav class="navbar navbar-expand-sm justify-content-center category-nav">
-                                <ul class="navbar-nav category-nav">
-                                    <li sec:authorize="hasRole('BUYER')" class="nav-item px-3">
-                                        <button type="submit" class="btn btn-primary">Add to Cart</button>
-                                    </li>
-                                    <li sec:authorize="hasRole('SELLER')" class="nav-item px-3">
-                                        <a class="btn btn-outline-dark" th:href="@{/editDish/{x} (x=${dishDto.id})}">Update Dish</a>
-                                    </li>
-                                    <li class="nav-item px-3">
-                                        <a class="btn btn-outline-dark" href="javascript:history.go(-1)">Back To
-                                            Menu</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+<!--                    <form th:action="@{'/addToCart/' + ${dishId}}" method="post">-->
+<!--                    <div  sec:authorize="hasRole('BUYER')" class="mb-3 quantity">-->
+<!--                        <label class="form-label" for="quantity">Quantity</label>-->
+<!--                        <input type="number" min="1" class="form-control quantity-input" id="quantity" name="quantity">-->
+<!--                        <input type="hidden" id="dishId" th:value="${dishId}">-->
+<!--                    </div>-->
+<!--                        <div class="mt-3 d-flex justify-content-end">-->
+<!--                            <nav class="navbar navbar-expand-sm justify-content-center category-nav">-->
+<!--                                <ul class="navbar-nav category-nav">-->
+<!--                                    <li sec:authorize="hasRole('BUYER')" class="nav-item px-3">-->
+<!--                                        <button type="submit" class="btn btn-primary">Add to Cart</button>-->
+<!--                                    </li>-->
+<!--                                    <li sec:authorize="hasRole('SELLER')" class="nav-item px-3">-->
+<!--                                        <a class="btn btn-outline-dark" th:href="@{/editDish/{x} (x=${dishDto.id})}">Update Dish</a>-->
+<!--                                    </li>-->
+<!--                                    <li class="nav-item px-3">-->
+<!--                                        <a class="btn btn-outline-dark" href="javascript:history.go(-1)">Back To-->
+<!--                                            Menu</a>-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </nav>-->
+<!--                        </div>-->
                     </form>
                 </div>
             </div>

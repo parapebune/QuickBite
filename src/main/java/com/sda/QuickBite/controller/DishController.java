@@ -2,6 +2,7 @@ package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.DishDto;
 import com.sda.QuickBite.dto.QuantityDto;
+import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.SecurityCheck;
@@ -101,6 +102,37 @@ public class DishController {
                                 @RequestParam(name = "restaurantId") String restaurantId){
         dishService.removeDishById(dishId);
         return "redirect:/restaurant/"+restaurantId;
+    }
+
+    @GetMapping("/editDish/{dishId}")
+    public String editDishGet(Model model, @PathVariable(name = "dishId") String dishId) {
+        System.out.println("Dish ID: " + dishId);
+
+        Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
+        if (optionalDishDto.isEmpty()) {
+            return "error";
+        }
+        DishDto dishDto = optionalDishDto.get();
+        model.addAttribute("dishDto", dishDto);
+        return "editDish";
+    }
+
+    @PostMapping("/editDish/{dishId}")
+    public String editDishPost(@ModelAttribute(name = "dishDto") @Valid DishDto dishDto, BindingResult bindingResult,
+                               @RequestParam("dishImage") MultipartFile dishImage,
+                               @PathVariable(name = "dishId") String dishId) {
+        System.out.println("Dish ID" + dishId);
+        if (bindingResult.hasErrors()) {
+            return "editDish";
+        }
+
+        Optional<Dish> optionalOutdatedDish = dishService.getDishById(dishId);
+        if (optionalOutdatedDish.isEmpty()) {
+            return "error";
+        }
+        Dish outdatedDish = optionalOutdatedDish.get();
+        dishService.updateDish(outdatedDish, dishDto, dishImage);
+        return "redirect:/dish/" + dishId;
     }
 
 

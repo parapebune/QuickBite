@@ -2,6 +2,7 @@ package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.DishCategoryDto;
 import com.sda.QuickBite.dto.RestaurantDto;
+import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
@@ -11,10 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -74,5 +72,31 @@ public class RestaurantController {
         model.addAttribute("dishCategoryDtoList",dishCategoryDtoList);
 
         return "restaurant";
+    }
+
+    @GetMapping("/editRestaurant/{restaurantId}")
+    public String editRestaurantGet(Model model, @PathVariable(name = "restaurantId") String restaurantId) {
+        Optional<RestaurantDto> optionalRestaurantDto = restaurantService.getRestaurantDtoById(restaurantId);
+        if (optionalRestaurantDto.isEmpty()) {
+            return "error";
+        }
+        RestaurantDto restaurantDto = optionalRestaurantDto.get();
+        model.addAttribute("restaurantDto", restaurantDto);
+
+
+        return "editRestaurant";
+    }
+
+    @PostMapping("/editRestaurant/{restaurantId}")
+
+    public String editRestaurantPost(@ModelAttribute(name = "restaurantDto") @Valid RestaurantDto restaurantDto, BindingResult bindingResult,
+                                     MultipartFile restaurantLogo, MultipartFile restaurantBackground, @RequestParam(name = "restaurantId") String restaurantId) {
+        Optional<Restaurant> optionalRestaurantToBeUpdated = restaurantService.getRestaurantById(restaurantId);
+        if (optionalRestaurantToBeUpdated.isEmpty()) {
+            return "error";
+        }
+        Restaurant outDatedRestaurant = optionalRestaurantToBeUpdated.get();
+        restaurantService.updateRestaurant(outDatedRestaurant, restaurantDto, restaurantLogo, restaurantBackground);
+        return "redirect:/restaurant/" + restaurantId;
     }
 }

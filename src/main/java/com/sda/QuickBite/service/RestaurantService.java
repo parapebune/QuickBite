@@ -6,6 +6,7 @@ import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.RestaurantSpecific;
 import com.sda.QuickBite.mapper.RestaurantMapper;
 import com.sda.QuickBite.repository.RestaurantRepository;
+import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,8 @@ public class RestaurantService {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+    @Autowired
+    private Util util;
 
     public void addRestaurant(RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg, User user) {
 
@@ -64,7 +67,7 @@ public class RestaurantService {
         List<Restaurant> restaurantList = restaurantRepository.findByUserUserId(Long.valueOf(userId));
         List<RestaurantDto> restaurantDtoList = new ArrayList<>();
         for (Restaurant restaurant : restaurantList) {
-            if (restaurant.getUser().getUserId().equals(userId)) {
+            if (restaurant.getUser().getUserId().toString().equals(userId)) {
                 RestaurantDto restaurantDto = restaurantMapper.map(restaurant);
                 restaurantDtoList.add(restaurantDto);
             }
@@ -98,11 +101,22 @@ public class RestaurantService {
     }
 
     public void updateRestaurant(Restaurant outDatedRestaurant, RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg) {
-
-        Restaurant restaurantToBeSaved = restaurantMapper.map(restaurantDto, restaurantImage, restaurantBackgroundImg);
-        restaurantToBeSaved.setRestaurantId(outDatedRestaurant.getRestaurantId());
-        restaurantToBeSaved.setUser(outDatedRestaurant.getUser());
-        restaurantRepository.save(restaurantToBeSaved);
+        Restaurant restaurant = Restaurant.builder()
+                .restaurantId(outDatedRestaurant.getRestaurantId())
+                .name(restaurantDto.getName())
+                .description(restaurantDto.getDescription())
+                .address(restaurantDto.getAddress())
+                .restaurantSpecific(RestaurantSpecific.valueOf(restaurantDto.getRestaurantSpecific()))
+                .phoneNo(restaurantDto.getPhoneNo())
+                .user(outDatedRestaurant.getUser())
+                .build();
+        if(!restaurantImage.isEmpty()){
+            restaurant.setLogo(util.convertToBytes(restaurantImage));
+        }
+        if(!restaurantBackgroundImg.isEmpty()){
+            restaurant.setBackgroundImage(util.convertToBytes(restaurantBackgroundImg));
+        }
+        restaurantRepository.save(restaurant);
     }
 }
 

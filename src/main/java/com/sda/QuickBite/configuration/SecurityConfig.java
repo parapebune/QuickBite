@@ -57,8 +57,8 @@ public class SecurityConfig {
 
 
                     auth.requestMatchers("/addDish/*").permitAll();
-                    auth.requestMatchers("/orderHistory/*").permitAll();
-                    auth.requestMatchers("/sellerPage/*").permitAll();
+                    auth.requestMatchers("/orderHistory").permitAll();
+                    auth.requestMatchers("/sellerPage").permitAll();
                     auth.requestMatchers("/orderCart").permitAll();
                     auth.requestMatchers("/navBar").permitAll();
 

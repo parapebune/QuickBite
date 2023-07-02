@@ -13,11 +13,9 @@ import lombok.*;
 @Setter
 @ToString
 public class OrderEntryDto {
-
-
     private String id;
+    private String dishName;
     private String quantity;
-    private String dish;
-    private String orderCart;
+    private String costPerDish;
 }
 
