@@ -103,8 +103,11 @@
                             </li>
                         </ul>
 
-                        <a href="/sendFoodOrder"  type="button" class="btn btn-primary btn-lg btn-block">
+                        <a href="/sendFoodOrder"  type="button" class="btn btn-primary  btn-block">
                             Send order
+                        </a>
+                        <a th:href="@{${'/restaurant/' + restaurantId}}"  type="button" class="btn btn-primary  btn-block">
+                            Back to restaurant
                         </a>
                     </div>
                 </div>
