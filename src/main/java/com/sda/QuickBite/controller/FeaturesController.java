@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class FeaturesController {
+public class FeaturesController extends DefaultController {
     @Autowired
     private RestaurantService restaurantService;
 
@@ -46,7 +46,8 @@ public class FeaturesController {
         }
         Dish dish = optionalDish.get();
         orderCartService.addToCart(dish, quantityDto, authentication.getName());
-        return "redirect:/dish/" + dishId +"?restaurantId=" + dish.getRestaurant().getRestaurantId().toString();
+        return "redirect:/restaurant/" + dish.getRestaurant().getRestaurantId().toString();
+//        + dishId +"?restaurantId=" + ;
 
     }
 

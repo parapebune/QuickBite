@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class RestaurantController {
+public class RestaurantController extends DefaultController {
     @Autowired
     private RestaurantService restaurantService;
 
@@ -56,7 +56,7 @@ public class RestaurantController {
         }
         User user = optionalUser.get();
         restaurantService.addRestaurant(restaurantDto, restaurantLogo, restaurantBackground, user);
-        return "redirect:/addRestaurant";
+        return "redirect:/sellerPage";
     }
 
     @GetMapping("/restaurant/{restaurantId}")
