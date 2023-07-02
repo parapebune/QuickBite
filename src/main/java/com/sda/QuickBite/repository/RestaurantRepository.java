@@ -16,4 +16,6 @@ public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
 
     Optional<Restaurant> findByMenuDishId(Long dishId);
     List<Restaurant> findAllByUserUserId(Long userId);
+
+
 }

@@ -43,7 +43,7 @@
 
 <div class="card bg-light text-dark">
     <h2>Orders</h2>
-    <div class="card text-start ">
+    <div class="card  text-start ">
         <div class="card d-flex flex-row justify-content-between">
 
             <div class="card-body bg-light text-dark col-2-custom ">Date and time</div>
@@ -62,51 +62,51 @@
 
         </div>
 
-        <div class="card  d-flex flex-row justify-content-start">
+        <div class="card">
             <th:block th:object="${fullOrderDtoList}" th:each="foodOrderDto : ${fullOrderDtoList}">
-                <div class=" col-4-custom d-flex flex-row ">
-                    <div th:text="${foodOrderDto.foodOrderDto.date}" class="card-body bg-light text-dark col-4-custom">
-                        Date andtime
-                    </div>
-                    <div th:text="${foodOrderDto.foodOrderDto.foodOrderId}"
-                         class="card-body bg-light text-dark col-1-custom">Order No.
-                    </div>
-                    <div th:text="${foodOrderDto.foodOrderDto.restaurantName}"
-                         class="card-body bg-light text-dark col-1-custom">Restaurant
-                    </div>
-                </div>
-                <div class="col-5-custom d-flex flex-column">
-                    <th:block th:each="orderEntryDto : ${foodOrderDto.orderEntryDtoList}">
-                        <div class="d-flex flex-row ">
-                            <div th:text="${orderEntryDto.dishName}" class="card-body bg-light text-dark col-6-custom">
-                                Dish
+                <div>
+                    <div class=" d-flex flex-row  ">
+                        <div style="width: 700px" class="d-flex flex-row ">
+                            <div th:text="${foodOrderDto.foodOrderDto.date}"
+                                 class="card-body bg-light text-dark col-4-custom">
+                                Date andtime
                             </div>
-                            <div th:text="${orderEntryDto.quantity}" class="card-body bg-light text-dark col-1-custom">
-                                Qty.
+                            <div th:text="${foodOrderDto.foodOrderDto.foodOrderId}"
+                                 class="card-body bg-light text-dark col-1-custom">Order No.
                             </div>
-                            <div th:text="${orderEntryDto.costPerDish} + ' RON'"
-                                 class="card-body bg-light text-dark col-1-custom">Cost
+                            <div th:text="${foodOrderDto.foodOrderDto.restaurantName}"
+                                 class="card-body bg-light text-dark col-1-custom">Restaurant
                             </div>
                         </div>
-                    </th:block>
+                        <div style="width: 1000px" class=" d-flex flex-column">
+                            <th:block th:each="orderEntryDto : ${foodOrderDto.orderEntryDtoList}">
+                                <div class="d-flex flex-row ">
+                                    <div th:text="${orderEntryDto.dishName}"
+                                         class="card-body bg-light text-dark col-6-custom">
+                                        Dish
+                                    </div>
+                                    <div th:text="${orderEntryDto.quantity}"
+                                         class="card-body bg-light text-dark col-1-custom">
+                                        Qty.
+                                    </div>
+                                    <div th:text="${orderEntryDto.costPerDish} + ' RON'"
+                                         class="card-body bg-light text-dark col-1-custom">Cost
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                        <div style="width: 700px" class="  d-flex flex-row ">
+                            <div th:text="${foodOrderDto.foodOrderDto.totalAmount + ' RON'}"
+                                 class="card-body bg-light text-dark col-1-custom"></div>
+                            <div class="card-body bg-light text-dark col-1-custom">Status</div>
+                            <button type="submit" class="card-body bg-light text-dark col-1-custom"
+                                    th:text="Update"></button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class=" col-3-custom d-flex flex-row">
-<!--                    <form style="width: 100%">-->
-                        <div th:text="${foodOrderDto.foodOrderDto.totalAmount + ' RON'}"
-                             class="card-body bg-light text-dark col-1-custom"></div>
-                        <div class="card-body bg-light text-dark col-1-custom">Status</div>
-<!--                        <div class="card-body bg-light text-dark col-1-custom">Action</div>-->
-                        <!--                        <div class="card-body bg-light text-dark col-1-custom">-->
-                        <!--                            <a th:href="@{/foodOrder/{x}/update (x=${foodOrderDto.foodOrderDto.foodOrderId})}">-->
-                        <button type="submit" class="card-body bg-light text-dark col-1-custom" th:text="Update"></button>
-                        <!--                            </a>-->
-                        <!--                        </div>-->
-<!--                    </form>-->
-                </div>
-
             </th:block>
         </div>
+
     </div>
 </div>
 
