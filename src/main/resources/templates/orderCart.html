@@ -36,46 +36,46 @@
                                     <!-- Data -->
                                     <p><strong th:text="${orderCartEntryDto.dishDto.name}"></strong></p>
                                     <p th:text="${orderCartEntryDto.dishDto.description}"></p>
-                                    <p th:text="'Coocking Time: ' + ${orderCartEntryDto.dishDto.cookingTime} + ' min'"></p>
+                                    <p th:text="'Cooking Time: ' + ${orderCartEntryDto.dishDto.cookingTime} + ' min'"></p>
 
                                 </div>
 
                                 <div class="col-lg-4 col-md-6 mb-4 v">
                                     <!-- Quantity -->
+                                    <label class="form-label" for="form1">Quantity</label>
                                     <div class="d-flex mb-4" style="max-width: 300px">
-                                        <button class="btn btn-primary px-3 me-1"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            -
-                                        </button>
-                                        <div class="form-outline">
+                                        <a th:href="@{'/orderCart/decrease/' + ${orderCartEntryDto.id}}"
+                                           class="btn btn-primary px-3 py-2 ms-1 order-quantity-change">-</a>
+                                        <div class="form-outline order-cart-quantity">
                                             <input th:value="${orderCartEntryDto.quantity}" id="form1" min="0"
                                                    name="quantity" type="number"
                                                    class="form-control"/>
-                                            <label class="form-label" for="form1">Quantity</label>
+
                                         </div>
 
-                                        <button class="btn btn-primary px-3 py-2 ms-1"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                            +
-                                        </button>
+                                        <a th:href="@{'/orderCart/increase/' + ${orderCartEntryDto.id}}"
+                                           class="btn btn-primary px-3 py-2 ms-1 order-quantity-change">
+                                           +
+                                        </a>
 
                                     </div>
+
 
                                     <!-- Quantity -->
 
                                     <!-- Price -->
 
                                     <div class="d-flex " style="max-width: 300px">
-                                        <p class="text-start me-3 ">
-                                            <strong th:text="${orderCartEntryDto.dishDto.price}"></strong>
+                                        <p class="text-start me-3">
+                                            <strong th:text="'Price: ' + (${orderCartEntryDto.dishDto.price} * ${orderCartEntryDto.quantity})"></strong>
                                         </p>
-                                        <form>
-                                            <button  type="button"
-                                                    class="btn btn-primary px-5" style="border-left: 20px">
-                                                Remove
-                                            </button>
-                                        </form>
+
                                     </div>
+
+                                    <form>
+                                        <a th:href="@{'/cartEntry/remove/' + ${orderCartEntryDto.id}}" class="btn btn-primary px-5" style="border-left: 20px">Remove
+                                        </a>
+                                    </form>
 
 
                                     <!-- Price -->

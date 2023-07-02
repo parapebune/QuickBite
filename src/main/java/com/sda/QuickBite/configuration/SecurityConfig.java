@@ -31,7 +31,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/editRestaurant/**").permitAll();
                     auth.requestMatchers("/editDish/**").permitAll();
                     auth.requestMatchers("/addToCart/**").permitAll();
-                    auth.requestMatchers("/orderCart").permitAll();
+                    auth.requestMatchers("/orderCart/**").permitAll();
+                    auth.requestMatchers("/cartEntry/remove/*").permitAll();
 
 
                     auth.requestMatchers("/registration").permitAll();

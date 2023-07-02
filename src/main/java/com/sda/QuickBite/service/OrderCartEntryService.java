@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderCartEntryService {
@@ -46,5 +47,36 @@ public class OrderCartEntryService {
 
     public List<OrderCartEntry> getOrderCartEntryListByOrderCartId(Long orderCartId) {
         return orderCartEntryRepository.findAllByOrderCartOrderCartId(orderCartId);
+    }
+
+    public void increaseQuantity(String orderCartEntryId) {
+        Optional<OrderCartEntry> optionalOrderCartEntry = orderCartEntryRepository.findById(Long.valueOf(orderCartEntryId));
+        if (optionalOrderCartEntry.isEmpty()){
+            throw new RuntimeException("Dish Not Found");
+        }
+        OrderCartEntry orderCartEntry = optionalOrderCartEntry.get();
+        orderCartEntry.setQuantity(orderCartEntry.getQuantity()+1);
+        orderCartEntryRepository.save(orderCartEntry);
+    }
+
+    public void decreaseQuantity(String orderCartEntryId) {
+        Optional<OrderCartEntry> optionalOrderCartEntry = orderCartEntryRepository.findById(Long.valueOf(orderCartEntryId));
+        if (optionalOrderCartEntry.isEmpty()){
+            throw new RuntimeException("Dish Not Found");
+        }
+        OrderCartEntry orderCartEntry = optionalOrderCartEntry.get();
+        if (orderCartEntry.getQuantity() > 1){
+            orderCartEntry.setQuantity(orderCartEntry.getQuantity()-1);
+            orderCartEntryRepository.save(orderCartEntry);
+        }
+    }
+
+    public void removeOrderCartEntry(String orderCartEntryId) {
+        Optional<OrderCartEntry> optionalOrderCartEntry = orderCartEntryRepository.findById(Long.valueOf(orderCartEntryId));
+        if (optionalOrderCartEntry.isEmpty()){
+            throw new RuntimeException("Dish Not Found");
+        }
+        OrderCartEntry orderCartEntry = optionalOrderCartEntry.get();
+        orderCartEntryRepository.deleteById(orderCartEntry.getOrderCartEntryId());
     }
 }
