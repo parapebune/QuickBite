@@ -112,4 +112,25 @@ public class FeaturesController extends DefaultController {
         model.addAttribute("fullOrderDtoList",fullOrderDtoList);
         return "orderDashboard";
     }
+
+
+    @GetMapping("/orderCart/increase/{orderCartEntryId}")
+    public String increaseGet(@PathVariable(name = "orderCartEntryId") String orderCartEntryId){
+        orderCartEntryService.increaseQuantity(orderCartEntryId);
+        return "redirect:/orderCart";
+    }
+
+    @GetMapping("/orderCart/decrease/{orderCartEntryId}")
+    public String decreaseGet(@PathVariable(name = "orderCartEntryId") String orderCartEntryId){
+        orderCartEntryService.decreaseQuantity(orderCartEntryId);
+        return "redirect:/orderCart";
+    }
+
+    @GetMapping("/cartEntry/remove/{orderCartEntryId}")
+    public String removeGet(@PathVariable(name = "orderCartEntryId") String orderCartEntryId){
+        orderCartEntryService.removeOrderCartEntry(orderCartEntryId);
+        return "redirect:/orderCart";
+    };
+
+
 }

@@ -61,3 +61,13 @@ body{
     width: 100px;
     background: #4990e1;
 }
+
+.order-cart-quantity {
+    height: 20px;
+}
+
+.order-quantity-change{
+    height: 38px;
+}
+
+
