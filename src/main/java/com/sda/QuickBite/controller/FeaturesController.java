@@ -19,11 +19,6 @@ import java.util.Optional;
 @Controller
 public class FeaturesController extends DefaultController {
     @Autowired
-    private RestaurantService restaurantService;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-    @Autowired
     private DishRepository dishRepository;
 
     @Autowired
@@ -31,8 +26,6 @@ public class FeaturesController extends DefaultController {
 
     @Autowired
     private DishService dishService;
-    @Autowired
-    private Util util;
 
     @Autowired
     private OrderCartService orderCartService;

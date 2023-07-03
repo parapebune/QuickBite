@@ -24,21 +24,7 @@ public class DishController extends DefaultController {
     private RestaurantService restaurantService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private DishService dishService;
-    @Autowired
-    private Util util;
-
-    @Autowired
-    private OrderCartService orderCartService;
-    @Autowired
-    private OrderCartEntryService orderCartEntryService;
-    @Autowired
-    private FoodOrderService foodOrderService;
-    @Autowired
-    private SecurityCheck securityCheck;
 
     @GetMapping("/restaurant/{restaurantId}/addDish")
     public String addDishGet(Model model, @PathVariable(name = "restaurantId") String restaurantId){

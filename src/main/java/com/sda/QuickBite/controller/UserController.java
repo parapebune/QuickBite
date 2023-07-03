@@ -1,6 +1,7 @@
 package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.ChangePasswordDto;
+import com.sda.QuickBite.dto.ErrorMessageDto;
 import com.sda.QuickBite.dto.UserDto;
 import com.sda.QuickBite.dto.UserProfileDto;
 import com.sda.QuickBite.entity.User;
@@ -22,31 +23,12 @@ import java.util.Optional;
 
 @Controller
 public class UserController extends DefaultController {
-    @Autowired
-    private RestaurantService restaurantService;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private DishService dishService;
-    @Autowired
-    private Util util;
-
-
-
-    @Autowired
-    private OrderCartService orderCartService;
-    @Autowired
-    private OrderCartEntryService orderCartEntryService;
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private FoodOrderService foodOrderService;
-
-
-
 
     @GetMapping("/registration")
     public String registrationGet(Model model) {

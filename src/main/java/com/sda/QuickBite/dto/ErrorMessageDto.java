@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.dto;
 
 import lombok.*;
@@ -11,3 +12,4 @@ import lombok.*;
 public class ErrorMessageDto {
         private String errorMessage;
 }
+

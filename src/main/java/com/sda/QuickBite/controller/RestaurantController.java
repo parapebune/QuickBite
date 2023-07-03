@@ -28,15 +28,6 @@ public class RestaurantController extends DefaultController {
 
     @Autowired
     private DishService dishService;
-    @Autowired
-    private Util util;
-
-    @Autowired
-    private OrderCartService orderCartService;
-    @Autowired
-    private OrderCartEntryService orderCartEntryService;
-    @Autowired
-    private FoodOrderService foodOrderService;
 
 
     @GetMapping("/addRestaurant")

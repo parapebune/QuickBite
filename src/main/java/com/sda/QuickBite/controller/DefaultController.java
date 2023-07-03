@@ -12,14 +12,11 @@ public class DefaultController {
     @Autowired
     private Util util;
 
-
-
     @ModelAttribute("fullName")
     public String fullName(Authentication authentication) {
         if (authentication == null) {
             return null;
         }
-
         return util.displayAuthenticatedUserFullName(authentication);
     }
 }

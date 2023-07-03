@@ -14,18 +14,17 @@
 
 <div th:object="${restaurantDto}" class="container p-1 my-5" >
     <div class="card " style="border-radius: 100px">
-        <img class="card-img-fluid w-auto h-auto restaurant_custom_img " style="border-radius: 100px"
+        <img class="card-img-fluid w-100 h-100 restaurant_custom_img " style="border-radius: 100px"
              th:src="${restaurantDto.backgroundImage}" alt="Card image">
-
-        <div class="card-img-overlay text-white text-center " >
-            <img class="card-header  "  th:src="${restaurantDto.logo}"  alt="Product image">
-            <div class="w-100 restaurant_custom_img_text" >
+        <div class="card-img-overlay text-white text-center d-flex flex-column align-items-center justify-content-center"
+             style="position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+            <img class="card-header mb-4" th:src="${restaurantDto.logo}" style="max-height: 30%; width: auto;" alt="Product image">
+            <div class="text-container restaurant_custom_img_text" style="max-height: 90%; overflow-y: auto;">
                 <div class="card-body" style="font-size: 50px;" th:text=" ${restaurantDto.name}"></div>
                 <div class="card-body" th:text=" ${restaurantDto.description}"></div>
                 <div class="card-body" th:text="${restaurantDto.restaurantSpecific}"></div>
                 <div class="card-body" th:text="${restaurantDto.address}"></div>
                 <div class="card-body" th:text="${restaurantDto.phoneNo}"></div>
-
             </div>
         </div>
     </div>
