@@ -1,5 +1,6 @@
 package com.sda.QuickBite.utils;
 
+import com.sda.QuickBite.dto.ErrorMessageDto;
 import com.sda.QuickBite.dto.UserDto;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.User;
@@ -60,4 +61,13 @@ public class Util {
         }
         return totalAmount;
     }
+
+    public void getErrorMessage(String errorMessage, Model model) {
+        ErrorMessageDto errorMessageDto = ErrorMessageDto.builder()
+                .errorMessage(errorMessage).build();
+        model.addAttribute("errorMessageDto", errorMessageDto);
+    }
+
+
+
 }

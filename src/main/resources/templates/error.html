@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
@@ -9,9 +9,9 @@
 </head>
 <body>
 
-<div class="container mt-3">
-    <h1>SOME ERROR!</h1>
-    <a href="/home" type="button" class="btn btn-primary btn-lg">Back to home</a>
+<div class="container mt-3 error-container justify-content-center">
+    <div th:text="${errorMessageDto.errorMessage}" style="margin: auto; font-size: 100px"></div>
+    <a href="/home" type="button" class="btn btn-primary btn-lg w-25" style="margin: auto">Back to home</a>
 </div>
 </body>
 </html>

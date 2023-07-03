@@ -48,10 +48,12 @@ public class RestaurantController extends DefaultController {
 
     @PostMapping("/addRestaurant")
     public String addRestaurantPost(@ModelAttribute(name = "restaurantDto") @Valid RestaurantDto restaurantDto, BindingResult bindingResult,
-                                    MultipartFile restaurantLogo, MultipartFile restaurantBackground, Authentication authentication){
+                                    MultipartFile restaurantLogo, MultipartFile restaurantBackground
+            , Authentication authentication, Model model){
         String email = authentication.getName();
         Optional<User> optionalUser = userService.getUserByEmail(email);
         if(optionalUser.isEmpty()){
+            util.getErrorMessage("Restaurant Not Found", model);
             return "error";
         }
         User user = optionalUser.get();
@@ -63,6 +65,7 @@ public class RestaurantController extends DefaultController {
     public String restaurantPageGet(@PathVariable(value = "restaurantId") String restaurantId, Model model){
         Optional<RestaurantDto> optionalRestaurantDto = restaurantService.getRestaurantDtoById(restaurantId);
         if(optionalRestaurantDto.isEmpty()){
+            util.getErrorMessage("Restaurant Not Found", model);
             return "error";
         }
         RestaurantDto restaurantDto = optionalRestaurantDto.get();
@@ -78,6 +81,7 @@ public class RestaurantController extends DefaultController {
     public String editRestaurantGet(Model model, @PathVariable(name = "restaurantId") String restaurantId) {
         Optional<RestaurantDto> optionalRestaurantDto = restaurantService.getRestaurantDtoById(restaurantId);
         if (optionalRestaurantDto.isEmpty()) {
+            util.getErrorMessage("Restaurant Not Found", model);
             return "error";
         }
         RestaurantDto restaurantDto = optionalRestaurantDto.get();

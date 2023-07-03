@@ -43,16 +43,18 @@ public class FeaturesController extends DefaultController {
 
     @PostMapping("/addToCard/{dishId}")
     public String addToCardPost(@PathVariable(name = "dishId") String dishId, @ModelAttribute(name = "quantityDto") QuantityDto quantityDto,
-                                Authentication authentication){
+                                Authentication authentication, Model model){
         if(authentication == null){
             return "login";
         }
         Optional<Dish> optionalDish = dishService.getDishById(dishId);
         if(optionalDish.isEmpty()){
+            util.getErrorMessage("Dish Not Found", model);
             return "error";
         }
         Dish dish = optionalDish.get();
         if(!orderCartService.isDishFromSameRestaurant(dish, authentication.getName())){
+            util.getErrorMessage("Dish Not Found", model);
             return "error";
         }
         orderCartService.addToCart(dish, quantityDto, authentication.getName());
@@ -77,6 +79,7 @@ public class FeaturesController extends DefaultController {
     public String foodOrderDetailsGet(@PathVariable(name = "foodOrderId") String foodOrderId, Model model){
         Optional<FoodOrderDto> optionalFoodOrderDto = foodOrderService.getFoodOrderDtoById(foodOrderId);
         if(optionalFoodOrderDto.isEmpty()){
+            util.getErrorMessage("Food Order Not Found", model);
             return "error";
         }
         FoodOrderDto foodOrderDto = optionalFoodOrderDto.get();
