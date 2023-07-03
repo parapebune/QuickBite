@@ -79,7 +79,7 @@ body{
 }
 
 .restaurant_custom_img{
-    height: 150px;
+    /*height: 150px;*/
     border-width: 16px;
     /*border-left-style: solid;*/
     /*border-right-style: solid;*/
@@ -87,8 +87,9 @@ body{
     border-color: black;
 }
 .restaurant_custom_img_text{
-    font-size: 30px;
+    /*font-size: 30px;*/
     background-color: rgba(3,2,9,0.8);
+    width: 100%;
     /*border-radius: 100px;*/
     border-bottom-style: solid;
     border-top-style: solid;

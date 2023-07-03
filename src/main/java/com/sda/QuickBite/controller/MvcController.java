@@ -24,25 +24,6 @@ public class MvcController extends DefaultController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private DishService dishService;
-    @Autowired
-    private Util util;
-
-
-    @Autowired
-    private OrderCartService orderCartService;
-    @Autowired
-    private OrderCartEntryService orderCartEntryService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private FoodOrderService foodOrderService;
-
-
-
-
     @GetMapping("/home")
     public String homeGet(Model model, @RequestParam(name = "category", required = false) String category, Authentication authentication) {
 

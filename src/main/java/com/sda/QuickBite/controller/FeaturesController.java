@@ -19,11 +19,6 @@ import java.util.Optional;
 @Controller
 public class FeaturesController extends DefaultController {
     @Autowired
-    private RestaurantService restaurantService;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-    @Autowired
     private DishRepository dishRepository;
 
     @Autowired
@@ -31,8 +26,6 @@ public class FeaturesController extends DefaultController {
 
     @Autowired
     private DishService dishService;
-    @Autowired
-    private Util util;
 
     @Autowired
     private OrderCartService orderCartService;
@@ -40,6 +33,9 @@ public class FeaturesController extends DefaultController {
     private OrderCartEntryService orderCartEntryService;
     @Autowired
     private FoodOrderService foodOrderService;
+
+    @Autowired
+    private Util util;
 
     @PostMapping("/addToCard/{dishId}")
     public String addToCardPost(@PathVariable(name = "dishId") String dishId, @ModelAttribute(name = "quantityDto") QuantityDto quantityDto,
