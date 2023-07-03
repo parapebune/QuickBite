@@ -30,7 +30,7 @@
                 <a th:href="@{/restaurant/{x}(x=${restaurantDto.id})}" class="nav-link m-0 p-0 btn-outline-light">
                     <div class="card bg-light text-dark m-3" style="width:300px">
                         <h4 class="card-header" th:text="${restaurantDto.name}"></h4>
-                        <img th:src="${restaurantDto.logo}" alt="Imagine product" style="background: bisque">
+                        <img th:src="${restaurantDto.logo}" alt="Restaurant Logo" style="background: bisque; height: 150px">
                         <div class="card-footer" th:text="${restaurantDto.restaurantSpecific}"></div>
                     </div>
                 </a>
