@@ -1,6 +1,7 @@
 package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.DishDto;
+import com.sda.QuickBite.dto.ErrorMessageDto;
 import com.sda.QuickBite.dto.QuantityDto;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.Restaurant;
@@ -49,15 +50,19 @@ public class DishController extends DefaultController {
     @PostMapping("/restaurant/{restaurantId}/addDish")
     public String addDishPost(@ModelAttribute(name = "dishDto") @Valid DishDto dishDto, BindingResult bindingResult,
                               @RequestParam("dishImage") MultipartFile dishImage,
-                              @PathVariable(name = "restaurantId") String restaurantId){
+                              @PathVariable(name = "restaurantId") String restaurantId,
+                              Model model){
         if(bindingResult.hasErrors()){
             return "addDish";
         }
 
+
         Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
         if(optionalRestaurant.isEmpty()){
+            util.getErrorMessage("Restaurant not found!", model);
             return "error";
         }
+
         Restaurant restaurant = optionalRestaurant.get();
         dishService.addDish(dishDto, dishImage, restaurant);
         return "redirect:/restaurant/" + restaurantId;
@@ -68,6 +73,7 @@ public class DishController extends DefaultController {
         model.addAttribute("restaurantId",restaurantId);
         Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
         if(optionalDishDto.isEmpty()){
+            util.getErrorMessage("Dish not found!", model);
             return "error";
         }
         DishDto dishDto = optionalDishDto.get();
@@ -83,12 +89,15 @@ public class DishController extends DefaultController {
     public String modifyDishGet(@PathVariable(name = "dishId") String dishId, Model model){
         Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
         if(optionalDishDto.isEmpty()){
+            util.getErrorMessage("Dish not found!", model);
             return "error";
         }
         DishDto dishDto = optionalDishDto.get();
         model.addAttribute("dishDto",dishDto);
         return "modifyDish";
     }
+
+
 
     @PostMapping("/dish/{dishId}/update")
     public String updateDishPost(@ModelAttribute(name = "dishDto") DishDto dishDto, @PathVariable(name = "dishId") String dishId,
@@ -110,6 +119,7 @@ public class DishController extends DefaultController {
 
         Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
         if (optionalDishDto.isEmpty()) {
+            util.getErrorMessage("Dish Not Found", model);
             return "error";
         }
         DishDto dishDto = optionalDishDto.get();
@@ -120,7 +130,7 @@ public class DishController extends DefaultController {
     @PostMapping("/editDish/{dishId}")
     public String editDishPost(@ModelAttribute(name = "dishDto") @Valid DishDto dishDto, BindingResult bindingResult,
                                @RequestParam("dishImage") MultipartFile dishImage,
-                               @PathVariable(name = "dishId") String dishId) {
+                               @PathVariable(name = "dishId") String dishId, Model model) {
         System.out.println("Dish ID" + dishId);
         if (bindingResult.hasErrors()) {
             return "editDish";
@@ -128,6 +138,7 @@ public class DishController extends DefaultController {
 
         Optional<Dish> optionalOutdatedDish = dishService.getDishById(dishId);
         if (optionalOutdatedDish.isEmpty()) {
+            util.getErrorMessage("Dish Not Found", model);
             return "error";
         }
         Dish outdatedDish = optionalOutdatedDish.get();

@@ -8,6 +8,7 @@ import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -86,12 +87,14 @@ public class UserController extends DefaultController {
     }
 
     @PostMapping("/yourProfile")
-    public String yourProfilePost(@ModelAttribute(name = "userProfileDto") @Valid UserProfileDto userProfileDto, BindingResult bindingResult) {
+    public String yourProfilePost(@ModelAttribute(name = "userProfileDto") @Valid UserProfileDto userProfileDto
+            , BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "yourProfile";
         }
         Optional<User> optionalUser = userService.getUserByEmail(userProfileDto.getEmail());
         if (optionalUser.isEmpty()) {
+            util.getErrorMessage("User Not Found", model);
             return "error";
         }
         User user = optionalUser.get();
