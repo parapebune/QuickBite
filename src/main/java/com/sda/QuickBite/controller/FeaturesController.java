@@ -94,12 +94,16 @@ public class FeaturesController extends DefaultController {
         TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
         model.addAttribute("orderTotalAmount", orderTotalAmountDto);
         model.addAttribute("orderCartEntryDtoList", orderCartEntryDtoList);
-
-//        OrderCartEntryDto orderCartEntryDto =   orderCartEntryDtoList.get(0);
-//        String dishId = orderCartEntryDto.getDishDto().getId();
-//        Optional<Dish> optionalDish= dishRepository.findDishByDishId(Long.valueOf(dishId));
-//        Dish dish=optionalDish.get();
-//        model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
+        if (orderCartEntryDtoList.size() != 0) {
+            OrderCartEntryDto orderCartEntryDto = orderCartEntryDtoList.get(0);
+            String dishId = orderCartEntryDto.getDishDto().getId();
+            Optional<Dish> optionalDish = dishRepository.findDishByDishId(Long.valueOf(dishId));
+            if (optionalDish.isEmpty()) {
+                return "orderCart";
+            }
+            Dish dish = optionalDish.get();
+            model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
+        }
         return "orderCart";
     }
 
