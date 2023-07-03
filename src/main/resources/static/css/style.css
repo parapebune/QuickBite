@@ -9,65 +9,98 @@ form{
     color: red;
 }
 
-.navbar-right {
-    display: flex;
-    margin-right: 0;
-    margin-top: 100px;
-}
+/*.navbar-right {*/
+/*    display: flex;*/
+/*    margin-right: 0;*/
+/*    margin-top: 100px;*/
+/*}*/
 
-.navbar-nav.mr-auto {
-    margin-right: auto;
-}
+/*.navbar-nav.mr-auto {*/
+/*    margin-right: auto;*/
+/*}*/
 
-.navbar-nav.ml-auto {
-    margin-left: auto;
-}
+/*.navbar-nav.ml-auto {*/
+/*    margin-left: auto;*/
+/*}*/
 
-.navbar-custom{
-    display: flex;
-    flex-direction: column;
-}
+/*.navbar-custom{*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
 
-.navbar-logo {
-    height: 45px;
-}
+/*.navbar-logo {*/
+/*    height: 45px;*/
+/*}*/
+
+/*body{*/
+
+/*    background: #83b0e3;*/
+
+/*}*/
+
+/*.restaurant-container{*/
+
+/*    background: #83b0e3;*/
+/*}*/
+
+/*.category-nav {*/
+/*    background: #4990e1;*/
+/*}*/
+
+/*.quantity {*/
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*}*/
+
+/*.quantity label {*/
+/*    align-self: center;*/
+/*    margin-right: 10px;*/
+/*}*/
+
+/*.quantity-input {*/
+/*    width: 100px;*/
+/*    background: #4990e1;*/
+/*}*/
+
+/*.order-cart-quantity {*/
+/*    height: 20px;*/
+/*}*/
+
+/*.order-quantity-change{*/
+/*    height: 38px;*/
+/*}*/
 
 body{
-
-    background: #83b0e3;
-
+    background-image: url("../img/background.jpg");background-size: cover;
 }
 
-.restaurant-container{
+.restaurant_custom_img{
+    height: 150px;
+    border-width: 16px;
+    /*border-left-style: solid;*/
+    /*border-right-style: solid;*/
+    border-style: solid;
+    border-color: black;
+}
+.restaurant_custom_img_text{
+    font-size: 30px;
+    background-color: rgba(3,2,9,0.8);
+    /*border-radius: 100px;*/
+    border-bottom-style: solid;
+    border-top-style: solid;
 
-    background: #83b0e3;
+    border-width: 10px;
+    border-color: black;
+}
+.wrapper_custom {
+    width: 300px; /* set the width you want */
+    height: 400px; /* set the height you want */
+    overflow: hidden; /* hide the part of the content that exceeds the div */
+}
+.wrapper_custom img {
+    object-fit: cover; /* this makes the image to cover all the div */
+    width: 100%;
 }
 
-.category-nav {
-    background: #4990e1;
-}
-
-.quantity {
-    display: flex;
-    flex-direction: row;
-}
-
-.quantity label {
-    align-self: center;
-    margin-right: 10px;
-}
-
-.quantity-input {
-    width: 100px;
-    background: #4990e1;
-}
-
-.order-cart-quantity {
-    height: 20px;
-}
-
-.order-quantity-change{
-    height: 38px;
-}
 
 

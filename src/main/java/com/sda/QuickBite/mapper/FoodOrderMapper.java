@@ -1,7 +1,6 @@
 package com.sda.QuickBite.mapper;
 
 import com.sda.QuickBite.dto.FoodOrderDto;
-import com.sda.QuickBite.dto.OrderEntryDto;
 import com.sda.QuickBite.entity.FoodOrder;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import org.springframework.stereotype.Component;
@@ -22,12 +21,5 @@ public class FoodOrderMapper {
                 .status(foodOrder.getOrderStatus().name())
                 .build();
     }
-    public OrderEntryDto map(OrderCartEntry orderCartEntry) {
-        Double costPerDish = orderCartEntry.getDish().getPrice() * orderCartEntry.getQuantity();
-        return OrderEntryDto.builder()
-                .dishName(orderCartEntry.getDish().getName())
-                .quantity(orderCartEntry.getQuantity().toString())
-                .costPerDish(costPerDish.toString())
-                .build();
-    }
+
 }

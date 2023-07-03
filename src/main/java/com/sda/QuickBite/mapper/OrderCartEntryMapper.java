@@ -11,10 +11,12 @@ public class OrderCartEntryMapper {
     private DishMapper dishMapper;
 
     public OrderCartEntryDto map(OrderCartEntry orderCartEntry) {
+        Double cost = orderCartEntry.getQuantity()*orderCartEntry.getDish().getPrice();
         return OrderCartEntryDto.builder()
                 .id(orderCartEntry.getOrderCartEntryId().toString())
                 .quantity(orderCartEntry.getQuantity().toString())
                 .dishDto(dishMapper.map(orderCartEntry.getDish()))
+                .cost(cost.toString())
                 .build();
     }
 }

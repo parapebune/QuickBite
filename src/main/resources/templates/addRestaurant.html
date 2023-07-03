@@ -10,6 +10,7 @@
 <body>
 <div th:insert="fragments/navBar"></div>
 <div class="m-4" >
+    <h2>Add restaurant</h2>
     <form th:object="${restaurantDto}"  action="/addRestaurant" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label class="form-label" for="name">Restaurant name</label>

@@ -2,7 +2,6 @@ package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.Dish;
-import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.repository.DishRepository;
 import com.sda.QuickBite.repository.RestaurantRepository;
@@ -53,6 +52,9 @@ public class FeaturesController extends DefaultController {
             return "error";
         }
         Dish dish = optionalDish.get();
+        if(!orderCartService.isDishFromSameRestaurant(dish, authentication.getName())){
+            return "error";
+        }
         orderCartService.addToCart(dish, quantityDto, authentication.getName());
         return "redirect:/restaurant/" + dish.getRestaurant().getRestaurantId().toString();
 //        + dishId +"?restaurantId=" + ;
@@ -78,10 +80,10 @@ public class FeaturesController extends DefaultController {
             return "error";
         }
         FoodOrderDto foodOrderDto = optionalFoodOrderDto.get();
-        List<OrderEntryDto> orderEntryDtoList = dishService.getAllDishDtoByFoodOrderId(foodOrderId);
+        List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getAllOrderCartEntryDtoByFoodOrderId(foodOrderId);
 
         model.addAttribute("foodOrderDto",foodOrderDto);
-        model.addAttribute("orderEntryDtoList", orderEntryDtoList);
+        model.addAttribute("orderCartEntryDtoList", orderCartEntryDtoList);
 
         return "viewOrder";
     }
@@ -92,11 +94,12 @@ public class FeaturesController extends DefaultController {
         TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
         model.addAttribute("orderTotalAmount", orderTotalAmountDto);
         model.addAttribute("orderCartEntryDtoList", orderCartEntryDtoList);
-        OrderCartEntryDto orderCartEntryDto =   orderCartEntryDtoList.get(0);
-        String dishId = orderCartEntryDto.getDishDto().getId();
-        Optional<Dish> optionalDish= dishRepository.findDishByDishId(Long.valueOf(dishId));
-        Dish dish=optionalDish.get();
-        model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
+
+//        OrderCartEntryDto orderCartEntryDto =   orderCartEntryDtoList.get(0);
+//        String dishId = orderCartEntryDto.getDishDto().getId();
+//        Optional<Dish> optionalDish= dishRepository.findDishByDishId(Long.valueOf(dishId));
+//        Dish dish=optionalDish.get();
+//        model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
         return "orderCart";
     }
 
@@ -110,6 +113,8 @@ public class FeaturesController extends DefaultController {
         User user = optionalUser.get();
         List<FullOrderDto> fullOrderDtoList = foodOrderService.getAllFullFoodOrdersByUser(user);
         model.addAttribute("fullOrderDtoList",fullOrderDtoList);
+        StatusDto statusDto = new StatusDto();
+        model.addAttribute("statusDto",statusDto);
         return "orderDashboard";
     }
 
@@ -130,7 +135,14 @@ public class FeaturesController extends DefaultController {
     public String removeGet(@PathVariable(name = "orderCartEntryId") String orderCartEntryId){
         orderCartEntryService.removeOrderCartEntry(orderCartEntryId);
         return "redirect:/orderCart";
-    };
+    }
+
+    @PostMapping("/food-order/{foodOrderId}/change-status")
+    public String changeStatusPost(@ModelAttribute(name = "statusDto") StatusDto statusDto,
+                                   @PathVariable(name = "foodOrderId") String foodOrderId){
+        foodOrderService.changeStatus(foodOrderId,statusDto);
+        return "redirect:/orderDashboard";
+    }
 
 
 }

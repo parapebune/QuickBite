@@ -2,7 +2,7 @@ package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.DishCategoryDto;
 import com.sda.QuickBite.dto.DishDto;
-import com.sda.QuickBite.dto.OrderEntryDto;
+import com.sda.QuickBite.dto.OrderCartEntryDto;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.FoodOrder;
 import com.sda.QuickBite.entity.OrderCartEntry;
@@ -10,6 +10,7 @@ import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.enums.DishCategory;
 import com.sda.QuickBite.mapper.DishMapper;
 import com.sda.QuickBite.mapper.FoodOrderMapper;
+import com.sda.QuickBite.mapper.OrderCartEntryMapper;
 import com.sda.QuickBite.repository.DishRepository;
 import com.sda.QuickBite.repository.OrderCartRepository;
 import com.sda.QuickBite.repository.RestaurantRepository;
@@ -45,6 +46,8 @@ public class DishService {
     private OrderCartEntryService orderCartEntryService;
     @Autowired
     private FoodOrderMapper foodOrderMapper;
+    @Autowired
+    private OrderCartEntryMapper orderCartEntryMapper;
 
     public void addDish(DishDto dishDto, MultipartFile dishImage, Restaurant restaurant) {
         Dish dish = dishMapper.map(dishDto, dishImage, restaurant);
@@ -103,21 +106,21 @@ public class DishService {
         dishRepository.save(dishToBeSaved);
     }
 
-    public List<OrderEntryDto> getAllDishDtoByFoodOrderId(String foodOrderId) {
-        Optional<FoodOrder> optionalFoodOrder = foodOrderService.getFoodOrderById(foodOrderId);
-        if(optionalFoodOrder.isEmpty()){
-            return new ArrayList<>();
-        }
-        FoodOrder foodOrder = optionalFoodOrder.get();
-
-        List<OrderCartEntry> orderCartEntryList = orderCartEntryService.getOrderCartEntryListByOrderCartId(foodOrder.getOrderCart().getOrderCartId());
-        List<OrderEntryDto> orderEntryDtoList = new ArrayList<>();
-        for (OrderCartEntry orderCartEntry : orderCartEntryList){
-            OrderEntryDto orderEntryDto = foodOrderMapper.map(orderCartEntry);
-            orderEntryDtoList.add(orderEntryDto);
-        }
-        return orderEntryDtoList;
-    }
+//    public List<OrderCartEntryDto> getAllDishDtoByFoodOrderId(String foodOrderId) {
+//        Optional<FoodOrder> optionalFoodOrder = foodOrderService.getFoodOrderById(foodOrderId);
+//        if(optionalFoodOrder.isEmpty()){
+//            return new ArrayList<>();
+//        }
+//        FoodOrder foodOrder = optionalFoodOrder.get();
+//
+//        List<OrderCartEntry> orderCartEntryList = orderCartEntryService.getOrderCartEntryListByOrderCartId(foodOrder.getOrderCart().getOrderCartId());
+//        List<OrderCartEntryDto> orderCartEntryDtoList = new ArrayList<>();
+//        for (OrderCartEntry orderCartEntry : orderCartEntryList){
+//            OrderCartEntryDto orderCartEntryDto = orderCartEntryMapper.map(orderCartEntry);
+//            orderCartEntryDtoList.add(orderCartEntryDto);
+//        }
+//        return orderCartEntryDtoList;
+//    }
     public void updateDish(DishDto dishDto, String dishId, MultipartFile dishImage) {
         Optional<Dish> optionalDish = dishRepository.findById(Long.valueOf(dishId));
         if(optionalDish.isEmpty()){

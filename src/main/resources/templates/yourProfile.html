@@ -9,7 +9,7 @@
 </head>
 <body>
 <div th:insert="~{fragments/navBar.html :: body}"></div>
-<div  class="col-md-6 mx-auto" >
+<div  class="m-4 mx-auto d-block" >
     <h1>Your profile</h1>
     <form th:object="${userProfileDto}"  action="/yourProfile" method="post">
         <div class="mb-3">

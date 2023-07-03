@@ -12,4 +12,5 @@ public class OrderCartEntryDto {
     private String id;
     private String quantity;
     private DishDto dishDto;
+    private String cost;
 }

@@ -1,18 +1,18 @@
 package com.sda.QuickBite.service;
 
-import com.sda.QuickBite.dto.FoodOrderDto;
-import com.sda.QuickBite.dto.FullOrderDto;
-import com.sda.QuickBite.dto.OrderEntryDto;
+import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.FoodOrder;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.OrderStatus;
 import com.sda.QuickBite.mapper.FoodOrderMapper;
+import com.sda.QuickBite.mapper.OrderCartEntryMapper;
 import com.sda.QuickBite.repository.FoodOrderRepository;
 import com.sda.QuickBite.repository.OrderCartEntryRepository;
 import com.sda.QuickBite.repository.RestaurantRepository;
 import com.sda.QuickBite.repository.UserRepository;
+import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +27,6 @@ public class FoodOrderService {
     @Autowired
     private OrderCartEntryRepository orderCartEntryRepository;
     @Autowired
-    private OrderCartEntryService orderCartEntryService;
-    @Autowired
     private RestaurantRepository restaurantRepository;
     @Autowired
     private UserRepository userRepository;
@@ -38,6 +36,10 @@ public class FoodOrderService {
     private UserService userService;
     @Autowired
     private FoodOrderMapper foodOrderMapper;
+    @Autowired
+    private OrderCartEntryMapper orderCartEntryMapper;
+    @Autowired
+    private Util util;
 
     public void sendFoodOrder(String email) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
@@ -51,7 +53,7 @@ public class FoodOrderService {
         }
         User user = optionalUser.get();
         Restaurant restaurant = optionalRestaurant.get();
-        double totalAmount = orderCartEntryService.calculateTotalAmount(orderCartEntryList);
+        double totalAmount =util.calculateTotalAmount(orderCartEntryList);
         FoodOrder foodOrder = FoodOrder.builder()
                 .orderDate(LocalDateTime.now())
                 .restaurant(restaurant)
@@ -101,13 +103,13 @@ public class FoodOrderService {
 
             FullOrderDto fullOrderDto = FullOrderDto.builder()
                     .foodOrderDto(foodOrderMapper.map(foodOrder))
-                    .orderEntryDtoList(new ArrayList<>()).build();
+                    .orderCartEntryDtoList(new ArrayList<>()).build();
 
             List<OrderCartEntry> orderCartEntryList = orderCartEntryRepository.findAllByOrderCartOrderCartId(foodOrder.getOrderCart().getOrderCartId());
 
             for(OrderCartEntry orderCartEntry : orderCartEntryList){
-                OrderEntryDto orderEntryDto = foodOrderMapper.map(orderCartEntry);
-                fullOrderDto.getOrderEntryDtoList().add(orderEntryDto);
+                OrderCartEntryDto orderCartEntryDto = orderCartEntryMapper.map(orderCartEntry);
+                fullOrderDto.getOrderCartEntryDtoList().add(orderCartEntryDto);
             }
 
             fullOrderDtoList.add(fullOrderDto);
@@ -116,4 +118,25 @@ public class FoodOrderService {
 
         return fullOrderDtoList;
     }
+
+    public void changeStatus(String foodOrderId, StatusDto statusDto) {
+        Optional<FoodOrder> optionalFoodOrder = foodOrderRepository.findById(Long.valueOf(foodOrderId));
+        if(optionalFoodOrder.isEmpty()){
+            throw new RuntimeException("Food order not found");
+        }
+        FoodOrder foodOrder = optionalFoodOrder.get();
+        System.out.println(statusDto.getStatus());
+        foodOrder.setOrderStatus(OrderStatus.valueOf(statusDto.getStatus()));
+        foodOrderRepository.save(foodOrder);
+    }
+//public void changeStatus(String foodOrderId, String status) {
+//    Optional<FoodOrder> optionalFoodOrder = foodOrderRepository.findById(Long.valueOf(foodOrderId));
+//    if(optionalFoodOrder.isEmpty()){
+//        throw new RuntimeException("Food order not found");
+//    }
+//    FoodOrder foodOrder = optionalFoodOrder.get();
+//    System.out.println(status);
+//    foodOrder.setOrderStatus(OrderStatus.valueOf(status));
+//    foodOrderRepository.save(foodOrder);
+//}
 }

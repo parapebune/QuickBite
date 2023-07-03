@@ -33,8 +33,7 @@ public class UserController extends DefaultController {
     private Util util;
 
 
-    @Autowired
-    private OrderEntryService orderEntryService;
+
     @Autowired
     private OrderCartService orderCartService;
     @Autowired
