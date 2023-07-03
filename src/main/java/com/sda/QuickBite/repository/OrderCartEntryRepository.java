@@ -11,8 +11,7 @@ public interface OrderCartEntryRepository extends CrudRepository<OrderCartEntry,
 
     List<OrderCartEntry> findAllByOrderCartOrderCartId(Long orderCartId);
 
-
-
+    Optional<OrderCartEntry> findByDishDishIdAndOrderCartOrderCartId (Long dishId, Long orderCartId);
 }
 
 

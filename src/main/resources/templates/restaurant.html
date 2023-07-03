@@ -11,24 +11,25 @@
 <!--<div th:insert="fragments/navBar"></div>-->
 <div th:insert="~{fragments/navBar.html :: body}"></div>
 
-<div th:object="${restaurantDto}" class="container p-1 my-5" style="text-align: center;">
+<div th:object="${restaurantDto}" class="container p-1 my-5" >
     <div class="card " style="border-radius: 100px">
-        <img class="card-img-fluid w-auto h-auto border border-5" style="border-radius: 100px"
+        <img class="card-img-fluid w-auto h-auto restaurant_custom_img " style="border-radius: 100px"
              th:src="${restaurantDto.backgroundImage}" alt="Card image">
 
-        <div class="card-img-overlay p-5 text-white ">
-            <img class="card-header" th:src="${restaurantDto.logo}" style=" height: 150px" alt="Product image">
-            <div style="display: flex; flex-direction: column; align-items: flex-start; font-size: 50px;">
-                <div class="card-body" th:text="'Nume Restaurant: ' + ${restaurantDto.name}"></div>
-                <div class="card-body" th:text="'Descriere: ' + ${restaurantDto.description}"></div>
-                <div class="card-body" th:text="'Specific: ' + ${restaurantDto.restaurantSpecific}"></div>
-                <div class="card-body" th:text="'Adresa: ' + ${restaurantDto.address}"></div>
-                <div class="card-body" th:text="'Telefon: ' + ${restaurantDto.phoneNo}"></div>
+        <div class="card-img-overlay text-white text-center " >
+            <img class="card-header  "  th:src="${restaurantDto.logo}"  alt="Product image">
+            <div class="w-100 restaurant_custom_img_text" >
+                <div class="card-body" style="font-size: 50px;" th:text=" ${restaurantDto.name}"></div>
+                <div class="card-body" th:text=" ${restaurantDto.description}"></div>
+                <div class="card-body" th:text="${restaurantDto.restaurantSpecific}"></div>
+                <div class="card-body" th:text="${restaurantDto.address}"></div>
+                <div class="card-body" th:text="${restaurantDto.phoneNo}"></div>
             </div>
         </div>
 
     </div>
 </div>
+<div class="mx-auto" style="border-top-style: solid; width: 65%"></div>
 <nav  sec:authorize="hasRole('SELLER')" class="navbar navbar-expand-sm justify-content-center category-nav" >
     <ul class="navbar-nav category-nav">
         <li class="nav-item px-3">

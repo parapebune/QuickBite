@@ -31,8 +31,6 @@ public class MvcController extends DefaultController {
 
 
     @Autowired
-    private OrderEntryService orderEntryService;
-    @Autowired
     private OrderCartService orderCartService;
     @Autowired
     private OrderCartEntryService orderCartEntryService;

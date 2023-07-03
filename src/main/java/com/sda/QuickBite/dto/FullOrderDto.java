@@ -12,5 +12,5 @@ import java.util.List;
 @ToString
 public class FullOrderDto {
     private FoodOrderDto foodOrderDto;
-    private List<OrderEntryDto> orderEntryDtoList;
+    private List<OrderCartEntryDto> orderCartEntryDtoList;
 }

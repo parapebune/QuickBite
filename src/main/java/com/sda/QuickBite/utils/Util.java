@@ -1,6 +1,7 @@
 package com.sda.QuickBite.utils;
 
 import com.sda.QuickBite.dto.UserDto;
+import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -49,5 +51,13 @@ public class Util {
         }
         UserDto userDto = optionalUserDto.get();
         return userDto.getFirstName() + " " + userDto.getLastName();
+    }
+
+    public double calculateTotalAmount(List<OrderCartEntry> orderCartEntryList) {
+        double totalAmount = 0;
+        for (OrderCartEntry orderCartEntry : orderCartEntryList){
+            totalAmount = totalAmount + orderCartEntry.getQuantity()*orderCartEntry.getDish().getPrice();
+        }
+        return totalAmount;
     }
 }

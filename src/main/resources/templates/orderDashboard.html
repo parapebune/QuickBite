@@ -1,181 +1,93 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<!--xmlns="http://www.w3.org/1999/html"-->
+
 <head>
     <meta charset="UTF-8">
     <title>Order History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .bg-cyan {
-            background-color: #857b11;
-        }
+    <link rel="stylesheet" href="/css/style.css">
 
-        .col-1-custom {
-            width: 8.3%;
-        }
-
-        .col-2-custom {
-            width: 16.6%;
-        }
-
-        .col-3-custom {
-            width: 24.9%;
-        }
-
-        .col-5-custom {
-            width: 41.5%;
-        }
-
-        .col-4-custom {
-            width: 33.2%;
-        }
-
-        .col-6-custom {
-            width: 49.8%;
-        }
-
-
-    </style>
 </head>
 <body>
 <div th:insert="~{fragments/navBar.html :: body}"></div>
 
 
-<div class="card bg-light text-dark">
-    <h2>Orders</h2>
-    <div class="card text-start ">
+<div class="container-fluid bg-dark text-white mx-auto d-block py-3" style="width: 95%;border-radius: 20px;">
+    <h2 class="ps-3 pt-2">Orders</h2>
+    <div class="card  text-start ">
         <div class="card d-flex flex-row justify-content-between">
 
-            <div class="card-body bg-light text-dark col-2-custom ">Date and time</div>
-            <div class="card-body bg-light text-dark col-1-custom ">Order No.</div>
-            <div class="card-body bg-light text-dark col-1-custom ">Restaurant</div>
+            <div class="card-body bg-light text-dark col-2 ">Date and time</div>
+            <div class="card-body bg-light text-dark col-1 ">Order No.</div>
+            <div class="card-body bg-light text-dark col-1 ">Restaurant</div>
 
 
-            <div class="card-body bg-light text-dark col-3-custom">Dish</div>
-            <div class="card-body bg-light text-dark col-1-custom">Qty.</div>
-            <div class="card-body bg-light text-dark col-1-custom">Cost</div>
+            <div class="card-body bg-light text-dark col-3">Dish</div>
+            <div class="card-body bg-light text-dark col-1">Qty.</div>
+            <div class="card-body bg-light text-dark col-1">Cost</div>
 
 
-            <div class="card-body bg-light text-dark col-1-custom">Total amount</div>
-            <div class="card-body bg-light text-dark col-1-custom">Status</div>
-            <div class="card-body bg-light text-dark col-1-custom">Action</div>
+            <div class="card-body bg-light text-dark col-1">Total amount</div>
+            <div class="card-body bg-light text-dark col-1">Status</div>
+            <div class="card-body bg-light text-dark col-1">Action</div>
 
         </div>
 
-        <div class="card  d-flex flex-row justify-content-start">
-            <th:block th:object="${fullOrderDtoList}" th:each="foodOrderDto : ${fullOrderDtoList}">
-                <div class=" col-4-custom d-flex flex-row ">
-                    <div th:text="${foodOrderDto.foodOrderDto.date}" class="card-body bg-light text-dark col-4-custom">
-                        Date andtime
-                    </div>
-                    <div th:text="${foodOrderDto.foodOrderDto.foodOrderId}"
-                         class="card-body bg-light text-dark col-1-custom">Order No.
-                    </div>
-                    <div th:text="${foodOrderDto.foodOrderDto.restaurantName}"
-                         class="card-body bg-light text-dark col-1-custom">Restaurant
-                    </div>
-                </div>
-                <div class="col-5-custom d-flex flex-column">
-                    <th:block th:each="orderEntryDto : ${foodOrderDto.orderEntryDtoList}">
-                        <div class="d-flex flex-row ">
-                            <div th:text="${orderEntryDto.dishName}" class="card-body bg-light text-dark col-6-custom">
-                                Dish
+        <div>
+            <th:block th:object="${fullOrderDtoList}" th:each="fullOrderDto : ${fullOrderDtoList}">
+                <div class="card bg-light text-dark ">
+                    <div class=" d-flex flex-row ">
+                        <div  class="d-flex flex-row col-xxl-4 ">
+                            <div th:text="${fullOrderDto.foodOrderDto.date}"
+                                 class="card-body bg-light text-dark col-xxl-5">
                             </div>
-                            <div th:text="${orderEntryDto.quantity}" class="card-body bg-light text-dark col-1-custom">
-                                Qty.
+                            <div th:text="${fullOrderDto.foodOrderDto.foodOrderId}"
+                                 class="card-body bg-light text-dark col-xxl-2 ">
                             </div>
-                            <div th:text="${orderEntryDto.costPerDish} + ' RON'"
-                                 class="card-body bg-light text-dark col-1-custom">Cost
+                            <div th:text="${fullOrderDto.foodOrderDto.restaurantName}"
+                                 class="card-body bg-light text-dark col-xxl-2 ">
                             </div>
                         </div>
-                    </th:block>
-                </div>
+                        <div  class=" d-flex flex-column col-xxl-5">
+                            <th:block th:each="orderCartEntryDto : ${fullOrderDto.orderCartEntryDtoList}">
+                                <div class="d-flex flex-row col-xxl-12 ">
+                                    <div th:text="${orderCartEntryDto.dishDto.name}"
+                                         class="card-body bg-light text-dark col-xxl-6 ">
+                                    </div>
+                                    <div th:text="${orderCartEntryDto.quantity}"
+                                         class="card-body bg-light text-dark col-xxl-1 ">
+                                    </div>
+                                    <div th:text="${orderCartEntryDto.cost} + ' RON'"
+                                         class="card-body bg-light text-dark col-xxl-1 "></div>
+                                </div>
+                            </th:block>
+                        </div>
+                            <form th:object="${statusDto}" th:action="@{'/food-order/' + ${fullOrderDto.foodOrderDto.foodOrderId} + '/change-status'}" method="post" class="  d-flex flex-row col-xxl-3 ">
+                            <div th:text="${fullOrderDto.foodOrderDto.totalAmount + ' RON'}"
+                                 class="card-body bg-light text-dark col-xxl-1 "></div>
 
-                <div class=" col-3-custom d-flex flex-row">
-<!--                    <form style="width: 100%">-->
-                        <div th:text="${foodOrderDto.foodOrderDto.totalAmount + ' RON'}"
-                             class="card-body bg-light text-dark col-1-custom"></div>
-                        <div class="card-body bg-light text-dark col-1-custom">Status</div>
-<!--                        <div class="card-body bg-light text-dark col-1-custom">Action</div>-->
-                        <!--                        <div class="card-body bg-light text-dark col-1-custom">-->
-                        <!--                            <a th:href="@{/foodOrder/{x}/update (x=${foodOrderDto.foodOrderDto.foodOrderId})}">-->
-                        <button type="submit" class="card-body bg-light text-dark col-1-custom" th:text="Update"></button>
-                        <!--                            </a>-->
-                        <!--                        </div>-->
-<!--                    </form>-->
+                            <div  class="card-body bg-light text-dark col-xxl-1 ">
+                                <select th:field="*{status}" class="form-select form-select-sm" id="status">
+                                    <option th:value="${fullOrderDto.foodOrderDto.status}" th:text="${fullOrderDto.foodOrderDto.status}"></option>
+                                    <option th:each="statusOpt : ${T(com.sda.QuickBite.enums.OrderStatus).values()}"
+                                            th:if="${statusOpt.name() != fullOrderDto.foodOrderDto.status}"
+                                            th:value="${statusOpt}" th:text="${statusOpt}"
+                                    ></option>
+                                </select>
+                            </div>
+                            <div class="card-body bg-light text-dark col-xxl-1 ">
+                                <button type="submit" class="btn btn-primary" th:text="Update"></button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
             </th:block>
         </div>
+
     </div>
 </div>
-
-
-<!--<div class="card bg-light text-dark">-->
-<!--    <div class="card-body">-->
-<!--        <h2>Orders</h2>-->
-<!--        <table class="table table-hover ">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th>Date and time</th>-->
-<!--                <th>Order No.</th>-->
-<!--                <th>Restaurant</th>-->
-<!--                <th>Dish</th>-->
-<!--                <th>Qty.</th>-->
-<!--                <th>Cost</th>-->
-<!--                <th>Total amount</th>-->
-<!--                <th>Status</th>-->
-<!--                <th>Action</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <th:block th:object="${fullOrderDtoList}" th:each="foodOrderDto : ${fullOrderDtoList}">-->
-
-<!--                <tr>-->
-<!--                    <td th:text="${foodOrderDto.foodOrderDto.date}"></td>-->
-<!--                    <td th:text="${foodOrderDto.foodOrderDto.foodOrderId}"></td>-->
-<!--                    <td th:text="${foodOrderDto.foodOrderDto.restaurantName}"></td>-->
-<!--                    <td th:text="${foodOrderDto.foodOrderDto.totalAmount + ' RON'}"></td>-->
-<!--                    <table class="table table-hover ">-->
-<!--                        <thead>-->
-<!--                        <tr>-->
-<!--                            <th>Dish</th>-->
-<!--                            <th>Qty.</th>-->
-<!--                            <th>Cost</th>-->
-<!--                        </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody>-->
-<!--                        <th:block th:each="orderEntryDto : ${foodOrderDto.orderEntryDtoList}">-->
-<!--                            <tr>-->
-<!--                                <td th:text="${orderEntryDto.dishName}"></td>-->
-<!--                                <td th:text="${orderEntryDto.quantity}"></td>-->
-<!--                                <td th:text="${orderEntryDto.costPerDish}"></td>-->
-<!--                            </tr>-->
-<!--                        </th:block>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-<!--                    </td>-->
-<!--                    <form>-->
-<!--                        <td>-->
-<!--                            &lt;!&ndash;                        <label class="form-label" for="status">Restaurant specific</label>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                        <select th:field="*{}" class="form-control" id="status">&ndash;&gt;-->
-<!--                            &lt;!&ndash;                            <option th:each="statusOpt : ${T(com.sda.QuickBite.enums.OrderStatus).values()}"&ndash;&gt;-->
-<!--                            &lt;!&ndash;                                    th:value="${statusOpt}" th:text="${statusOpt}"></option>&ndash;&gt;-->
-<!--                            &lt;!&ndash;                        </select>&ndash;&gt;-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <a th:href="@{/foodOrder/{x}/update (x=${foodOrderDto.foodOrderDto.foodOrderId})}">-->
-<!--                                <button type="submit" class="btn btn-primary btn-sm" th:text="Update"></button>-->
-<!--                            </a>-->
-<!--                        </td>-->
-<!--                    </form>-->
-<!--                </tr>-->
-
-<!--            </th:block>-->
-<!--            </tbody>-->
-<!--        </table>-->
-<!--    </div>-->
-<!--</div>-->
 
 </body>
 </html>

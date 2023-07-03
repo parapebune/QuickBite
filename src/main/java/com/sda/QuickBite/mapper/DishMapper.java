@@ -1,7 +1,6 @@
 package com.sda.QuickBite.mapper;
 
 import com.sda.QuickBite.dto.DishDto;
-import com.sda.QuickBite.dto.OrderEntryDto;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.Restaurant;
@@ -49,13 +48,5 @@ public class DishMapper {
                 .category(DishCategory.valueOf(dishDto.getCategory()))
                 .image(util.convertToBytes(dishImage)).build();
     }
-    public OrderEntryDto map(OrderCartEntry orderCartEntry) {
 
-        Double costPerDish = orderCartEntry.getDish().getPrice() * orderCartEntry.getQuantity();
-        return OrderEntryDto.builder()
-                .dishName(orderCartEntry.getDish().getName())
-                .quantity(orderCartEntry.getQuantity().toString())
-                .costPerDish(costPerDish.toString())
-                .build();
-    }
 }
