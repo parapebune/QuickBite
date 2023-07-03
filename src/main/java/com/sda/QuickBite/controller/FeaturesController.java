@@ -34,6 +34,9 @@ public class FeaturesController extends DefaultController {
     @Autowired
     private FoodOrderService foodOrderService;
 
+    @Autowired
+    private Util util;
+
     @PostMapping("/addToCard/{dishId}")
     public String addToCardPost(@PathVariable(name = "dishId") String dishId, @ModelAttribute(name = "quantityDto") QuantityDto quantityDto,
                                 Authentication authentication, Model model){
