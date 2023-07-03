@@ -26,6 +26,9 @@ public class DishController extends DefaultController {
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private Util util;
+
     @GetMapping("/restaurant/{restaurantId}/addDish")
     public String addDishGet(Model model, @PathVariable(name = "restaurantId") String restaurantId){
         DishDto dishDto = new DishDto();

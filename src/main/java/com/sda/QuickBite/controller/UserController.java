@@ -30,6 +30,9 @@ public class UserController extends DefaultController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private Util util;
+
     @GetMapping("/registration")
     public String registrationGet(Model model) {
         UserDto userDto = new UserDto();

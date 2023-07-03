@@ -29,6 +29,9 @@ public class RestaurantController extends DefaultController {
     @Autowired
     private DishService dishService;
 
+    @Autowired
+    private Util util;
+
 
     @GetMapping("/addRestaurant")
     public String addRestaurantGet(Model model){
