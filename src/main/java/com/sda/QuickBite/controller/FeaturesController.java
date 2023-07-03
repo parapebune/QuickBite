@@ -94,13 +94,20 @@ public class FeaturesController extends DefaultController {
         TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
         model.addAttribute("orderTotalAmount", orderTotalAmountDto);
         model.addAttribute("orderCartEntryDtoList", orderCartEntryDtoList);
+        if(orderCartEntryDtoList.size() == 0){
+            return "orderCart";
+        }else {
+            OrderCartEntryDto orderCartEntryDto =   orderCartEntryDtoList.get(0);
+            String dishId = orderCartEntryDto.getDishDto().getId();
+            Optional<Dish> optionalDish= dishRepository.findDishByDishId(Long.valueOf(dishId));
+            if(optionalDish.isEmpty()){
+                return "orderCart";
+            }
+            Dish dish=optionalDish.get();
+            model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
+            return "orderCart";
+        }
 
-//        OrderCartEntryDto orderCartEntryDto =   orderCartEntryDtoList.get(0);
-//        String dishId = orderCartEntryDto.getDishDto().getId();
-//        Optional<Dish> optionalDish= dishRepository.findDishByDishId(Long.valueOf(dishId));
-//        Dish dish=optionalDish.get();
-//        model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
-        return "orderCart";
     }
 
     @GetMapping("/orderDashboard")

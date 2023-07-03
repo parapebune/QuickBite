@@ -10,12 +10,14 @@
 <body>
 <div th:insert="~{fragments/navBar.html :: body}"></div>
 <div th:object="${orderCartEntryDtoList}">
+
     <div th:if="${orderCartEntryDtoList.size() == 0}">
         <div class="m-4" >
             <h2>YOUR CART IS EMPTY!</h2>
             <a href="/home" type="button" class="btn btn-primary btn-lg">Back to home</a>
         </div>
     </div>
+
     <div th:if="${orderCartEntryDtoList.size() > 0}">
         <section class="h-100 gradient-custom">
             <div class="container py-5">
