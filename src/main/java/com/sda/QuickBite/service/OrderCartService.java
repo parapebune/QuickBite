@@ -34,18 +34,18 @@ public class OrderCartService {
         OrderCart orderCart = optionalOrderCart.get();
 
         Optional<OrderCartEntry> optionalOrderCartEntry = orderCartEntryRepository.findByDishDishIdAndOrderCartOrderCartId(dish.getDishId(), orderCart.getOrderCartId());
+        OrderCartEntry orderCartEntry;
         if(optionalOrderCartEntry.isPresent()){
-            OrderCartEntry orderCartEntry = optionalOrderCartEntry.get();
+            orderCartEntry = optionalOrderCartEntry.get();
             orderCartEntry.setQuantity(orderCartEntry.getQuantity() + Integer.parseInt(quantityDto.getQuantity()));
-            orderCartEntryRepository.save(orderCartEntry);
         }else {
-            OrderCartEntry orderCartEntry = OrderCartEntry.builder()
+            orderCartEntry = OrderCartEntry.builder()
                     .dish(dish)
-                    .quantity(Integer.valueOf( quantityDto.getQuantity()))
+                    .quantity(Integer.valueOf(quantityDto.getQuantity()))
                     .orderCart(orderCart)
                     .build();
-            orderCartEntryRepository.save(orderCartEntry);
         }
+        orderCartEntryRepository.save(orderCartEntry);
     }
 
 

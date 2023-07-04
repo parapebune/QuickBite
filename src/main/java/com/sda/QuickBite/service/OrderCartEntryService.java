@@ -44,14 +44,6 @@ public class OrderCartEntryService {
         return TotalAmountDto.builder().totalAmount(String.valueOf(totalAmount)).build();
     }
 
-//    public double calculateTotalAmount(List<OrderCartEntry> orderCartEntryList) {
-//        double totalAmount = 0;
-//        for (OrderCartEntry orderCartEntry : orderCartEntryList){
-//            totalAmount = totalAmount + orderCartEntry.getQuantity()*orderCartEntry.getDish().getPrice();
-//        }
-//        return totalAmount;
-//    }
-
     public List<OrderCartEntry> getOrderCartEntryListByOrderCartId(Long orderCartId) {
         return orderCartEntryRepository.findAllByOrderCartOrderCartId(orderCartId);
     }
