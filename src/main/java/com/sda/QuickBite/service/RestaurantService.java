@@ -118,5 +118,9 @@ public class RestaurantService {
         }
         restaurantRepository.save(restaurant);
     }
+
+    public void removeRestaurant(Restaurant restaurant) {
+        restaurantRepository.delete(restaurant);
+    }
 }
 

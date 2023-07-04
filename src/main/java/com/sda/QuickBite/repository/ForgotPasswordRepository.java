@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.repository;
 
 import com.sda.QuickBite.entity.ForgotPassword;
@@ -13,3 +14,4 @@ public interface ForgotPasswordRepository extends CrudRepository<ForgotPassword,
 
     Boolean existsByEmail(String email);
 }
+

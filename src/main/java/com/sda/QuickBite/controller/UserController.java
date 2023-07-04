@@ -150,6 +150,7 @@ public class UserController extends DefaultController {
     public String changeForgottenPassword(@PathVariable(name = "encodedEmailForLink") String encodedEmailForLink
             , @PathVariable(name = "encodedRecoveryCodeForLink") String encodedRecoveryCodeForLink, Model model) {
 
+
         ChangeForgottenPasswordDto changeForgottenPasswordDto = new ChangeForgottenPasswordDto();
         model.addAttribute("changeForgottenPasswordDto", changeForgottenPasswordDto);
         return "changeForgottenPassword";

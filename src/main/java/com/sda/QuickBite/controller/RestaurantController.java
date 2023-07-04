@@ -97,4 +97,18 @@ public class RestaurantController extends DefaultController {
         restaurantService.updateRestaurant(outDatedRestaurant, restaurantDto, restaurantLogo, restaurantBackground);
         return "redirect:/restaurant/" + restaurantId;
     }
+
+    @GetMapping("/removeRestaurant/{restaurantId}")
+    public String removeRestaurantGet(@PathVariable(name = "restaurantId") String restaurantId, Model model){
+        Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
+        if(optionalRestaurant.isEmpty()){
+            util.getErrorMessage("Restaurant not found!", model);
+            return "error";
+        }
+        Restaurant restaurant = optionalRestaurant.get();
+
+        restaurantService.removeRestaurant(restaurant);
+
+        return "redirect:/sellerPage";
+    }
 }

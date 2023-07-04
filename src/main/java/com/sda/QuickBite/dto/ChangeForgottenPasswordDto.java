@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.dto;
 
 import lombok.*;
@@ -13,3 +14,4 @@ public class ChangeForgottenPasswordDto {
     private String newPasswordRetype;
 
 }
+

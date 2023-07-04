@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.entity;
 
 import jakarta.persistence.Entity;
@@ -23,3 +24,4 @@ public class ForgotPassword {
     private String email;
     private String recoveryCode;
 }
+
