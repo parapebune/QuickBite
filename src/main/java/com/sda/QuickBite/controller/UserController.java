@@ -1,15 +1,11 @@
 package com.sda.QuickBite.controller;
 
-import com.sda.QuickBite.dto.ChangePasswordDto;
-import com.sda.QuickBite.dto.ErrorMessageDto;
-import com.sda.QuickBite.dto.UserDto;
-import com.sda.QuickBite.dto.UserProfileDto;
+import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,8 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 
 @Controller
@@ -32,6 +32,7 @@ public class UserController extends DefaultController {
 
     @Autowired
     private Util util;
+
 
     @GetMapping("/registration")
     public String registrationGet(Model model) {
@@ -63,6 +64,7 @@ public class UserController extends DefaultController {
     public String loginGet(Model model) {
         return "login";
     }
+
 
     @GetMapping("/yourProfile")
     public String yourProfileGet(Model model, Authentication authentication) {
@@ -98,7 +100,7 @@ public class UserController extends DefaultController {
     }
 
     @PostMapping("/changePassword")
-    public String changePassWordPost(@ModelAttribute(name = "changePasswordDto") @Valid ChangePasswordDto changePasswordDto,
+    public String changePasswordPost(@ModelAttribute(name = "changePasswordDto") @Valid ChangePasswordDto changePasswordDto,
                                      BindingResult bindingResult, Authentication authentication) {
         User user = userService.getAuthenticatedUser(authentication);
         String oldPasswordInputByUser = changePasswordDto.getOldPassword();
@@ -125,4 +127,91 @@ public class UserController extends DefaultController {
         userService.updateUserPassword(user);
         return "redirect:/login";
     }
+
+    @GetMapping("/forgotPassword")
+    public String forgotPasswordGet(Model model) {
+        EmailDto emailDto = new EmailDto();
+        model.addAttribute("emailDto", emailDto);
+        return "forgotPassword";
+    }
+
+    @PostMapping("/forgotPassword")
+    public String forgotPasswordPost(@ModelAttribute(name = "emailDto") EmailDto emailDto, Model model) {
+        Optional<User> optionalUser = userService.getUserByEmail(emailDto.getEmail());
+        if (optionalUser.isEmpty()) {
+            util.getErrorMessage("Email not in the database!", model);
+            return "error";
+        }
+        userService.processForgotPassword(emailDto);
+        return "redirect:/login";
+    }
+
+    @GetMapping("/forgotPassword/{encodedEmailForLink}/{encodedRecoveryCodeForLink}")
+    public String changeForgottenPassword(@PathVariable(name = "encodedEmailForLink") String encodedEmailForLink
+            , @PathVariable(name = "encodedRecoveryCodeForLink") String encodedRecoveryCodeForLink, Model model) {
+
+        ChangeForgottenPasswordDto changeForgottenPasswordDto = new ChangeForgottenPasswordDto();
+        model.addAttribute("changeForgottenPasswordDto", changeForgottenPasswordDto);
+        return "changeForgottenPassword";
+    }
+
+    @PostMapping("/changeForgottenPassword/{encodedEmailForLink}/{encodedRecoveryCodeForLink}")
+    public String changeForgottenPasswordPost(@ModelAttribute(name="changeForgottenPasswordDto") ChangeForgottenPasswordDto changeForgottenPasswordDto
+            , @PathVariable(name = "encodedEmailForLink") String encodedEmailForLink
+            , @PathVariable(name = "encodedRecoveryCodeForLink") String encodedRecoveryCodeForLink
+            , Model model, BindingResult bindingResult){
+
+        String decodedEmail = URLDecoder.decode(encodedEmailForLink, StandardCharsets.UTF_8);
+        byte[] emailBytes = Base64.getDecoder().decode(decodedEmail);
+        String email = new String(emailBytes);
+
+        String decodedRecoveryCode = URLDecoder.decode(encodedRecoveryCodeForLink, StandardCharsets.UTF_8);
+        byte[] recoveryCodeBytes = Base64.getDecoder().decode(decodedRecoveryCode);
+        String recoveryCode = new String(recoveryCodeBytes);
+
+        Boolean correctRecoveryCode = userService.verifyRecoveryCode(encodedEmailForLink, encodedRecoveryCodeForLink);
+        if (!correctRecoveryCode){
+            util.getErrorMessage("Bad Request!", model);
+            return "error";
+        }
+
+        Optional<User> optionalUser = userService.getUserByEmail(email);
+        if (optionalUser.isEmpty()){
+            util.getErrorMessage("User Not Found", model);
+        }
+
+        User user = optionalUser.get();
+        System.out.println("Old password was: " + user.getPassword());
+        
+        
+        if (!changeForgottenPasswordDto.getNewPassword().equals(changeForgottenPasswordDto.getNewPasswordRetype())) {
+            bindingResult.rejectValue("newPasswordRetype", "error.changeForgottenPasswordDto",
+                    "New Passwords do not match! Please try again!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "changeForgottenPassword";
+        }
+
+        String encodedNewPassword = bCryptPasswordEncoder.encode(changeForgottenPasswordDto.newPassword);
+        System.out.println("New password id: " + encodedNewPassword);
+        user.setPassword(bCryptPasswordEncoder.encode(changeForgottenPasswordDto.getNewPassword()));
+        userService.updateUserPassword(user);
+        return "redirect:/login";
+    }
+
+//    public String decodeRecoveryCodeFromLink(String encodedRecoveryCodeForLink) {
+//        String decodedRecoveryCode = URLDecoder.decode(encodedRecoveryCodeForLink, StandardCharsets.UTF_8);
+//        byte[] recoveryCodeBytes = Base64.getDecoder().decode(decodedRecoveryCode);
+//        String recoveryCode = new String(recoveryCodeBytes);
+//        return recoveryCode;
+//    }
+//
+//    public String decodeEmailFromLink(String encodedEmailForLink) {
+//        String decodedEmail = URLDecoder.decode(encodedEmailForLink, StandardCharsets.UTF_8);
+//        byte[] emailBytes = Base64.getDecoder().decode(decodedEmail);
+//        String email = new String(emailBytes);
+//        return email;
+//    }
+
 }

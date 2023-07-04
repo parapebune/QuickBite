@@ -33,6 +33,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/addToCart/**").permitAll();
                     auth.requestMatchers("/orderCart/**").permitAll();
                     auth.requestMatchers("/cartEntry/remove/*").permitAll();
+                    auth.requestMatchers("/forgotPassword/**").permitAll();
+                    auth.requestMatchers("/changeForgottenPassword/**").permitAll();
 
 
                     auth.requestMatchers("/registration").permitAll();
@@ -69,8 +71,11 @@ public class SecurityConfig {
                 })
                 .httpBasic();
 
+
         httpSecurity.formLogin()
                 .loginPage("/login").defaultSuccessUrl("/home").permitAll()
+                .failureUrl("/login?error=true")
+                .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/home").permitAll()
                 .and()

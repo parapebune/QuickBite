@@ -4,9 +4,9 @@ import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.repository.DishRepository;
-import com.sda.QuickBite.repository.RestaurantRepository;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -36,6 +36,7 @@ public class FeaturesController extends DefaultController {
 
     @Autowired
     private Util util;
+
 
     @PostMapping("/addToCard/{dishId}")
     public String addToCardPost(@PathVariable(name = "dishId") String dishId, @ModelAttribute(name = "quantityDto") QuantityDto quantityDto,
@@ -88,12 +89,13 @@ public class FeaturesController extends DefaultController {
     }
 
     @GetMapping("/orderCart")
-    public String orderCartGet(Model model, Authentication authentication ) {
+    public String orderCartGet(Model model, Authentication authentication, HttpSession session ) {
         List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getOrderCartEntryList(authentication.getName());
         TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
         model.addAttribute("orderTotalAmount", orderTotalAmountDto);
         model.addAttribute("orderCartEntryDtoList", orderCartEntryDtoList);
         if (orderCartEntryDtoList.size() != 0) {
+            System.out.println("DAR AICI?");
             OrderCartEntryDto orderCartEntryDto = orderCartEntryDtoList.get(0);
             String dishId = orderCartEntryDto.getDishDto().getId();
             Optional<Dish> optionalDish = dishRepository.findDishByDishId(Long.valueOf(dishId));
@@ -103,6 +105,9 @@ public class FeaturesController extends DefaultController {
             Dish dish = optionalDish.get();
             model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
         }
+        int cartItemCount = orderCartEntryDtoList.size();
+        session.setAttribute("cartItemCount", cartItemCount);
+        System.out.println("AJUNGE AICI?" + session.getAttribute("cartItemCount"));
         return "orderCart";
     }
 

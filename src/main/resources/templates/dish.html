@@ -24,7 +24,7 @@
                     <h5 class="card-text" th:text="'Price: ' + ${dishDto.price + ' RON'}"></h5>
                     <form th:object="${quantityDto}" th:action="@{/addToCard/{x}(x=${dishDto.id})}" method="post">
                         <label sec:authorize="hasRole('BUYER')" class="card-text" >Quantity:</label>
-                        <input sec:authorize="hasRole('BUYER')" class="form-label" style="width: 50px" th:field="*{quantity}" type="number">
+                        <input sec:authorize="hasRole('BUYER')" class="form-label" style="width: 50px" th:field="*{quantity}" type="number" min="1">
                         <div class="mt-3 d-flex justify-content-left">
                             <button sec:authorize="hasRole('BUYER')" type="submit" class="btn btn-outline-primary mr-2 m-3" >Add to cart</button>
                             <a sec:authorize="hasRole('SELLER')" th:href="@{/dish/{x}/modify(x=${dishDto.id})}" type="button" class="btn btn-outline-primary mr-2 m-3">Modify</a>

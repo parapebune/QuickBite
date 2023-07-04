@@ -66,6 +66,7 @@
 <!--    <button class="btn btn-primary"  th:href="@{/editRestaurant/{x} (x=${restaurantId})}">Update Restaurant</button>-->
       <input type="hidden" name="restaurantId" th:value="${restaurantId}" />
       <button class="btn btn-primary" type="submit">Update Restaurant</button>
+      <a th:href="@{/sellerPage}" class="btn btn-primary">Cancel</a>
 
   </form>
 </div>
