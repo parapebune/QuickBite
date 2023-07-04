@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.entity;
 
 import jakarta.persistence.*;
@@ -26,3 +27,4 @@ public class Feedback {
 
 
 }
+

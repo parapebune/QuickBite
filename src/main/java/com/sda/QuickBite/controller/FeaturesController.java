@@ -37,9 +37,11 @@ public class FeaturesController extends DefaultController {
     @Autowired
     private Util util;
     @Autowired
-    private FeedBackService feedbackService;
+    private FeedbackService feedbackService;
     @Autowired
     private RestaurantService restaurantService;
+
+
 
 
     @PostMapping("/addToCard/{dishId}")
@@ -154,6 +156,7 @@ public class FeaturesController extends DefaultController {
     }
 
     @GetMapping("/restaurant/review/{restaurantId}")
+
     public String addReviewGet(@PathVariable(name = "restaurantId") String restaurantId,
                                Model model){
         FeedbackDto feedbackDto = new FeedbackDto();
@@ -181,6 +184,7 @@ public class FeaturesController extends DefaultController {
         feedbackService.addFeedback(feedbackDto,restaurant, user);
         return "redirect:/orderHistory";
     }
+
 
 
 }
