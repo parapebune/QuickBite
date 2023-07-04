@@ -33,7 +33,8 @@
                     <a sec:authorize="isAnonymous()" href="/login" class="nav-item nav-link">Login</a>
                     <a sec:authorize="hasRole('BUYER')" href="/orderHistory" class="nav-item nav-link">Order History</a>
                     <a sec:authorize="hasRole('BUYER')" href="/orderCart" class="nav-item nav-link">
-                        Your Cart <span class="badge bg-primary" th:text="${session.cartItemCount}"></span>
+<!--                        Your Cart <span class="badge bg-primary" th:text="${session.cartItemCount}"></span>-->
+                        Your Cart <span class="badge bg-primary" th:text="${orderCartSize}"></span>
                     </a>
                     <a sec:authorize="isAnonymous()" href="/registration" class="nav-item nav-link">Registration</a>
                     <a sec:authorize="isAuthenticated()" href="/logout" class="nav-item nav-link">Logout</a>

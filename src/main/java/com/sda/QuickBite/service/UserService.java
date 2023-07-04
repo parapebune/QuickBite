@@ -37,9 +37,6 @@ public class UserService {
     @Autowired
     private ForgotPasswordRepository forgotPasswordRepository;
 
-    @Autowired
-    private ForgotPasswordRepository forgotPasswordRepository;
-
 
     public void addUser(UserDto userDto) {
         User user = userMapper.map(userDto);
@@ -79,11 +76,7 @@ public class UserService {
     public User getAuthenticatedUser(Authentication authentication) {
         String email = authentication.getName();
         Optional<User> optionalUser = getUserByEmail(email);
-        if (optionalUser.isEmpty()) {
-            return null;
-        }
-        User user = optionalUser.get();
-        return user;
+        return optionalUser.orElse(null);
     }
 
     public void updateUser(User user, @Valid UserProfileDto userDto) {
@@ -124,12 +117,11 @@ public class UserService {
     }
 
     public void processForgotPassword(EmailDto emailDto) {
-        System.out.println(emailDto.getEmail());
         UUID uuid = UUID.randomUUID();
         String recoveryCode = uuid.toString();
 
-        System.out.println("Email: " + emailDto.getEmail());
-        System.out.println("Recovery code: " + recoveryCode);
+//        System.out.println("Email: " + emailDto.getEmail());
+//        System.out.println("Recovery code: " + recoveryCode);
 
         String encodedEmail = Base64.getEncoder().encodeToString(emailDto.getEmail().getBytes());
         String encodedEmailForLink = URLEncoder.encode(encodedEmail, StandardCharsets.UTF_8)
@@ -179,10 +171,8 @@ public class UserService {
         String recoveryCodeByEmail = forgotPassword.getRecoveryCode();
 
         if (recoveryCodeByEmail.equals(recoveryCode)) {
-            System.out.println("Se potrivesc codurile!!!");
             return true;
         }
-        System.out.println("Nu se potrivesc codurile");
         return false;
 
     }

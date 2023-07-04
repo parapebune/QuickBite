@@ -51,7 +51,7 @@ public class FeaturesController extends DefaultController {
         }
         Dish dish = optionalDish.get();
         if(!orderCartService.isDishFromSameRestaurant(dish, authentication.getName())){
-            util.getErrorMessage("Dish Not Found", model);
+            util.getErrorMessage("You cannot add a dish from different restaurant!", model);
             return "error";
         }
         orderCartService.addToCart(dish, quantityDto, authentication.getName());
@@ -89,13 +89,12 @@ public class FeaturesController extends DefaultController {
     }
 
     @GetMapping("/orderCart")
-    public String orderCartGet(Model model, Authentication authentication, HttpSession session ) {
+    public String orderCartGet(Model model, Authentication authentication) {
         List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getOrderCartEntryList(authentication.getName());
         TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
         model.addAttribute("orderTotalAmount", orderTotalAmountDto);
         model.addAttribute("orderCartEntryDtoList", orderCartEntryDtoList);
         if (orderCartEntryDtoList.size() != 0) {
-            System.out.println("DAR AICI?");
             OrderCartEntryDto orderCartEntryDto = orderCartEntryDtoList.get(0);
             String dishId = orderCartEntryDto.getDishDto().getId();
             Optional<Dish> optionalDish = dishRepository.findDishByDishId(Long.valueOf(dishId));
@@ -105,9 +104,6 @@ public class FeaturesController extends DefaultController {
             Dish dish = optionalDish.get();
             model.addAttribute("restaurantId", dish.getRestaurant().getRestaurantId().toString());
         }
-        int cartItemCount = orderCartEntryDtoList.size();
-        session.setAttribute("cartItemCount", cartItemCount);
-        System.out.println("AJUNGE AICI?" + session.getAttribute("cartItemCount"));
         return "orderCart";
     }
 

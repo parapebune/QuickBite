@@ -33,9 +33,6 @@ public class DishController extends DefaultController {
     @Autowired
     private Util util;
 
-    @Autowired
-    private OrderCartEntryService orderCartEntryService;
-
     @GetMapping("/restaurant/{restaurantId}/addDish")
     public String addDishGet(Model model, @PathVariable(name = "restaurantId") String restaurantId){
         DishDto dishDto = new DishDto();
@@ -52,7 +49,6 @@ public class DishController extends DefaultController {
             return "addDish";
         }
 
-
         Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
         if(optionalRestaurant.isEmpty()){
             util.getErrorMessage("Restaurant not found!", model);
@@ -63,10 +59,6 @@ public class DishController extends DefaultController {
         dishService.addDish(dishDto, dishImage, restaurant);
         return "redirect:/restaurant/" + restaurantId;
     }
-
-
-
-
 
     @GetMapping("/dish/{dishId}")
     public String dishGet(Model model, @PathVariable(name = "dishId") String dishId,
@@ -87,10 +79,6 @@ public class DishController extends DefaultController {
         return "dish";
     }
 
-
-
-
-
     @GetMapping("/dish/{dishId}/modify")
     public String modifyDishGet(@PathVariable(name = "dishId") String dishId, Model model){
         Optional<DishDto> optionalDishDto = dishService.getDishDtoById(dishId);
@@ -102,16 +90,12 @@ public class DishController extends DefaultController {
         model.addAttribute("dishDto",dishDto);
         return "modifyDish";
     }
-
-
-
     @PostMapping("/dish/{dishId}/update")
     public String updateDishPost(@ModelAttribute(name = "dishDto") DishDto dishDto, @PathVariable(name = "dishId") String dishId,
                                  @RequestParam(name = "dishImage",required = false) MultipartFile dishImage ){
         dishService.updateDish(dishDto, dishId, dishImage);
         return "redirect:/dish/" + dishId;
     }
-
     @GetMapping("/dish/{dishId}/remove")
     public String removeDishGet(@ModelAttribute(name = "dishId") String dishId,
                                 @RequestParam(name = "restaurantId") String restaurantId){
@@ -151,8 +135,4 @@ public class DishController extends DefaultController {
         dishService.updateDish(outdatedDish, dishDto, dishImage);
         return "redirect:/dish/" + dishId;
     }
-
-
-
-
 }
