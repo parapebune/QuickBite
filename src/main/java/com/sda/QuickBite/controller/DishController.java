@@ -2,20 +2,24 @@ package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.DishDto;
 import com.sda.QuickBite.dto.ErrorMessageDto;
+import com.sda.QuickBite.dto.OrderCartEntryDto;
 import com.sda.QuickBite.dto.QuantityDto;
 import com.sda.QuickBite.entity.Dish;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.SecurityCheck;
 import com.sda.QuickBite.utils.Util;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,6 +32,9 @@ public class DishController extends DefaultController {
 
     @Autowired
     private Util util;
+
+    @Autowired
+    private OrderCartEntryService orderCartEntryService;
 
     @GetMapping("/restaurant/{restaurantId}/addDish")
     public String addDishGet(Model model, @PathVariable(name = "restaurantId") String restaurantId){
@@ -56,6 +63,11 @@ public class DishController extends DefaultController {
         dishService.addDish(dishDto, dishImage, restaurant);
         return "redirect:/restaurant/" + restaurantId;
     }
+
+
+
+
+
     @GetMapping("/dish/{dishId}")
     public String dishGet(Model model, @PathVariable(name = "dishId") String dishId,
                           @RequestParam(name = "restaurantId", required = false) String restaurantId){
@@ -71,8 +83,13 @@ public class DishController extends DefaultController {
                 .quantity("1").build();
 
         model.addAttribute("quantityDto", quantityDto);
+        System.out.println();
         return "dish";
     }
+
+
+
+
 
     @GetMapping("/dish/{dishId}/modify")
     public String modifyDishGet(@PathVariable(name = "dishId") String dishId, Model model){

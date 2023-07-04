@@ -5,6 +5,7 @@ import com.sda.QuickBite.dto.UserDto;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -12,9 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +28,8 @@ public class Util {
 
     @Autowired
     private UserService userService;
+
+
     public static final String BASE64_PREFIX = "data:image/png; base64, ";
 
     public byte[] convertToBytes(MultipartFile multipartFile){
@@ -63,11 +69,12 @@ public class Util {
     }
 
     public void getErrorMessage(String errorMessage, Model model) {
+        System.out.println("GET ERROR MESSAGE IS CALLED");
         ErrorMessageDto errorMessageDto = ErrorMessageDto.builder()
                 .errorMessage(errorMessage).build();
         model.addAttribute("errorMessageDto", errorMessageDto);
-    }
 
+    }
 
 
 }

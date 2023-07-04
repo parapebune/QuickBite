@@ -59,6 +59,7 @@
             <p th:each="error : ${#fields.errors('image')}" th:text="${error}" class="error"/>
         </div>
         <button type="submit" class="btn btn-primary">Add Dish</button>
+        <a th:href="@{/sellerPage}" class="btn btn-primary">Cancel</a>
     </form>
 </div>
 </body>

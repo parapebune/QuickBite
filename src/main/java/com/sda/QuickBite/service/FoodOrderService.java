@@ -67,7 +67,7 @@ public class FoodOrderService {
     }
 
     public List<FoodOrderDto> getAllFoodOrdersDtoByEmail(String email) {
-        List<FoodOrder> foodOrderList = foodOrderRepository.findAllByUserEmail(email);
+        List<FoodOrder> foodOrderList = foodOrderRepository.findAllByUserEmailOrderByOrderDateDesc(email);
         List<FoodOrderDto> foodOrderDtoList = new ArrayList<>();
         for(FoodOrder foodOrder : foodOrderList){
             FoodOrderDto foodOrderDto = foodOrderMapper.map(foodOrder);
@@ -96,7 +96,7 @@ public class FoodOrderService {
 
         List<FoodOrder> foodOrderList = new ArrayList<>();
         for(Restaurant restaurant : restaurants){
-            foodOrderList.addAll(foodOrderRepository.findAllByRestaurantRestaurantId(restaurant.getRestaurantId()));
+            foodOrderList.addAll(foodOrderRepository.findAllByRestaurantRestaurantIdOrderByOrderDateDesc(restaurant.getRestaurantId()));
         }
         List<FullOrderDto> fullOrderDtoList = new ArrayList<>();
         for(FoodOrder foodOrder : foodOrderList){
@@ -129,6 +129,8 @@ public class FoodOrderService {
         foodOrder.setOrderStatus(OrderStatus.valueOf(statusDto.getStatus()));
         foodOrderRepository.save(foodOrder);
     }
+
+
 //public void changeStatus(String foodOrderId, String status) {
 //    Optional<FoodOrder> optionalFoodOrder = foodOrderRepository.findById(Long.valueOf(foodOrderId));
 //    if(optionalFoodOrder.isEmpty()){
