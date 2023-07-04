@@ -2,17 +2,18 @@ package com.sda.QuickBite.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class FoodOrderDto {
-    private String foodOrderId;
-    private String date;
+public class SummaryOrderCartDto {
     private String restaurantName;
-    private String restaurantId;
+
     private String totalAmount;
-    private String status;
+    private List<OrderCartEntryDto> orderCartEntryDtoList;
+
 }

@@ -2,10 +2,13 @@ package com.sda.QuickBite.service;
 
 import com.sda.QuickBite.dto.OrderCartEntryDto;
 import com.sda.QuickBite.dto.TotalAmountDto;
+import com.sda.QuickBite.dto.SummaryOrderCartDto;
 import com.sda.QuickBite.entity.FoodOrder;
 import com.sda.QuickBite.entity.OrderCartEntry;
 import com.sda.QuickBite.mapper.OrderCartEntryMapper;
 import com.sda.QuickBite.repository.OrderCartEntryRepository;
+import com.sda.QuickBite.repository.OrderCartRepository;
+import com.sda.QuickBite.repository.RestaurantRepository;
 import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class OrderCartEntryService {
 
     @Autowired
     private  OrderCartEntryRepository orderCartEntryRepository;
+
+    @Autowired
+    private OrderCartRepository orderCartRepository;
     @Autowired
     private  OrderCartEntryMapper orderCartEntryMapper;
 
@@ -26,6 +32,8 @@ public class OrderCartEntryService {
     private FoodOrderService foodOrderService;
     @Autowired
     private Util util;
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
 
     public List<OrderCartEntryDto> getOrderCartEntryList(String email) {
@@ -42,6 +50,8 @@ public class OrderCartEntryService {
         List<OrderCartEntry> orderCartEntryList = orderCartEntryRepository.findByOrderCartUserEmail(email);
         double totalAmount = util.calculateTotalAmount(orderCartEntryList);
         return TotalAmountDto.builder().totalAmount(String.valueOf(totalAmount)).build();
+
+
     }
 
     public List<OrderCartEntry> getOrderCartEntryListByOrderCartId(Long orderCartId) {
@@ -94,4 +104,19 @@ public class OrderCartEntryService {
         }
         return orderCartEntryDtoList;
     }
+
+//    public List<SummaryOrderCartDto> getSummaryOrderCartDtoList(String email) {
+//        Optional<OrderCart> optionalOrderCart = orderCartRepository.findByUserEmail(email);
+//        if(optionalOrderCart.isEmpty())
+//        List<Restaurant> restaurantList = restaurantRepository.findAllByUserOrderCartOrderCartId()
+//        List<OrderCartEntry> listOfOrderCartEntryByRestaurant = orderCartEntryRepository.
+//
+//        List<OrderCartEntry> orderCartEntryList = orderCartEntryRepository.findByOrderCartUserEmail(email);
+//        List<OrderCartEntryDto> orderCartEntryDtoList = new ArrayList<>();
+//        for (OrderCartEntry orderCartEntry : orderCartEntryList){
+//            OrderCartEntryDto orderCartEntryDto = orderCartEntryMapper.map(orderCartEntry);
+//            orderCartEntryDtoList.add(orderCartEntryDto);
+//        }
+//        return null;
+//    }
 }
