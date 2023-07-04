@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!--xmlns="http://www.w3.org/1999/html"-->
 
 <head>
@@ -19,8 +19,8 @@
     <div class="card  text-start ">
         <div class="card d-flex flex-row justify-content-between">
 
-            <div class="card-body bg-light text-dark col-2 ">Date and time</div>
-            <div class="card-body bg-light text-dark col-1 ">Order No.</div>
+            <div class="card-body bg-light text-dark col-2 date-header">Date and time</div>
+            <div class="card-body bg-light text-dark col-1 order-no-header">Order No.</div>
             <div class="card-body bg-light text-dark col-1 ">Restaurant</div>
 
 
@@ -39,9 +39,9 @@
             <th:block th:object="${fullOrderDtoList}" th:each="fullOrderDto : ${fullOrderDtoList}">
                 <div class="card bg-light text-dark ">
                     <div class=" d-flex flex-row ">
-                        <div  class="d-flex flex-row col-xxl-4 ">
+                        <div class="d-flex flex-row col-xxl-4 ">
                             <div th:text="${fullOrderDto.foodOrderDto.date}"
-                                 class="card-body bg-light text-dark col-xxl-5">
+                                 class="card-body bg-light text-dark col-xxl-5 date-column">
                             </div>
                             <div th:text="${fullOrderDto.foodOrderDto.foodOrderId}"
                                  class="card-body bg-light text-dark col-xxl-2 ">
@@ -50,7 +50,7 @@
                                  class="card-body bg-light text-dark col-xxl-2 ">
                             </div>
                         </div>
-                        <div  class=" d-flex flex-column col-xxl-5">
+                        <div class=" d-flex flex-column col-xxl-5">
                             <th:block th:each="orderCartEntryDto : ${fullOrderDto.orderCartEntryDtoList}">
                                 <div class="d-flex flex-row col-xxl-12 ">
                                     <div th:text="${orderCartEntryDto.dishDto.name}"
@@ -64,18 +64,23 @@
                                 </div>
                             </th:block>
                         </div>
-                            <form th:object="${statusDto}" th:action="@{'/food-order/' + ${fullOrderDto.foodOrderDto.foodOrderId} + '/change-status'}" method="post" class="  d-flex flex-row col-xxl-3 ">
+                        <form th:object="${statusDto}"
+                              th:action="@{'/food-order/' + ${fullOrderDto.foodOrderDto.foodOrderId} + '/change-status'}"
+                              method="post" class="  d-flex flex-row col-xxl-3 ">
                             <div th:text="${fullOrderDto.foodOrderDto.totalAmount + ' RON'}"
                                  class="card-body bg-light text-dark col-xxl-1 "></div>
 
-                            <div  class="card-body bg-light text-dark col-xxl-1 ">
+                            <div class="card-body bg-light text-dark col-xxl-1 ">
                                 <select th:field="*{status}" class="form-select form-select-sm" id="status">
-                                    <option th:value="${fullOrderDto.foodOrderDto.status}" th:text="${fullOrderDto.foodOrderDto.status}"></option>
+                                    <option th:value="${fullOrderDto.foodOrderDto.status}"
+                                            th:text="${fullOrderDto.foodOrderDto.status}"></option>
                                     <option th:each="statusOpt : ${T(com.sda.QuickBite.enums.OrderStatus).values()}"
-                                            th:if="${statusOpt.name() != fullOrderDto.foodOrderDto.status}"
-                                            th:value="${statusOpt}" th:text="${statusOpt}"
+                                            th:if="${statusOpt.getLabel() != fullOrderDto.foodOrderDto.status}"
+                                            th:value="${statusOpt}" th:text="${statusOpt.getLabel()}"
                                     ></option>
                                 </select>
+
+
                             </div>
                             <div class="card-body bg-light text-dark col-xxl-1 ">
                                 <button type="submit" class="btn btn-primary" th:text="Update"></button>

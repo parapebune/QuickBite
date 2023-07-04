@@ -19,7 +19,7 @@ public class FoodOrderMapper {
                 .restaurantName(foodOrder.getRestaurant().getName())
                 .restaurantId(foodOrder.getRestaurant().getRestaurantId().toString())
                 .totalAmount(foodOrder.getTotalAmount().toString())
-                .status(foodOrder.getOrderStatus().name())
+                .status(foodOrder.getOrderStatus().getLabel())
                 .build();
     }
 
