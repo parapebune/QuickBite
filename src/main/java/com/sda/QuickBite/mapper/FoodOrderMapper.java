@@ -17,6 +17,7 @@ public class FoodOrderMapper {
                 .foodOrderId(foodOrder.getOrderId().toString())
                 .date(foodOrder.getOrderDate().format(formatter))
                 .restaurantName(foodOrder.getRestaurant().getName())
+                .restaurantId(foodOrder.getRestaurant().getRestaurantId().toString())
                 .totalAmount(foodOrder.getTotalAmount().toString())
                 .status(foodOrder.getOrderStatus().name())
                 .build();

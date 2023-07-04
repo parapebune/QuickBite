@@ -2,11 +2,11 @@ package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.Dish;
+import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.repository.DishRepository;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -36,6 +36,10 @@ public class FeaturesController extends DefaultController {
 
     @Autowired
     private Util util;
+    @Autowired
+    private FeedBackService feedbackService;
+    @Autowired
+    private RestaurantService restaurantService;
 
 
     @PostMapping("/addToCard/{dishId}")
@@ -90,6 +94,7 @@ public class FeaturesController extends DefaultController {
 
     @GetMapping("/orderCart")
     public String orderCartGet(Model model, Authentication authentication) {
+//        List<SummaryOrderCartDto> summaryOrderCartDtoList = orderCartEntryService.getSummaryOrderCartDtoList(authentication.getName());
         List<OrderCartEntryDto> orderCartEntryDtoList = orderCartEntryService.getOrderCartEntryList(authentication.getName());
         TotalAmountDto orderTotalAmountDto = orderCartEntryService.getOrderTotalAmount(authentication.getName());
         model.addAttribute("orderTotalAmount", orderTotalAmountDto);
@@ -146,6 +151,35 @@ public class FeaturesController extends DefaultController {
                                    @PathVariable(name = "foodOrderId") String foodOrderId){
         foodOrderService.changeStatus(foodOrderId,statusDto);
         return "redirect:/orderDashboard";
+    }
+
+    @GetMapping("/restaurant/review/{restaurantId}")
+    public String addReviewGet(@PathVariable(name = "restaurantId") String restaurantId,
+                               Model model){
+        FeedbackDto feedbackDto = new FeedbackDto();
+        model.addAttribute("feedbackDto", feedbackDto);
+        return "addReviewPage";
+    }
+
+    @PostMapping("/restaurant/review/{restaurantId}")
+    public String addReviewPost(@PathVariable(name = "restaurantId") String restaurantId,
+                                @ModelAttribute(name = "feedbackDto") FeedbackDto feedbackDto, Authentication authentication,
+                                Model model){
+        Optional<User> optionalUser = userService.getUserByEmail(authentication.getName());
+        if(optionalUser.isEmpty()){
+            util.getErrorMessage("User not found",model );
+            return "error";
+        }
+        Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
+        if(optionalRestaurant.isEmpty()){
+            util.getErrorMessage("Restaurant not found!",model );
+            return "error";
+        }
+        User user = optionalUser.get();
+        Restaurant restaurant = optionalRestaurant.get();
+
+        feedbackService.addFeedback(feedbackDto,restaurant, user);
+        return "redirect:/orderHistory";
     }
 
 

@@ -48,6 +48,16 @@
         <li class="nav-item px-3">
             <a class="btn btn-outline-dark"  th:href="@{/removeRestaurant/{x} (x=${restaurantId})}">Remove Restaurant</a>
         </li>
+        <li class="nav-item px-3">
+            <a class="btn btn-outline-dark" th:href="@{/restaurant/rating/{x} (x=${restaurantId})}">Go to reviews</a>
+        </li>
+    </ul>
+</nav>
+<nav  sec:authorize="hasRole('BUYER')" class="navbar navbar-expand-sm justify-content-center category-nav" >
+    <ul class="navbar-nav category-nav">
+        <li class="nav-item px-3">
+            <a class="btn btn-outline-dark" th:href="@{/restaurant/rating/{x} (x=${restaurantId})}">Go to reviews</a>
+        </li>
     </ul>
 </nav>
 
