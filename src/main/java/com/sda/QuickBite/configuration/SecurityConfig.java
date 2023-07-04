@@ -50,6 +50,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/dish/*/update").hasRole("SELLER");
                     auth.requestMatchers("/dish/*/modify").hasRole("SELLER");
                     auth.requestMatchers("/dish/*/remove").hasRole("SELLER");
+                    auth.requestMatchers("/removeRestaurant/*").hasRole("SELLER");
                     auth.requestMatchers("/food-order/*/change-status").hasRole("SELLER");
                     auth.requestMatchers("/orderDashboard").hasRole("SELLER");
                     auth.requestMatchers("/food-order/*/*").hasRole("SELLER");
@@ -66,6 +67,8 @@ public class SecurityConfig {
                     auth.requestMatchers("/sellerPage").permitAll();
                     auth.requestMatchers("/orderCart").permitAll();
                     auth.requestMatchers("/navBar").permitAll();
+                    auth.requestMatchers("/forgotPassword").permitAll();
+                    auth.requestMatchers("/forgotPassword/*/*").permitAll();
 
 
                 })

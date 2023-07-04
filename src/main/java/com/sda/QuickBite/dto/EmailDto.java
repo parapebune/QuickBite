@@ -1,3 +1,4 @@
+
 package com.sda.QuickBite.dto;
 
 import lombok.*;
@@ -8,8 +9,6 @@ import lombok.*;
 @Setter
 @ToString
 public class EmailDto {
-
-
     private String email;
-
 }
+

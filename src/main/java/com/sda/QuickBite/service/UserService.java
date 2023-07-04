@@ -34,6 +34,8 @@ public class UserService {
 
     @Autowired
     public BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private ForgotPasswordRepository forgotPasswordRepository;
 
     @Autowired
     private ForgotPasswordRepository forgotPasswordRepository;
@@ -184,6 +186,4 @@ public class UserService {
         return false;
 
     }
-
-
 }

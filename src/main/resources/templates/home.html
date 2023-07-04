@@ -31,7 +31,7 @@
           <a th:href="@{/restaurant/{x}(x=${restaurantDto.id})}" class="nav-link m-0 p-0 btn-outline-light">
             <div class="card bg-light text-dark m-3 wrapper_custom" style="height: 300px">
               <h4 class="card-header text-light restaurant-header-footer" th:text="${restaurantDto.name}" style="height: 30%; overflow: auto;"></h4>
-              <div class="logo-container" style="height: 180px; display: flex; align-items: center; justify-content: center; background: #f1cf9d">
+              <div class="logo-container" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                 <img th:src="${restaurantDto.logo}" alt="Restaurant Logo" class="img-fluid" style="max-height: 100%; max-width: 100%; object-fit: contain;">
               </div>
               <div class="card-footer text-light restaurant-header-footer" th:text="${restaurantDto.restaurantSpecific}" style="height: 20%; overflow: auto;"></div>
