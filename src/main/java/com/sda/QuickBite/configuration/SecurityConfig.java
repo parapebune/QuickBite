@@ -70,6 +70,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/navBar").permitAll();
                     auth.requestMatchers("/forgotPassword").permitAll();
                     auth.requestMatchers("/forgotPassword/*/*").permitAll();
+                    auth.requestMatchers("/ratingPage").permitAll();
 
 
                 })

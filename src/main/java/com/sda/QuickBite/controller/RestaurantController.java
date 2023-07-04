@@ -98,10 +98,11 @@ public class RestaurantController extends DefaultController {
         return "redirect:/restaurant/" + restaurantId;
     }
 
+
     @GetMapping("/removeRestaurant/{restaurantId}")
-    public String removeRestaurantGet(@PathVariable(name = "restaurantId") String restaurantId, Model model){
+    public String removeRestaurantGet(@PathVariable(name = "restaurantId") String restaurantId, Model model) {
         Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
-        if(optionalRestaurant.isEmpty()){
+        if (optionalRestaurant.isEmpty()) {
             util.getErrorMessage("Restaurant not found!", model);
             return "error";
         }
@@ -110,5 +111,12 @@ public class RestaurantController extends DefaultController {
         restaurantService.removeRestaurant(restaurant);
 
         return "redirect:/sellerPage";
+    }
+
+    @GetMapping("/ratingPage")
+
+    public String ratingPageGet() {
+        return "ratingPage";
+
     }
 }
