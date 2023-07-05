@@ -7,6 +7,7 @@ import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.OrderStatus;
 import com.sda.QuickBite.repository.DishRepository;
+import com.sda.QuickBite.repository.RestaurantRepository;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,8 @@ public class FeaturesController extends DefaultController {
     private FeedbackService feedbackService;
     @Autowired
     private RestaurantService restaurantService;
-
-
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
 
     @PostMapping("/addToCard/{dishId}")
@@ -190,6 +191,20 @@ public class FeaturesController extends DefaultController {
 
         feedbackService.addFeedback(feedbackDto,restaurant, user);
         return "redirect:/orderHistory";
+    }
+
+    @GetMapping("/restaurant/{restaurantId}/reviews-page")
+    public String ratingPageGet(Model model,@PathVariable(name = "restaurantId") String restaurantId){
+        Optional<Restaurant> optionalRestaurant = restaurantService.getRestaurantById(restaurantId);
+        if(optionalRestaurant.isEmpty()){
+            util.getErrorMessage("Restaurant not found",model);
+            return "error";
+        }
+        Restaurant restaurant = optionalRestaurant.get();
+        List<FeedbackDto> feedbackDtoList = restaurantService.getListOftFeedbackDtoByRestaurant(restaurant);
+
+        model.addAttribute("feedbackDtoList",feedbackDtoList);
+        return "ratingPage";
     }
 
 
