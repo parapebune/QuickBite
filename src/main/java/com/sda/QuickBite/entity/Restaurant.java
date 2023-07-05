@@ -14,6 +14,7 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
+
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +28,12 @@ public class Restaurant {
     @Enumerated(value = EnumType.STRING)
     private RestaurantSpecific restaurantSpecific;
     @Lob
+    @ToString.Exclude
     @Column(columnDefinition = "LONGBLOB")
     private byte[] logo;
 
     @Lob
+    @ToString.Exclude
     @Column(columnDefinition = "LONGBLOB")
     private byte[] backgroundImage;
 
@@ -39,10 +42,12 @@ public class Restaurant {
     private User user;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Dish> menu;
 
 
     @OneToMany(mappedBy = "restaurant",cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Feedback> restaurantFeedbackList;
 
 

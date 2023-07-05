@@ -125,10 +125,21 @@ public class FoodOrderService {
             throw new RuntimeException("Food order not found");
         }
         FoodOrder foodOrder = optionalFoodOrder.get();
-        System.out.println(statusDto.getStatus());
+
+
         foodOrder.setOrderStatus(OrderStatus.valueOf(statusDto.getStatus()));
         foodOrderRepository.save(foodOrder);
     }
+
+    public void changeStatusToRated(String foodOrderId) {
+        Optional<FoodOrder> optionalFoodOrder = foodOrderRepository.findById(Long.valueOf(foodOrderId));
+        if(optionalFoodOrder.isEmpty()){
+            throw new RuntimeException("Food order not found");
+        }
+        FoodOrder foodOrder = optionalFoodOrder.get();
+        foodOrder.setOrderStatus(OrderStatus.RATED);
+        foodOrderRepository.save(foodOrder);
+     }
 
 
 //public void changeStatus(String foodOrderId, String status) {

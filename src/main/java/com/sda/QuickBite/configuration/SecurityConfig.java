@@ -36,6 +36,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/forgotPassword/**").permitAll();
                     auth.requestMatchers("/changeForgottenPassword/**").permitAll();
                     auth.requestMatchers("/restaurant/review/*").permitAll();
+                    auth.requestMatchers("/restaurant/review/**").permitAll();
 
 
                     auth.requestMatchers("/registration").permitAll();
