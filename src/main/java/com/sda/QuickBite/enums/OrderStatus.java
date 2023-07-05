@@ -8,9 +8,9 @@ public enum OrderStatus {
 
     COOKING("Epicurean Prelude"),
 
-    DELIVERY_FAILED("Lost in the Breeze");
+    DELIVERY_FAILED("Lost in the Breeze"),
 
-//    RATED("")
+    RATED("Culinary Verdict Received");
 
 
     public String label;

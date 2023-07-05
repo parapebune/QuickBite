@@ -2,8 +2,10 @@ package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.*;
 import com.sda.QuickBite.entity.Dish;
+import com.sda.QuickBite.entity.FoodOrder;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
+import com.sda.QuickBite.enums.OrderStatus;
 import com.sda.QuickBite.repository.DishRepository;
 import com.sda.QuickBite.service.*;
 import com.sda.QuickBite.utils.Util;
@@ -155,17 +157,19 @@ public class FeaturesController extends DefaultController {
         return "redirect:/orderDashboard";
     }
 
-    @GetMapping("/restaurant/review/{restaurantId}")
+    @GetMapping("/restaurant/review/{restaurantId}/{foodOrderId}")
 
     public String addReviewGet(@PathVariable(name = "restaurantId") String restaurantId,
+                               @PathVariable(name = "foodOrderId") String foodOrderId,
                                Model model){
         FeedbackDto feedbackDto = new FeedbackDto();
         model.addAttribute("feedbackDto", feedbackDto);
         return "addReviewPage";
     }
 
-    @PostMapping("/restaurant/review/{restaurantId}")
+    @PostMapping("/restaurant/review/{restaurantId}/{foodOrderId}")
     public String addReviewPost(@PathVariable(name = "restaurantId") String restaurantId,
+                                @PathVariable(name = "foodOrderId") String foodOrderId,
                                 @ModelAttribute(name = "feedbackDto") FeedbackDto feedbackDto, Authentication authentication,
                                 Model model){
         Optional<User> optionalUser = userService.getUserByEmail(authentication.getName());
@@ -180,6 +184,9 @@ public class FeaturesController extends DefaultController {
         }
         User user = optionalUser.get();
         Restaurant restaurant = optionalRestaurant.get();
+
+
+        foodOrderService.changeStatusToRated(foodOrderId);
 
         feedbackService.addFeedback(feedbackDto,restaurant, user);
         return "redirect:/orderHistory";

@@ -15,4 +15,5 @@ public class FoodOrderDto {
     private String restaurantId;
     private String totalAmount;
     private String status;
+    private String rated;
 }

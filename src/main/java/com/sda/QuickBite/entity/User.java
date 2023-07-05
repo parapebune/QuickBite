@@ -28,6 +28,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Restaurant> restaurantList;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -35,9 +36,11 @@ public class User {
     private OrderCart orderCart;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<FoodOrder> orders;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Feedback> userFeedbackList;
 
 
