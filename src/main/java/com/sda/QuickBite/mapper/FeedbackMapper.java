@@ -17,5 +17,12 @@ public class FeedbackMapper {
                 .user(user).build();
 
     }
+    public FeedbackDto map(Feedback feedback){
+        return FeedbackDto.builder()
+                .userFullName(feedback.getUser().getFirstName() + feedback.getUser().getLastName())
+                .review(feedback.getReview())
+                .rating(feedback.getRating().toString())
+                .build();
+    }
 }
 

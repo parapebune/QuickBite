@@ -115,6 +115,30 @@ body{
 }
 
 
+ .rating {
+     color: yellow;
+     font-size: 24px;
+ }
+
+.star {
+    position: relative;
+    display: inline-block;
+    margin-right: 16px;
+}
+
+.star::before {
+    content: '\2605';
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.star.half::before {
+    clip-path: inset(0% 50% 0% 0%);
+}
+
+
+
 
 
 

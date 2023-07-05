@@ -1,10 +1,14 @@
 package com.sda.QuickBite.service;
 
+import com.sda.QuickBite.dto.FeedbackDto;
 import com.sda.QuickBite.dto.RestaurantDto;
+import com.sda.QuickBite.entity.Feedback;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
 import com.sda.QuickBite.enums.RestaurantSpecific;
+import com.sda.QuickBite.mapper.FeedbackMapper;
 import com.sda.QuickBite.mapper.RestaurantMapper;
+import com.sda.QuickBite.repository.FeedbackRepository;
 import com.sda.QuickBite.repository.RestaurantRepository;
 import com.sda.QuickBite.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,11 @@ public class RestaurantService {
     private RestaurantRepository restaurantRepository;
     @Autowired
     private Util util;
+
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+    @Autowired
+    private FeedbackMapper feedbackMapper;
 
     public void addRestaurant(RestaurantDto restaurantDto, MultipartFile restaurantImage, MultipartFile restaurantBackgroundImg, User user) {
 
@@ -121,6 +130,27 @@ public class RestaurantService {
 
     public void removeRestaurant(Restaurant restaurant) {
         restaurantRepository.delete(restaurant);
+    }
+
+    public List<FeedbackDto> getListOftFeedbackDtoByRestaurant(Restaurant restaurant) {
+        List<Feedback> feedbackList = feedbackRepository.findAllByRestaurant(restaurant);
+        List<FeedbackDto> feedbackDtoList = new ArrayList<>();
+
+        for (Feedback feedback : feedbackList){
+            FeedbackDto feedbackDto = feedbackMapper.map(feedback);
+            feedbackDtoList.add(feedbackDto);
+        }
+        return feedbackDtoList;
+    }
+
+    public Double getAverageRating(String restaurantId) {
+        List<Feedback> feedbackList = feedbackRepository.findAllByRestaurantRestaurantId(Long.valueOf(restaurantId));
+        double sum =0;
+        for (Feedback feedback : feedbackList){
+            sum = sum + feedback.getRating();
+        }
+
+        return  sum/feedbackList.size();
     }
 }
 

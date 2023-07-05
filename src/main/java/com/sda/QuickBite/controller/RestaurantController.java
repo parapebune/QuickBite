@@ -1,6 +1,7 @@
 package com.sda.QuickBite.controller;
 
 import com.sda.QuickBite.dto.DishCategoryDto;
+import com.sda.QuickBite.dto.RestaurantAvgRatingDto;
 import com.sda.QuickBite.dto.RestaurantDto;
 import com.sda.QuickBite.entity.Restaurant;
 import com.sda.QuickBite.entity.User;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,9 +69,17 @@ public class RestaurantController extends DefaultController {
 
         List<DishCategoryDto> dishCategoryDtoList = dishService.getDishDtoListGroupByCategory(restaurantId);
         model.addAttribute("dishCategoryDtoList",dishCategoryDtoList);
-
+        Double avgRating = restaurantService.getAverageRating(restaurantId);
+        Double restaurantAvgRating = util.getaDoubleFormatted(avgRating);
+        RestaurantAvgRatingDto restaurantAvgRatingDto = RestaurantAvgRatingDto.builder()
+                .averageRatingDouble(restaurantAvgRating.toString())
+                .averageRatingInt(String.valueOf(restaurantAvgRating.intValue()))
+                .build();
+        model.addAttribute("restaurantAvgRatingDto", restaurantAvgRatingDto);
         return "restaurant";
     }
+
+
 
     @GetMapping("/editRestaurant/{restaurantId}")
     public String editRestaurantGet(Model model, @PathVariable(name = "restaurantId") String restaurantId) {

@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
@@ -74,6 +75,12 @@ public class Util {
                 .errorMessage(errorMessage).build();
         model.addAttribute("errorMessageDto", errorMessageDto);
 
+    }
+
+    public Double getaDoubleFormatted(Double restaurantAvgRating) {
+        DecimalFormat df = new DecimalFormat("0.0");
+        String formatted = df.format(restaurantAvgRating);
+        return Double.valueOf(formatted);
     }
 
 
